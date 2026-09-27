@@ -127,7 +127,7 @@ var selected=[];
 for(var i=0;i<pool.length&&selected.length<6;i++)selected.push(pool[(offset+i)%pool.length]);
 var box=document.getElementById("suggestGrid");if(!box)return;
 var seasonEl=document.getElementById("suggestSeason");if(seasonEl)seasonEl.textContent=season+" · refreshed weekly";
-box.innerHTML=selected.map(function(name){var x=catalog[name];return "<article class='suggestCard' style=\"--suggest-image:url('"+x.image+"')\"><div class='suggestContent'><div class='suggestTag'>"+esc(x.tag)+"</div><h3>"+esc(name)+"</h3><p>"+esc(x.place)+" · "+esc(x.why)+"</p><a class='suggestAction' href='trip.html?inspiration="+encodeURIComponent(name)+"'>Explore this trip</a></div></article>"}).join("");
+box.innerHTML=selected.map(function(name){var x=catalog[name];var href="trip.html?inspiration="+encodeURIComponent(name);return "<a class='suggestCard' href='"+href+"' aria-label='Explore "+esc(name)+" as a 7-day inspiration trip' style=\"--suggest-image:url('"+x.image+"')\"><div class='suggestContent'><div class='suggestTag'>"+esc(x.tag)+"</div><h3>"+esc(name)+"</h3><p>"+esc(x.place)+" · "+esc(x.why)+"</p><span class='suggestAction'>Explore this trip</span></div></a>"}).join("");
 }function renderNextJourney(saved,current,upcoming,attention){
 var box=document.getElementById("nextJourney");if(!box)return;
 var lead=upcoming.slice().sort(function(a,b){return (daysUntil((a.t||a).start)||999999)-(daysUntil((b.t||b).start)||999999)})[0]||current;
