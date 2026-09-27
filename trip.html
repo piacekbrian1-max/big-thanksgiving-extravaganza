@@ -164,7 +164,7 @@ function fmtDate(s){if(!s)return "Date not set";var d=new Date(s+"T12:00:00");re
 function maps(q){return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q)}
 function search(q){return "https://www.google.com/search?q="+encodeURIComponent(q)}
 function daysOverlap(date,start,end){return date>=start&&date<=end}
-var imgs={prague:"images/prague-christmas.jpg",trnava:"images/trnava-advent.jpg",pilsen:"images/pilsen-christmas.jpg",hluboka:"images/hluboka-winter.jpg",neworleans:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Jackson_Square_-_New_Orleans_(55151955319).jpg",neworleans2:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Garden_District_New_Orleans_(2).jpg",neworleans3:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Magazine_Street,_Uptown_New_Orleans,_16_December_2020_11.jpg",vienna:"images/prague-christmas.jpg"};
+var imgs={prague:"images/prague-christmas.jpg",trnava:"images/trnava-advent.jpg",pilsen:"images/pilsen-christmas.jpg",hluboka:"images/hluboka-winter.jpg",neworleans:"https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/The_Historic_New_Orleans_Collection_%28HNOC%29_on_Royal_Street%2C_French_Quarter%2C_February_2026.jpg/2400px-The_Historic_New_Orleans_Collection_%28HNOC%29_on_Royal_Street%2C_French_Quarter%2C_February_2026.jpg",neworleans2:"https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/St_Charles_Avenue_house%2C_New_Orleans_Garden_District%2C_12_March_2026_-_13.jpg/2400px-St_Charles_Avenue_house%2C_New_Orleans_Garden_District%2C_12_March_2026_-_13.jpg",neworleans3:"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Frenchmen_Street_at_Urquhart_Street%2C_New_Orleans_26_May_2026_-_2.jpg/2400px-Frenchmen_Street_at_Urquhart_Street%2C_New_Orleans_26_May_2026_-_2.jpg",vienna:"images/prague-christmas.jpg"};
 
 var nolaGuide={
 Breakfast:[
@@ -357,7 +357,7 @@ document.getElementById("homeBase").value=trip.homeBase&&trip.homeBase!=="Downto
 document.getElementById("smartTransport").value=trip.transport||"Walk + transit";document.getElementById("smartRadius").value=trip.walkingRadius||"Moderate — combine nearby areas";
 var d0=ds[0]||"";document.getElementById("heroMain").src=destinationImage(d0,0);document.getElementById("heroMain").alt=d0;
 document.getElementById("heroSide1").src=destinationImage(d0,1);document.getElementById("heroSide2").src=destinationImage(d0,2);document.getElementById("side1Label").textContent=d0+" · local character";document.getElementById("side2Label").textContent=d0+" · seasonal atmosphere";
-document.getElementById("heroPhotoCredit").textContent=slug(d0).indexOf("new orleans")>=0?"Editorial photos · Wikimedia Commons · CC BY":"Photo · destination editorial image";
+document.getElementById("heroPhotoCredit").textContent=slug(d0).indexOf("new orleans")>=0?"Photos: Ajay Suresh / Infrogmation · Wikimedia Commons · CC BY 4.0 / CC BY-SA 4.0":"Photo · destination editorial image";
 document.getElementById("routeMap").href="https://www.google.com/maps/dir/"+encodeURIComponent((trip.homeBase||"Downtown "+d0))+"/"+encodeURIComponent(d0);
 }
 function renderRoute(){
