@@ -204,7 +204,44 @@ button,a{max-width:100%}
   .full{grid-column:auto}
   .foot{display:block}
 }
-</style></head>
+
+<style id="roamwell-ipad-landscape-budget">
+/* iPad landscape / wide tablet: keep the budget module balanced instead of
+   dropping the three summary cards into an unintended 2+1 layout. */
+@media (min-width:900px) and (max-width:1180px){
+  .budgetSummary{
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  }
+  .budgetFormGrid{
+    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  }
+  .budgetFormGrid > div{
+    min-width:0;
+  }
+  .budgetForm input,
+  .budgetForm select{
+    min-width:0;
+    width:100%;
+  }
+  .budgetActions{
+    align-items:center;
+  }
+  .budgetActions .btn,
+  .budgetActions .miniBtn{
+    flex:0 1 auto;
+    width:auto !important;
+    white-space:nowrap;
+  }
+}
+@media (min-width:601px) and (max-width:899px){
+  .budgetSummary{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+  .budgetFormGrid{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+}
+</style></style></head>
 <body>
 <header class="top"><div class="nav">
 <a class="logo" href="index.html"><span class="logoMark">TRIP</span><span><strong id="brand" class="logoRoam">ROAMWELL</strong><small class="logoTag">TRAVEL BETTER · REMEMBER MORE</small></span></a>
