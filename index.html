@@ -123,8 +123,14 @@ const dep=new Date("2026-11-25T13:10:00-05:00"),$=id=>document.getElementById(id
 function tick(){let z=Math.max(0,dep-new Date()),q=Math.floor(z/1000),d=Math.floor(q/86400);q%=86400;let h=Math.floor(q/3600);q%=3600;let m=Math.floor(q/60);q%=60;$("d").textContent=d;$("h").textContent=String(h).padStart(2,"0");$("m").textContent=String(m).padStart(2,"0");$("s").textContent=String(q).padStart(2,"0")}tick();setInterval(tick,1000);
 const coords={trnava:[48.3774,17.5883],prague:[50.0755,14.4378],pilsen:[49.7384,13.3736],hluboka:[49.051,14.434]};
 const desc={0:"Clear",1:"Mostly clear",2:"Partly cloudy",3:"Overcast",45:"Fog",48:"Rime fog",51:"Light drizzle",53:"Drizzle",55:"Heavy drizzle",61:"Light rain",63:"Moderate rain",65:"Heavy rain",71:"Light snow",73:"Moderate snow",75:"Heavy snow",80:"Rain showers",81:"Moderate showers",82:"Heavy showers",85:"Snow showers",86:"Heavy snow showers",95:"Thunderstorm"};
-const fallbackImage="https://images.unsplash.com/photo-1543589077-47d81606c1bf?auto=format&fit=crop&w=1600&q=85";
-document.querySelectorAll("img").forEach(img=>{img.addEventListener("error",()=>{if(img.dataset.fallback)return;img.dataset.fallback="1";img.src=fallbackImage},{once:true})});
+const fallbackImage="https://commons.wikimedia.org/wiki/Special:Redirect/file/Christmas_Tree_in_Old_Town_Square_Prague.jpg";
+const fallbackByAlt={
+"Trnava Advent":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Trnava_center.JPG",
+"Trnava Christmas":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Trnava_center.JPG",
+"Pilsen Christmas market":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Plze%C5%88sk%C3%BD_Prazdroj%2C_Jubilejn%C3%AD_br%C3%A1na_s_v%C3%A1no%C4%8Dn%C3%AD_v%C3%BDzdobou.jpg",
+"Hluboká Advent":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Hluboka_nad_Vltavou_Schloss.jpg"
+};
+document.querySelectorAll("img").forEach(img=>{img.addEventListener("error",()=>{if(img.dataset.fallback)return;img.dataset.fallback="1";img.src=fallbackByAlt[img.alt]||fallbackImage},{once:true})});
 const dbReq=indexedDB.open("big-thanksgiving-memories",1);let memoryDB;
 dbReq.onupgradeneeded=e=>{memoryDB=e.target.result;if(!memoryDB.objectStoreNames.contains("photos"))memoryDB.createObjectStore("photos",{keyPath:"id",autoIncrement:true})};
 dbReq.onsuccess=e=>{memoryDB=e.target.result;renderMemories()};
