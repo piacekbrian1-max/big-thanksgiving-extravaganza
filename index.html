@@ -144,7 +144,12 @@ main{max-width:1500px;width:94%;margin:auto}.dash{margin-top:-34px;position:rela
       img.onerror=function(){
         if(img.getAttribute("data-fallback")) return;
         img.setAttribute("data-fallback","1");
-        img.src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Christmas_Tree_in_Old_Town_Square_Prague.jpg/960px-Christmas_Tree_in_Old_Town_Square_Prague.jpg";
+        var src=img.getAttribute("src")||"";
+        var alt=(img.getAttribute("alt")||"").toLowerCase();
+        if(src.indexOf("Trnava")>=0 || alt.indexOf("trnava")>=0) img.src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Slovakia_-_Trnava_-_Trojicne_namestie_a_mestska_veza_RB01.jpg/960px-Slovakia_-_Trnava_-_Trojicne_namestie_a_mestska_veza_RB01.jpg";
+        else if(src.indexOf("Hluboka")>=0 || src.indexOf("Hlubok")>=0 || alt.indexOf("hlubok")>=0) img.src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Hluboka_nad_Vltavou_Schloss.jpg/960px-Hluboka_nad_Vltavou_Schloss.jpg";
+        else if(src.indexOf("visitplzen")>=0 || alt.indexOf("pilsen")>=0) img.src="https://s3-eu-central-1.amazonaws.com/tf-prod-visitplzen/visitplzen/var/www/rocketstack/web/app/uploads/vhristmas-amrket-visit-plzen.jpg";
+        else img.src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Christmas_Tree_in_Old_Town_Square_Prague.jpg/960px-Christmas_Tree_in_Old_Town_Square_Prague.jpg";
       };
     })(imgs[i]);
   }
