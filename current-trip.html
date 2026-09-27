@@ -52,6 +52,36 @@ main{max-width:1500px;width:94%;margin:auto}.dash{margin-top:-34px;position:rela
 .restaurantNote{font-size:9px!important;color:#7b8681!important;margin-top:10px}
 @media(max-width:1000px){.tripHub{grid-template-columns:1fr}.suggestionGrid,.foodGrid{grid-template-columns:1fr 1fr}.budgetGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.formGrid{grid-template-columns:1fr}.full{grid-column:auto}.suggestionGrid,.foodGrid,.budgetGrid{grid-template-columns:1fr}.budgetItem .budgetValue{font-size:22px}}
+
+/* Responsive layout hardening — prevent action/button collisions */
+button,a{max-width:100%;}
+.btn,.miniBtn{flex:0 0 auto;min-width:0;overflow-wrap:anywhere;}
+.heroActions,.actions,.builderActions,.suggestionActions,.guideActions,.tripItem,.budgetTotalBar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;}
+.guideActions{margin-top:12px;}
+.guideButton{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:8px 10px;border:1px solid var(--line);border-radius:7px;background:#fffdf9;color:var(--ink);font-size:8px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;line-height:1.2;white-space:normal;text-align:center;box-sizing:border-box;}
+.guideButton.primary{background:var(--green);border-color:var(--green);color:white;}
+.tripItem{align-items:center;}
+.tripItem>div:first-child{min-width:0;flex:1 1 180px;}
+.tripItem button,.miniBtn{flex:0 1 auto;}
+.suggestionActions .miniBtn{white-space:normal;text-align:center;line-height:1.2;}
+.navlinks.open{display:flex;}
+@media(max-width:1000px){
+  .nav{position:relative;}
+  .navlinks.open{position:absolute;top:74px;left:0;right:0;width:100%;padding:14px;background:rgba(16,27,27,.98);border:1px solid #ffffff18;border-radius:0 0 12px 12px;display:grid;grid-template-columns:1fr 1fr;gap:6px;box-shadow:0 18px 35px #0005;z-index:100;}
+  .navlinks.open a{padding:11px 9px;border:1px solid #ffffff12;border-radius:7px;line-height:1.25;}
+}
+@media(max-width:600px){
+  .navlinks.open{grid-template-columns:1fr;max-height:calc(100vh - 74px);overflow:auto;}
+  .heroActions,.actions,.builderActions,.suggestionActions,.guideActions{align-items:stretch;}
+  .heroActions .btn,.actions .btn,.builderActions .btn,.suggestionActions .miniBtn,.guideActions .guideButton{width:100%;max-width:100%;}
+  .tripItem{align-items:stretch;}
+  .tripItem>div:first-child{flex-basis:100%;}
+  .tripItem button,.tripItem .miniBtn{width:100%;}
+  .budgetTotalBar{align-items:flex-start;}
+  .linksGrid{grid-template-columns:1fr;}
+  .row{flex-direction:column;gap:5px;}
+  .row>span{overflow-wrap:anywhere;}
+}
 </style>
 </head>
 <body>
