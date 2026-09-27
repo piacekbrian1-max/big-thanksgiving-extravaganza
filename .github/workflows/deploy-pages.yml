@@ -30,11 +30,11 @@ jobs:
       - name: Build hourly weather snapshot
         shell: bash
         run: |
-          curl -fsSL "https://api.open-meteo.com/v1/forecast?latitude=48.3774,50.0755,49.7384,49.051&longitude=17.5883,14.4378,13.3736,14.434&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&timezone=auto" -o /tmp/current.json
+          curl -fsSL "https://api.open-meteo.com/v1/forecast?latitude=48.3774,50.0755,49.7384,49.051,29.9511&longitude=17.5883,14.4378,13.3736,14.434,-90.0715&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&timezone=auto" -o /tmp/current.json
           curl -fsSL "https://archive-api.open-meteo.com/v1/archive?latitude=48.3774,50.0755,49.7384,49.051&longitude=17.5883,14.4378,13.3736,14.434&start_date=1991-01-01&end_date=2020-12-31&daily=temperature_2m_max,temperature_2m_min&temperature_unit=fahrenheit&timezone=auto" -o /tmp/history.json
           python3 - <<'PY'
           import json, datetime
-          names=["trnava","prague","pilsen","hluboka"]
+          names=["trnava","prague","pilsen","hluboka","neworleans"]
           codes={0:"Clear",1:"Mostly clear",2:"Partly cloudy",3:"Overcast",45:"Fog",48:"Rime fog",51:"Light drizzle",53:"Drizzle",55:"Heavy drizzle",61:"Light rain",63:"Moderate rain",65:"Heavy rain",71:"Light snow",73:"Moderate snow",75:"Heavy snow",80:"Rain showers",81:"Moderate showers",82:"Heavy showers",85:"Snow showers",86:"Heavy snow showers",95:"Thunderstorm"}
           cur=json.load(open("/tmp/current.json"))
           hist=json.load(open("/tmp/history.json"))
@@ -48,6 +48,13 @@ jobs:
           out={"updated":datetime.datetime.now(datetime.timezone.utc).isoformat(),"locations":{}}
           for i,n in enumerate(names):
               c=cur[i]["current"]; h,l=one(hist[i])
+              if n=="neworleans":
+                  hi=[]; lo=[]
+                  for ii,t in enumerate(hist[i]["daily"]["time"]):
+                      m,d=map(int,t[5:10].split("-"))
+                      if m==1 and 16<=d<=20:
+                          hi.append(hist[i]["daily"]["temperature_2m_max"][ii]); lo.append(hist[i]["daily"]["temperature_2m_min"][ii])
+                  h=sum(hi)/len(hi); l=sum(lo)/len(lo)
               out["locations"][n]={"temperature_f":c["temperature_2m"],"humidity":c["relative_humidity_2m"],"precipitation_in":c["precipitation"],"wind_mph":c["wind_speed_10m"],"weather_code":c["weather_code"],"condition":codes.get(c["weather_code"],"Current conditions"),"historical_high_f":h,"historical_low_f":l}
           json.dump(out,open("weather.json","w"),separators=(",",":"))
           PY
@@ -66,6 +73,14 @@ jobs:
           test "$(file -b --mime-type images/trnava-advent.jpg)" = "image/jpeg"
           test "$(file -b --mime-type images/pilsen-christmas.jpg)" = "image/jpeg"
           test "$(file -b --mime-type images/hluboka-winter.jpg)" = "image/jpeg"
+          curl -fsSL -L "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Chartres_at_St_Ann_French_Quarter_New_Orleans_Jan_2019_Jackson_Square.jpg&width=1800" -o images/neworleans-frenchquarter.jpg
+          curl -fsSL -L "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Garden_District_in_New_Orleans_(1).jpg&width=1800" -o images/neworleans-gardendistrict.jpg
+          curl -fsSL -L "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Mardi_Gras_Parade,_New_Orleans,_Louisiana_(LOC).jpg&width=1800" -o images/neworleans-carnival.jpg
+          curl -fsSL -L "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Jackson_Square,_French_Quarter.jpg&width=1200" -o images/neworleans-jackson.jpg
+          test "$(file -b --mime-type images/neworleans-frenchquarter.jpg)" = "image/jpeg"
+          test "$(file -b --mime-type images/neworleans-gardendistrict.jpg)" = "image/jpeg"
+          test "$(file -b --mime-type images/neworleans-carnival.jpg)" = "image/jpeg"
+          test "$(file -b --mime-type images/neworleans-jackson.jpg)" = "image/jpeg"
 
       - name: Repoint page to verified image versions
         shell: bash
@@ -79,6 +94,10 @@ jobs:
           s=s.replace("images/trnava-advent.jpg","images/trnava-advent.jpg?v="+v)
           s=s.replace("images/pilsen-christmas.jpg","images/pilsen-christmas.jpg?v="+v)
           s=s.replace("images/hluboka-winter.jpg","images/hluboka-winter.jpg?v="+v)
+          s=s.replace("images/neworleans-frenchquarter.jpg","images/neworleans-frenchquarter.jpg?v="+v)
+          s=s.replace("images/neworleans-gardendistrict.jpg","images/neworleans-gardendistrict.jpg?v="+v)
+          s=s.replace("images/neworleans-carnival.jpg","images/neworleans-carnival.jpg?v="+v)
+          s=s.replace("images/neworleans-jackson.jpg","images/neworleans-jackson.jpg?v="+v)
           open(p,"w",encoding="utf-8").write(s)
           PY
           test -s images/prague-christmas.jpg
