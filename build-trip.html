@@ -35,6 +35,8 @@ body{margin:0;background:#f5f2ea;color:#172222;font-family:Arial,sans-serif}.her
 (function(){
 var KEY="big-thanksgiving-trips-v1";
 var prefs=["Local food","History & culture","Neighborhoods","Seasonal events","Music & shows","Outdoors","Scenic drives","Museums","Easy walking","Family friendly","Nightlife","Coffee & bakeries","Photography","Markets"];
+var qs=new URLSearchParams(location.search),suggestedDestination=qs.get("destination");
+if(suggestedDestination){document.getElementById("dest").value=suggestedDestination;document.getElementById("name").value=suggestedDestination+" Adventure";document.getElementById("status").textContent="Roamwell started this trip from your discovery pick. Add dates and preferences, then build it.";}
 var pbox=document.getElementById("prefs");
 for(var i=0;i<prefs.length;i++){var b=document.createElement("button");b.type="button";b.className="chip";b.textContent=prefs[i];b.onclick=function(){this.classList.toggle("active")};b.setAttribute("data-p",prefs[i]);pbox.appendChild(b)}
 function arr(v){return (v||"").split(/[,\n]/).map(function(x){return x.trim()}).filter(Boolean)}
