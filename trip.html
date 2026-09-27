@@ -332,6 +332,40 @@ button,a{max-width:100%}
     overflow-wrap:anywhere !important;
   }
 }
+
+/* Budget layout: hotel dates always occupy a dedicated full row so they can never overlap other fields */
+.budgetForm .budgetDetails{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) !important;
+  gap:12px !important;
+  align-items:end !important;
+}
+.budgetForm .budgetDetails .budgetFieldHotel{
+  grid-column:1 / -1 !important;
+  width:100% !important;
+  min-width:0 !important;
+}
+.budgetForm .budgetDetails .budgetFieldHotel .hotelDates{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) !important;
+  gap:8px !important;
+  width:100% !important;
+}
+.budgetForm .budgetDetails .budgetFieldHotel .hotelDates input{
+  width:100% !important;
+  min-width:0 !important;
+}
+@media (max-width:1180px){
+  .budgetForm .budgetDetails{
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+  }
+}
+@media (max-width:700px){
+  .budgetForm .budgetDetails{
+    grid-template-columns:1fr !important;
+  }
+}
+
 </style>
 </head>
 <body>
