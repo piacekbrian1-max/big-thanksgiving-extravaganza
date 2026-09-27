@@ -366,6 +366,32 @@ button,a{max-width:100%}
   }
 }
 
+
+/* Budget hotel dates: treat From and To as normal grid fields, not a nested row */
+.budgetForm .budgetDetails{
+  display:grid !important;
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  gap:12px !important;
+  align-items:end !important;
+}
+.budgetForm .budgetDetails .budgetHotelDateField{
+  display:block;
+  width:auto !important;
+  min-width:0 !important;
+}
+.budgetForm .budgetDetails .budgetHotelDateField input{
+  width:100% !important;
+  height:42px;
+  min-width:0;
+  box-sizing:border-box;
+}
+@media(max-width:1000px){
+  .budgetForm .budgetDetails{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
+}
+@media(max-width:700px){
+  .budgetForm .budgetDetails{grid-template-columns:1fr !important;}
+}
+
 </style>
 </head>
 <body>
@@ -473,7 +499,8 @@ button,a{max-width:100%}
 
   <div class="budgetFields budgetDetails">
     <div class="budgetField budgetDateField"><label for="budgetDate">Expense date</label><div class="budgetDateWrap"><input id="budgetDate" type="date" aria-label="Expense date"></div></div>
-    <div class="budgetField budgetFieldHotel" id="budgetHotelDates" style="display:none"><label>Hotel stay · from / to</label><div class="hotelDates"><input id="budgetHotelFrom" type="date" aria-label="Hotel stay from"><span>to</span><input id="budgetHotelTo" type="date" aria-label="Hotel stay to"></div></div>
+    <div class="budgetField budgetHotelDateField" id="budgetHotelFromField" style="display:none"><label for="budgetHotelFrom">Hotel stay · From</label><input id="budgetHotelFrom" type="date" aria-label="Hotel stay from"></div>
+    <div class="budgetField budgetHotelDateField" id="budgetHotelToField" style="display:none"><label for="budgetHotelTo">Hotel stay · To</label><input id="budgetHotelTo" type="date" aria-label="Hotel stay to"></div>
     <div class="budgetField"><label for="budgetRate">Exchange rate to USD</label><input id="budgetRate" inputmode="decimal" placeholder="Auto"></div>
     <div class="budgetField"><label for="budgetShot">Receipt / screenshot</label><input id="budgetShot" type="file" accept="image/*"></div>
     <div class="budgetField"><label>Receipt helper</label><button type="button" class="miniBtn budgetHelperBtn" onclick="readBudgetScreenshot()">Read screenshot</button></div>
@@ -877,8 +904,9 @@ t.innerHTML=h;
 window.deleteBudgetItem=function(i){budgetItems().splice(i,1);save();renderBudget()}
 function syncBudgetTypeFields(){
 var isHotel=document.getElementById("budgetDesc")&&document.getElementById("budgetDesc").value==="Hotel / lodging";
-var box=document.getElementById("budgetHotelDates");
-if(box)box.style.display=isHotel?"block":"none";
+var fromBox=document.getElementById("budgetHotelFromField"),toBox=document.getElementById("budgetHotelToField");
+if(fromBox)fromBox.style.display=isHotel?"block":"none";
+if(toBox)toBox.style.display=isHotel?"block":"none";
 }
 document.getElementById("budgetDesc").addEventListener("change",syncBudgetTypeFields);
 syncBudgetTypeFields();
