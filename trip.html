@@ -333,6 +333,66 @@ button,a{max-width:100%}
     width:100% !important;
   }
 }
+</style>
+<style id="roamwell-budget-buttons-definitive">
+/* Definitive budget action layout.
+   Use CSS Grid instead of flex so Safari/iPad cannot shrink buttons into each other. */
+#budget .budgetActions{
+  display:grid !important;
+  grid-template-columns:145px 170px 185px !important;
+  justify-content:start !important;
+  align-items:center !important;
+  gap:8px !important;
+  width:100% !important;
+  min-width:0 !important;
+}
+#budget .budgetActions .btn,
+#budget .budgetActions .miniBtn{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  box-sizing:border-box !important;
+  width:100% !important;
+  min-width:0 !important;
+  max-width:100% !important;
+  height:38px !important;
+  margin:0 !important;
+  padding:0 8px !important;
+  border-radius:7px !important;
+  font-size:7.5px !important;
+  line-height:1.15 !important;
+  letter-spacing:.055em !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  flex:none !important;
+}
+#budget .budgetActions .btn.primary{
+  width:100% !important;
+}
+@media (min-width:601px) and (max-width:899px){
+  #budget .budgetActions{
+    grid-template-columns:135px 155px 170px !important;
+    gap:7px !important;
+  }
+  #budget .budgetActions .btn,
+  #budget .budgetActions .miniBtn{
+    height:36px !important;
+    font-size:7px !important;
+    padding:0 6px !important;
+  }
+}
+@media (max-width:600px){
+  #budget .budgetActions{
+    grid-template-columns:1fr !important;
+    gap:7px !important;
+  }
+  #budget .budgetActions .btn,
+  #budget .budgetActions .miniBtn{
+    width:100% !important;
+    height:38px !important;
+  }
+}
 </style></style></head>
 <body>
 <header class="top"><div class="nav">
