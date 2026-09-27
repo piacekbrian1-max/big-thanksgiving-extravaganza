@@ -57,15 +57,15 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p images
-          curl -fsSL -L "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Christmas_Tree_in_Old_Town_Square_Prague.jpg&width=1600" -o images/prague-christmas-v2.jpg
-          curl -fsSL -L "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Trnava_-_Hlavn%C3%A1_Street.jpg&width=1600" -o images/trnava-advent-v2.jpg
-          curl -fsSL -L "https://s3-eu-central-1.amazonaws.com/tf-prod-visitplzen/visitplzen/var/www/rocketstack/web/app/uploads/vhristmas-amrket-visit-plzen.jpg" -o images/pilsen-christmas-v2.jpg
-          curl -fsSL -L "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Hluboka_nad_Vltavou_Schloss.jpg&width=1600" -o images/hluboka-castle-v2.jpg
+          curl -fsSL -L "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Christmas_Tree_in_Old_Town_Square_Prague.jpg&width=1600" -o images/prague-christmas.jpg
+          curl -fsSL -L "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Trnava_-_Hlavn%C3%A1_Street.jpg&width=1600" -o images/trnava-advent.jpg
+          curl -fsSL -L "https://s3-eu-central-1.amazonaws.com/tf-prod-visitplzen/visitplzen/var/www/rocketstack/web/app/uploads/vhristmas-amrket-visit-plzen.jpg" -o images/pilsen-christmas.jpg
+          curl -fsSL -L "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Hluboka_nad_Vltavou_Schloss.jpg&width=1600" -o images/hluboka-winter.webp
           file images/*
-          test "$(file -b --mime-type images/prague-christmas-v2.jpg)" = "image/jpeg"
-          test "$(file -b --mime-type images/trnava-advent-v2.jpg)" = "image/jpeg"
-          test "$(file -b --mime-type images/pilsen-christmas-v2.jpg)" = "image/jpeg"
-          test "$(file -b --mime-type images/hluboka-castle-v2.jpg)" = "image/jpeg"
+          test "$(file -b --mime-type images/prague-christmas.jpg)" = "image/jpeg"
+          test "$(file -b --mime-type images/trnava-advent.jpg)" = "image/jpeg"
+          test "$(file -b --mime-type images/pilsen-christmas.jpg)" = "image/jpeg"
+          test "$(file -b --mime-type images/hluboka-castle.jpg)" = "image/jpeg"
 
       - name: Repoint page to verified image versions
         shell: bash
@@ -73,10 +73,10 @@ jobs:
           python3 - <<'PY'
           p="index.html"
           s=open(p,encoding="utf-8").read()
-          s=s.replace("images/prague-christmas.jpg","images/prague-christmas-v2.jpg")
-          s=s.replace("images/trnava-advent.jpg","images/trnava-advent-v2.jpg")
-          s=s.replace("images/pilsen-christmas.jpg","images/pilsen-christmas-v2.jpg")
-          s=s.replace("images/hluboka-winter.webp","images/hluboka-castle-v2.jpg")
+          s=s.replace("images/prague-christmas.jpg","images/prague-christmas.jpg")
+          s=s.replace("images/trnava-advent.jpg","images/trnava-advent.jpg")
+          s=s.replace("images/pilsen-christmas.jpg","images/pilsen-christmas.jpg")
+          s=s.replace("images/hluboka-winter.webp","images/hluboka-castle.jpg")
           open(p,"w",encoding="utf-8").write(s)
           PY
           test -s images/prague-christmas.jpg
