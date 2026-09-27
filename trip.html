@@ -915,8 +915,32 @@ if(d.indexOf("new orleans")>=0||d.indexOf("nola")>=0)return profile.neworleans;
 return null;
 }
 function destinationImage(name,i){
-var k=slug(name);if(k.indexOf("new orleans")>=0||k.indexOf("nola")>=0)return i%3===0?imgs.neworleans:i%3===1?imgs.neworleans2:imgs.neworleans3;
-if(k.indexOf("prague")>=0)return imgs.prague;if(k.indexOf("trnava")>=0)return imgs.trnava;if(k.indexOf("pilsen")>=0)return imgs.pilsen;if(k.indexOf("hlub")>=0)return imgs.hluboka;if(k.indexOf("vienna")>=0)return imgs.vienna;return imgs.prague}
+var k=slug(name);
+var editorial={
+"new orleans":[
+"https://images.unsplash.com/photo-1525994886773-080587e161c2?auto=format&fit=crop&fm=jpg&q=88&w=3000",
+"https://images.unsplash.com/photo-1689568914860-4ecf6e58099c?auto=format&fit=crop&fm=jpg&q=88&w=3000",
+"https://images.unsplash.com/photo-1767112316652-c1764153c1fe?auto=format&fit=crop&fm=jpg&q=88&w=3000"
+],
+"charleston":["https://images.unsplash.com/photo-1643063708982-0556158f4775?auto=format&fit=crop&fm=jpg&q=82&w=1800"],
+"santa fe":["https://images.unsplash.com/photo-1777931407549-86d4771c9063?auto=format&fit=crop&fm=jpg&q=82&w=1800"],
+"new york city":["https://images.unsplash.com/photo-1665399320309-e9757b31a5fe?auto=format&fit=crop&fm=jpg&q=82&w=1800"],
+"lisbon":["https://images.unsplash.com/photo-1598535301312-5b3f8abd2a88?auto=format&fit=crop&fm=jpg&q=82&w=1800"],
+"vienna":["https://images.unsplash.com/photo-1641309043676-34128e15917e?auto=format&fit=crop&fm=jpg&q=82&w=1800"],
+"kyoto":["https://images.unsplash.com/photo-1589908234698-8e38077ca1f0?auto=format&fit=crop&fm=jpg&q=82&w=1800"],
+"savannah":["https://images.unsplash.com/photo-1780348544952-42690c752e19?auto=format&fit=crop&fm=jpg&q=82&w=1800"],
+"montreal":["https://images.unsplash.com/photo-1761920274681-18ba06a25d7c?auto=format&fit=crop&fm=jpg&q=82&w=1800"],
+"barcelona":["https://images.unsplash.com/photo-1780305807326-5724054ae6c6?auto=format&fit=crop&fm=jpg&q=82&w=1800"],
+"munich":["https://images.unsplash.com/photo-1783091478517-e6fb341b516e?auto=format&fit=crop&fm=jpg&q=82&w=1800"]
+};
+var key=Object.keys(editorial).find(function(x){return k===x||k.indexOf(x)>=0||x.indexOf(k)>=0});
+if(key){var set=editorial[key];return set[i%set.length]}
+if(k.indexOf("prague")>=0)return imgs.prague;
+if(k.indexOf("trnava")>=0)return imgs.trnava;
+if(k.indexOf("pilsen")>=0)return imgs.pilsen;
+if(k.indexOf("hlub")>=0)return imgs.hluboka;
+return imgs.prague;
+}
 function baseLabel(){return (trip.homeBase||document.getElementById("homeBase").value||trip.stay||"").trim()||"Downtown / city center"}
 function interestScore(area,slot){
 var prefs=(trip.preferences||[]).map(slug).join(" "),s=slug(area)+ " "+slug(slot),score=0;
