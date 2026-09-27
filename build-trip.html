@@ -10,10 +10,18 @@ body{margin:0;background:#f5f2ea;color:#172222;font-family:Arial,sans-serif}.her
 <div class="field"><label>Trip name</label><input id="name" value="My New Adventure"></div><div class="field"><label>Travelers</label><input id="travelers" type="number" min="1" value="2"></div>
 <div class="field"><label>Start date</label><input id="start" type="date"></div><div class="field"><label>End date</label><input id="end" type="date"></div>
 <div class="field full"><label>Where are you going?</label><input id="dest" placeholder="New Orleans"></div>
+<div class="field"><label>Who is traveling?</label><select id="groupType"><option>Adults only</option><option>Family with kids</option><option>Mixed ages / extended family</option><option>Friends / couples</option></select></div>
+<div class="field"><label>Kids' ages, if any</label><input id="kidsAges" placeholder="Example: 7, 12 or leave blank"></div>
 <div class="field"><label>How are you getting around?</label><select id="transport"><option>Walking + public transit</option><option>Rental car</option><option>Rideshare + walking</option><option>Mostly walking</option><option>Not sure yet</option></select></div>
 <div class="field"><label>Trip pace</label><select id="pace"><option>Relaxed — leave room to wander</option><option>Balanced — see a lot without rushing</option><option>Active — maximize each day</option></select></div>
-<div class="field"><label>Where are you staying?</label><input id="stay" placeholder="Hotel, Airbnb, neighborhood or leave blank"></div><div class="field"><label>Flights / travel details</label><input id="flights" placeholder="Airline, flight numbers, arrival/departure or leave blank"></div><div class="field"><label>Food budget</label><select id="foodbudget"><option>Casual / value</option><option>Mixed — casual + special dinners</option><option>Food is a major part of the trip</option></select></div>
+<div class="field"><label>Where are you staying?</label><input id="stay" placeholder="Hotel, Airbnb, neighborhood or leave blank"></div>
+<div class="field"><label>Stay / booking link</label><input id="stayLink" type="url" placeholder="Paste hotel or Airbnb link"></div>
+<div class="field"><label>Flights / travel details</label><input id="flights" placeholder="Airline, flight numbers, arrival/departure or leave blank"></div>
+<div class="field"><label>Flight / booking link</label><input id="flightLink" type="url" placeholder="Paste airline or booking link"></div><div class="field"><label>Food budget</label><select id="foodbudget"><option>Casual / value</option><option>Mixed — casual + special dinners</option><option>Food is a major part of the trip</option></select></div>
 <div class="field"><label>Walking / mobility</label><select id="mobility"><option>Normal walking</option><option>Prefer shorter walks with breaks</option><option>Easy walking only</option></select></div>
+<div class="field"><label>Daily energy</label><select id="energy"><option>Easygoing mornings + flexible days</option><option>Balanced days</option><option>Early starts + full days</option></select></div>
+<div class="field"><label>Evening preference</label><select id="evening"><option>Early evenings / relaxed nights</option><option>Mix of dinner and occasional nightlife</option><option>Nightlife and live entertainment matter</option></select></div>
+<div class="field"><label>Dietary needs</label><input id="dietary" placeholder="Vegetarian, gluten-free, allergies, none..."></div>
 <div class="field full"><label>What kind of trip is this?</label><div id="prefs" class="chips"></div></div>
 <div class="field full"><label>Must-see / must-do</label><textarea id="must" placeholder="Anything you already know you want to do"></textarea></div>
 <div class="field full"><label>Anything to avoid?</label><textarea id="avoid" placeholder="Crowds, long walks, nightlife, expensive restaurants, driving, etc."></textarea></div>
@@ -49,12 +57,25 @@ resources:["https://www.neworleans.com/plan/december-in-new-orleans/","https://w
 holiday:true};
 return {city:dest,areas:[dest+" historic center","central neighborhood","local market district"],sights:["Historic center","Signature landmark","Main museum or cultural site","Local neighborhood walk","Scenic viewpoint or park"],food:["Traditional local restaurant","Neighborhood restaurant","Market / casual food stop"],local:["Neighborhood favorite","Local café or bakery","Independent restaurant"],events:dest+" events",weather:dest+" weather",cams:dest+" live webcam",resources:[],holiday:false}
 }
-function dayPlan(c,d,pace,mobility,prefs,must){
-var out=[];for(var i=0;i<d;i++){var a=c.sights[i%c.sights.length],b=c.sights[(i+1)%c.sights.length],food=c.food[i%c.food.length],area=c.areas[i%c.areas.length];var focus=i===0?"Arrival + orientation":i===d-1?"Final favorites + flexible time":prefs.indexOf("Local food")>=0?"Neighborhood + food":"Signature sights + neighborhood";if(must.length&&i===0)focus="Must-see priority + orientation";out.push({day:i+1,title:focus,morning:a,afternoon:b,evening:food,area:area,note:mobility.indexOf("Easy")>=0?"Keep this day flexible with shorter walking segments and breaks.":pace.indexOf("Relaxed")>=0?"Leave open time for wandering, cafés and unexpected finds.":"Group nearby stops to reduce backtracking."})}return out}
+function dayPlan(c,d,pace,mobility,prefs,must,group,kids,evening,energy){
+var out=[],family=group==="Family with kids"||group==="Mixed ages / extended family",ages=arr(kids);
+for(var i=0;i<d;i++){
+ var a=c.sights[i%c.sights.length],b=c.sights[(i+1)%c.sights.length],food=c.food[i%c.food.length],area=c.areas[i%c.areas.length];
+ var focus=i===0?"Arrival + orientation":i===d-1?"Final favorites + flexible time":prefs.indexOf("Local food")>=0?"Neighborhood + food":"Signature sights + neighborhood";
+ if(must.length&&i===0)focus="Must-see priority + orientation";
+ if(family&&i%2===1)focus="Family-friendly highlight + neighborhood";
+ if(evening.indexOf("Nightlife")>=0&&i>0)food=food+" · add a live-music or evening option";
+ var note=mobility.indexOf("Easy")>=0?"Keep this day flexible with shorter walking segments and breaks.":energy.indexOf("Easygoing")>=0?"Start later and leave room for cafés, photos and wandering.":pace.indexOf("Relaxed")>=0?"Leave open time for wandering, cafés and unexpected finds.":"Group nearby stops to reduce backtracking.";
+ if(family)note+=" "+(ages.length?"Use the kids' ages ("+ages.join(", ")+") to fine-tune attraction timing.":"Favor shorter activity blocks and easy breaks.");
+ out.push({day:i+1,title:focus,morning:a,afternoon:b,evening:food,area:area,note:note})
+}return out}
 window.buildTrip=function(){
-var dest=document.getElementById("dest").value.trim(),d=days();if(!dest||!d){document.getElementById("status").textContent="Add a destination and start/end dates first.";return}
-var c=catalog(dest),ps=selected(),must=arr(document.getElementById("must").value),avoid=arr(document.getElementById("avoid").value),plan=dayPlan(c,d,document.getElementById("pace").value,document.getElementById("mobility").value,ps,must);
-var t={id:"trip-"+Date.now(),name:document.getElementById("name").value||c.city+" Adventure",travelers:parseInt(document.getElementById("travelers").value,10)||2,start:document.getElementById("start").value,end:document.getElementById("end").value,destinations:[c.city],mustSee:must,preferences:ps,days:d,status:"Built — editable",transport:document.getElementById("transport").value,pace:document.getElementById("pace").value,foodBudget:document.getElementById("foodbudget").value,stay:document.getElementById("stay").value,flights:document.getElementById("flights").value,mobility:document.getElementById("mobility").value,avoid:avoid,occasion:document.getElementById("occasion").value,areas:c.areas,plan:plan,localFood:c.local,food:c.food,sights:c.sights,resources:c.resources,weatherQuery:c.weather,camsQuery:c.cams,eventQuery:c.events,created:new Date().toISOString()};
+var dest=document.getElementById("dest").value.trim(),d=days();
+if(!dest||!d){document.getElementById("status").textContent="Add a destination and start/end dates first.";return}
+var c=catalog(dest),ps=selected(),must=arr(document.getElementById("must").value),avoid=arr(document.getElementById("avoid").value);
+var group=document.getElementById("groupType").value,kids=document.getElementById("kidsAges").value,energy=document.getElementById("energy").value,evening=document.getElementById("evening").value;
+var plan=dayPlan(c,d,document.getElementById("pace").value,document.getElementById("mobility").value,ps,must,group,kids,evening,energy);
+var t={id:"trip-"+Date.now(),name:document.getElementById("name").value||c.city+" Adventure",travelers:parseInt(document.getElementById("travelers").value,10)||2,start:document.getElementById("start").value,end:document.getElementById("end").value,destinations:[c.city],mustSee:must,preferences:ps,days:d,status:"Built — editable",transport:document.getElementById("transport").value,pace:document.getElementById("pace").value,foodBudget:document.getElementById("foodbudget").value,stay:document.getElementById("stay").value,stayLink:document.getElementById("stayLink").value,flights:document.getElementById("flights").value,flightLink:document.getElementById("flightLink").value,mobility:document.getElementById("mobility").value,groupType:group,kidsAges:kids,energy:energy,evening:evening,dietary:document.getElementById("dietary").value,avoid:avoid,occasion:document.getElementById("occasion").value,areas:c.areas,plan:plan,localFood:c.local,food:c.food,sights:c.sights,resources:c.resources,weatherQuery:c.weather,camsQuery:c.cams,eventQuery:c.events,created:new Date().toISOString()};
 var a;try{a=JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){a=[]}a.push(t);localStorage.setItem(KEY,JSON.stringify(a));sessionStorage.setItem("openTripId",t.id);
 document.getElementById("status").textContent="Trip built. Opening your editable trip workspace…";setTimeout(function(){location.href="trip.html?id="+encodeURIComponent(t.id)},250)
 }
