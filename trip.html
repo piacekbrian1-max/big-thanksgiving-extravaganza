@@ -300,6 +300,39 @@ button,a{max-width:100%}
     text-align-last:left !important;
   }
 }
+</style>
+<style id="roamwell-budget-controls-final">
+/* Compact budget controls for iPad/tablet. Never allow action buttons to overlap. */
+.budgetFormGrid{min-width:0}
+.budgetFormGrid>div{min-width:0}
+.budgetForm input,.budgetForm select{min-width:0;max-width:100%;box-sizing:border-box}
+.budgetActions{display:flex;align-items:center;justify-content:flex-start;flex-wrap:wrap;gap:6px}
+.budgetActions .btn,.budgetActions .miniBtn{
+  display:inline-flex !important;
+  width:auto !important;
+  min-width:0 !important;
+  max-width:none !important;
+  flex:0 0 auto !important;
+  padding:8px 11px !important;
+  font-size:8px !important;
+  line-height:1.15 !important;
+  white-space:nowrap !important;
+  height:34px !important;
+}
+@media (orientation:landscape) and (min-width:700px) and (max-width:1180px){
+  .budgetActions{flex-wrap:nowrap !important}
+  .budgetActions .btn,.budgetActions .miniBtn{
+    padding:7px 9px !important;
+    font-size:7.5px !important;
+    letter-spacing:.06em !important;
+  }
+}
+@media (max-width:600px){
+  .budgetActions{display:grid !important;grid-template-columns:1fr !important}
+  .budgetActions .btn,.budgetActions .miniBtn{
+    width:100% !important;
+  }
+}
 </style></style></head>
 <body>
 <header class="top"><div class="nav">
@@ -388,7 +421,7 @@ button,a{max-width:100%}
 </div>
 <div class="budgetForm">
 <div class="budgetFormGrid">
-<div><label>Description</label><input id="budgetDesc" placeholder="Dinner, hotel, tickets, gas..."></div>
+<div><label>Description</label><select id="budgetDesc"><option value="">Choose expense</option><option>Dinner</option><option>Breakfast</option><option>Lunch</option><option>Hotel / Lodging</option><option>Flights</option><option>Rental Car</option><option>Gas / Fuel</option><option>Parking</option><option>Tickets / Admission</option><option>Tour / Activity</option><option>Public Transit</option><option>Rideshare / Taxi</option><option>Shopping</option><option>Groceries</option><option>Drinks</option><option>Other</option></select></div>
 <div><label>Amount</label><input id="budgetAmount" inputmode="decimal" placeholder="125.00"></div>
 <div><label>Currency</label><select id="budgetCurrency"><option>USD</option><option>EUR</option><option>CZK</option><option>GBP</option><option>CHF</option><option>CAD</option><option>PLN</option><option>HUF</option><option>Other</option></select></div>
 <div><label>Category</label><select id="budgetCategory"><option>Food</option><option>Stay</option><option>Flights</option><option>Transportation</option><option>Activities</option><option>Shopping</option><option>Other</option></select></div>
