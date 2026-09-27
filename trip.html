@@ -474,17 +474,19 @@ button,a{max-width:100%}
   <div class="travelFilters">
     <select id="travelView" class="travelSelect" aria-label="Traveler or group view"></select>
     <select id="travelDestination" class="travelSelect" aria-label="Destination view"><option value="all">All destinations</option></select>
+    <button type="button" class="travelAdd" onclick="window.showTravelGroupForm()">＋ Add traveler / group</button>
   </div>
   <div class="travelStats" id="travelStats"></div>
 </div>
+<div id="travelGroupForm" class="travelForm" style="display:none"></div>
 <div class="travelGroups" id="travelGroups"></div>
 <div class="travelColumns">
   <div class="travelPanel">
-    <div class="travelPanelHead"><h3>Flights</h3><button type="button" class="travelAdd" onclick="showTravelBookingForm('flight')">＋ Add flight</button></div>
+    <div class="travelPanelHead"><h3>Flights</h3><button type="button" class="travelAdd" onclick="window.showFlightForm()">＋ Add flight</button></div>
     <div id="travelFlights"></div><div id="flightForm" class="travelForm" style="display:none"></div>
   </div>
   <div class="travelPanel">
-    <div class="travelPanelHead"><h3>Stays</h3><button type="button" class="travelAdd" onclick="showTravelBookingForm('stay')">＋ Add stay</button></div>
+    <div class="travelPanelHead"><h3>Stays</h3><button type="button" class="travelAdd" onclick="window.showStayForm()">＋ Add stay</button></div>
     <div id="travelStays"></div><div id="stayForm" class="travelForm" style="display:none"></div>
   </div>
 </div>
@@ -966,39 +968,129 @@ trip.travelGroups=[{id:"everyone",name:"Everyone",description:label,memberCount:
 }
 return trip.travelGroups;
 }
-function travelFlights(){if(!Array.isArray(trip.flightRecords)){trip.flightRecords=[];if(trip.flights)trip.flightRecords.push({id:"legacy-flight",groupId:"everyone",travelers:trip.travelers||"Everyone",route:trip.flights,details:"Imported from existing trip flight details",status:"Confirmed",destination:(trip.destinations||[])[0]||""})}return trip.flightRecords}
-function travelStays(){if(!Array.isArray(trip.stayRecords)){trip.stayRecords=[];if(trip.stay)trip.stayRecords.push({id:"legacy-stay",groupId:"everyone",travelers:trip.travelers||"Everyone",property:trip.stay,dates:fmtDate(trip.start)+" → "+fmtDate(trip.end),destination:(trip.destinations||[])[0]||"",status:"Confirmed"})}return trip.stayRecords}
-function travelSelectedGroup(){return document.getElementById("travelView")?document.getElementById("travelView").value:"all"}
-function travelSelectedDestination(){return document.getElementById("travelDestination")?document.getElementById("travelDestination").value:"all"}
-function travelMatches(x){var g=travelSelectedGroup(),d=travelSelectedDestination();return (g==="all"||x.groupId===g)||(g!=="all"&&x.groupId==="everyone") ? (d==="all"||!x.destination||x.destination===d):false}
+function travelFlights(){
+if(!Array.isArray(trip.flightRecords)){
+trip.flightRecords=[];
+if(trip.flights)trip.flightRecords.push({id:"legacy-flight",groupId:"everyone",travelers:trip.travelers||"Everyone",route:trip.flights,details:"Imported from existing trip flight details",status:"Confirmed",destination:(trip.destinations||[])[0]||""});
+}
+return trip.flightRecords;
+}
+function travelStays(){
+if(!Array.isArray(trip.stayRecords)){
+trip.stayRecords=[];
+if(trip.stay)trip.stayRecords.push({id:"legacy-stay",groupId:"everyone",travelers:trip.travelers||"Everyone",property:trip.stay,dates:fmtDate(trip.start)+" → "+fmtDate(trip.end),destination:(trip.destinations||[])[0]||"",status:"Confirmed"});
+}
+return trip.stayRecords;
+}
+function travelSelectedGroup(){
+var e=document.getElementById("travelView");
+return e?e.value:"all";
+}
+function travelSelectedDestination(){
+var e=document.getElementById("travelDestination");
+return e?e.value:"all";
+}
+function travelMatches(x){
+var g=travelSelectedGroup(),d=travelSelectedDestination();
+var groupOK=(g==="all"||x.groupId===g||(g!=="all"&&x.groupId==="everyone"));
+var destOK=(d==="all"||!x.destination||x.destination===d);
+return groupOK&&destOK;
+}
 function renderTravel(){
-var groups=travelGroups(),flights=travelFlights(),stays=travelStays(),view=document.getElementById("travelView"),dest=document.getElementById("travelDestination"),groupWrap=document.getElementById("travelGroups");
-view.innerHTML="<option value='all'>Everyone · complete trip</option>"+groups.map(function(g){return "<option value='"+esc(g.id)+"'>"+esc(g.name)+"</option>"}).join("");
-var oldGroup=travelSelectedGroup();if(groups.some(function(g){return g.id===oldGroup}))view.value=oldGroup;else view.value="all";
-var ds=[];(trip.destinations||[]).forEach(function(x){if(x&&!ds.includes(x))ds.push(x)});flights.concat(stays).forEach(function(x){if(x.destination&&!ds.includes(x.destination))ds.push(x.destination)});dest.innerHTML="<option value='all'>All destinations</option>"+ds.map(function(x){return "<option value='"+esc(x)+"'>"+esc(x)+"</option>"}).join("");
-var oldDest=travelSelectedDestination();if(ds.includes(oldDest))dest.value=oldDest;else dest.value="all";
-groupWrap.innerHTML=groups.map(function(g){return "<button type='button' class='travelGroup "+(view.value===g.id?"active":"")+"' data-group='"+esc(g.id)+"'><b>"+esc(g.name)+"</b><small>"+esc(g.description||"Traveler group")+"</small></button>"}).join("");
-groupWrap.querySelectorAll(".travelGroup").forEach(function(b){b.addEventListener("click",function(){view.value=b.dataset.group;renderTravel()})});
-view.onchange=function(){renderTravel()};dest.onchange=function(){renderTravel()};
-function draw(list,id,type){var e=document.getElementById(id);e.innerHTML="";var rows=list.filter(travelMatches);if(!rows.length){e.innerHTML="<div class='travelEmpty'>No "+type+" records for this view yet.</div>";return}rows.forEach(function(x,i){var icon=type==="flight"?"✈":"⌂",title=type==="flight"?(x.travelers||x.groupName||"Traveler")+" · "+(x.route||"Flight"):(x.property||"Stay")+" · "+(x.groupName||x.travelers||"Traveler");var meta=[x.destination,x.dates||x.details,x.room].filter(Boolean).join(" · ");var card=document.createElement("div");card.className="bookingCard";card.innerHTML="<div class='bookingIcon'>"+icon+"</div><div><div class='bookingTitle'>"+esc(title)+"</div><div class='bookingMeta'>"+esc(meta||"Details not added yet")+"</div><div class='bookingActions'><button type='button' data-edit='"+esc(x.id)+"'>Edit</button><button type='button' data-remove='"+esc(x.id)+"'>Remove</button></div></div><span class='bookingStatus'>"+esc(x.status||"Planning")+"</span>";e.appendChild(card);card.querySelector("[data-edit]").onclick=function(){showTravelBookingForm(type,x.id)};card.querySelector("[data-remove]").onclick=function(){removeTravelBooking(type,x.id)}})}
-draw(flights,"travelFlights","flight");draw(stays,"travelStays","stay");
-document.getElementById("travelStats").innerHTML="<span class='travelStat'>"+flights.length+" flight"+(flights.length===1?"":"s")+" </span><span class='travelStat'>"+stays.length+" stay"+(stays.length===1?"":"s")+"</span><span class='travelStat'>"+groups.length+" group"+(groups.length===1?"":"s")+"</span>";
+var groups=travelGroups(),flights=travelFlights(),stays=travelStays();
+var view=document.getElementById("travelView"),dest=document.getElementById("travelDestination"),groupWrap=document.getElementById("travelGroups");
+var oldGroup=view?view.value:"all",oldDest=dest?dest.value:"all";
+
+view.innerHTML="<option value='all'>Everyone · complete trip</option>"+groups.map(function(g){
+return "<option value='"+esc(g.id)+"'>"+esc(g.name)+"</option>";
+}).join("");
+view.value=(oldGroup==="all"||groups.some(function(g){return g.id===oldGroup}))?oldGroup:"all";
+
+var ds=[];
+(trip.destinations||[]).forEach(function(x){if(x&&!ds.includes(x))ds.push(x)});
+flights.concat(stays).forEach(function(x){if(x.destination&&!ds.includes(x.destination))ds.push(x.destination)});
+dest.innerHTML="<option value='all'>All destinations</option>"+ds.map(function(x){
+return "<option value='"+esc(x)+"'>"+esc(x)+"</option>";
+}).join("");
+dest.value=ds.includes(oldDest)?oldDest:"all";
+
+groupWrap.innerHTML=groups.map(function(g){
+return "<button type='button' class='travelGroup "+(view.value===g.id?"active":"")+"' data-group='"+esc(g.id)+"'><b>"+esc(g.name)+"</b><small>"+esc(g.description||"Traveler group")+"</small></button>";
+}).join("");
+groupWrap.querySelectorAll(".travelGroup").forEach(function(b){
+b.addEventListener("click",function(){view.value=b.dataset.group;renderTravel()});
+});
+
+view.onchange=function(){renderTravel()};
+dest.onchange=function(){renderTravel()};
+
+function draw(list,id,type){
+var e=document.getElementById(id);e.innerHTML="";
+var rows=list.filter(travelMatches);
+if(!rows.length){
+e.innerHTML="<div class='travelEmpty'>No "+type+" records for this view yet.</div>";
+return;
+}
+rows.forEach(function(x){
+var icon=type==="flight"?"✈":"⌂";
+var group=groups.find(function(g){return g.id===x.groupId});
+var groupName=group?group.name:"Everyone";
+var title=type==="flight"?(x.route||"Flight")+" · "+groupName:(x.property||"Stay")+" · "+groupName;
+var meta=[x.destination,x.travelers,x.dates||x.details,x.room].filter(Boolean).join(" · ");
+var card=document.createElement("div");
+card.className="bookingCard";
+card.innerHTML="<div class='bookingIcon'>"+icon+"</div><div><div class='bookingTitle'>"+esc(title)+"</div><div class='bookingMeta'>"+esc(meta||"Details not added yet")+"</div><div class='bookingActions'><button type='button' data-edit='"+esc(x.id)+"'>Edit</button><button type='button' data-remove='"+esc(x.id)+"'>Remove</button></div></div><span class='bookingStatus'>"+esc(x.status||"Planning")+"</span>";
+e.appendChild(card);
+card.querySelector("[data-edit]").onclick=function(){showTravelBookingForm(type,x.id)};
+card.querySelector("[data-remove]").onclick=function(){removeTravelBooking(type,x.id)};
+});
+}
+draw(flights,"travelFlights","flight");
+draw(stays,"travelStays","stay");
+document.getElementById("travelStats").innerHTML="<span class='travelStat'>"+flights.length+" flight"+(flights.length===1?"":"s")+"</span><span class='travelStat'>"+stays.length+" stay"+(stays.length===1?"":"s")+"</span><span class='travelStat'>"+groups.length+" group"+(groups.length===1?"":"s")+"</span>";
+}
+function showTravelGroupForm(){
+var e=document.getElementById("travelGroupForm");
+e.style.display="block";
+e.innerHTML="<div class='travelFormGrid'>"+
+"<div class='travelFormField'><label>Group / traveler name</label><input id='travelGroupName' placeholder='Brian · Family · Kids'></div>"+
+"<div class='travelFormField'><label>People</label><input id='travelGroupPeople' placeholder='Brian, Sarah, John'></div>"+
+"<div class='travelFormField travelFormFull'><label>Description</label><input id='travelGroupDescription' placeholder='Who this booking group represents'></div>"+
+"<div class='travelFormActions travelFormFull'><button type='button' class='saveTravel' id='travelGroupSaveBtn'>Save traveler / group</button><button type='button' id='travelGroupCancelBtn'>Cancel</button></div></div>";
+document.getElementById("travelGroupSaveBtn").onclick=function(){
+var name=document.getElementById("travelGroupName").value.trim();
+var people=document.getElementById("travelGroupPeople").value.trim();
+var description=document.getElementById("travelGroupDescription").value.trim();
+if(!name){alert("Enter a traveler or group name.");return}
+var id="group-"+Date.now();
+travelGroups().push({id:id,name:name,description:description||people||"Traveler group",memberCount:people?people.split(/[,;]/).filter(Boolean).length:1,people:people});
+save();
+e.style.display="none";e.innerHTML="";
+renderTravel();
+document.getElementById("travelView").value=id;
+renderTravel();
+};
+document.getElementById("travelGroupCancelBtn").onclick=function(){e.style.display="none";e.innerHTML=""};
 }
 function showTravelBookingForm(type,id){
-var stay=type==="stay",list=stay?travelStays():travelFlights(),x=list.find(function(v){return v.id===id})||{id:"",groupId:travelGroups()[0].id,travelers:"",destination:(trip.destinations||[])[0]||"",status:"Planning"};
-var e=document.getElementById(stay?"stayForm":"flightForm");e.style.display="block";
-var groupOptions=travelGroups().map(function(g){return "<option value='"+esc(g.id)+"' "+(g.id===x.groupId?"selected":"")+">"+esc(g.name)+"</option>"}).join("");
+var stay=type==="stay",list=stay?travelStays():travelFlights();
+var x=list.find(function(v){return v.id===id})||{id:"",groupId:travelSelectedGroup()!=="all"?travelSelectedGroup():travelGroups()[0].id,travelers:"",destination:(trip.destinations||[])[0]||"",status:"Planning"};
+var e=document.getElementById(stay?"stayForm":"flightForm");
+e.style.display="block";
+var groupOptions=travelGroups().map(function(g){
+return "<option value='"+esc(g.id)+"' "+(g.id===x.groupId?"selected":"")+">"+esc(g.name)+"</option>";
+}).join("");
 var html="<div class='travelFormGrid'>"+
 "<div class='travelFormField'><label>Traveler / group</label><select id='travelGroupInput'>"+groupOptions+"</select></div>"+
-"<div class='travelFormField'><label>People / rooming note</label><input id='travelPeopleInput' value='"+esc(x.travelers||"")+"'></div>"+
-"<div class='travelFormField'><label>Destination</label><input id='travelDestInput' value='"+esc(x.destination||"")+"'></div>"+
+"<div class='travelFormField'><label>People / rooming note</label><input id='travelPeopleInput' value='"+esc(x.travelers||"")+"' placeholder='Names or family'></div>"+
+"<div class='travelFormField'><label>Destination</label><input id='travelDestInput' value='"+esc(x.destination||"")+"' placeholder='New Orleans'></div>"+
 "<div class='travelFormField'><label>Status</label><select id='travelStatusInput'><option>Planning</option><option>Reserved</option><option>Confirmed</option><option>Need to book</option><option>Cancelled</option></select></div>";
 if(stay){
-html+="<div class='travelFormField'><label>Property</label><input id='travelPropertyInput' value='"+esc(x.property||"")+"'></div>"+
+html+="<div class='travelFormField'><label>Property</label><input id='travelPropertyInput' value='"+esc(x.property||"")+"' placeholder='Hotel / Airbnb'></div>"+
 "<div class='travelFormField'><label>Dates</label><input id='travelDatesInput' value='"+esc(x.dates||"")+"' placeholder='Check-in → check-out'></div>"+
-"<div class='travelFormField travelFormFull'><label>Room / booking details</label><input id='travelDetailsInput' value='"+esc(x.room||x.details||"")+"'></div>";
+"<div class='travelFormField travelFormFull'><label>Room / booking details</label><input id='travelDetailsInput' value='"+esc(x.room||x.details||"")+"' placeholder='Room, confirmation number, notes'></div>";
 }else{
-html+="<div class='travelFormField'><label>Route</label><input id='travelRouteInput' value='"+esc(x.route||"")+"' placeholder='ATL → VIE'></div>"+
+html+="<div class='travelFormField'><label>Route</label><input id='travelRouteInput' value='"+esc(x.route||"")+"' placeholder='ATL → MSY'></div>"+
 "<div class='travelFormField'><label>Flight details</label><input id='travelDetailsInput' value='"+esc(x.details||"")+"' placeholder='Airline · flight # · date · time'></div>";
 }
 html+="<div class='travelFormActions travelFormFull'><button type='button' class='saveTravel' id='travelSaveBtn'>Save "+(stay?"stay":"flight")+"</button><button type='button' id='travelCancelBtn'>Cancel</button></div></div>";
@@ -1006,14 +1098,35 @@ e.innerHTML=html;
 document.getElementById("travelStatusInput").value=x.status||"Planning";
 document.getElementById("travelSaveBtn").onclick=function(){
 var base={id:x.id||type+"-"+Date.now(),groupId:document.getElementById("travelGroupInput").value,travelers:document.getElementById("travelPeopleInput").value.trim(),destination:document.getElementById("travelDestInput").value.trim(),status:document.getElementById("travelStatusInput").value};
-if(stay){base.property=document.getElementById("travelPropertyInput").value.trim();base.dates=document.getElementById("travelDatesInput").value.trim();base.room=document.getElementById("travelDetailsInput").value.trim();var idx=travelStays().findIndex(function(v){return v.id===base.id});if(idx>=0)travelStays()[idx]=base;else travelStays().push(base)}
-else{base.route=document.getElementById("travelRouteInput").value.trim();base.details=document.getElementById("travelDetailsInput").value.trim();var j=travelFlights().findIndex(function(v){return v.id===base.id});if(j>=0)travelFlights()[j]=base;else travelFlights().push(base)}
-save();renderTravel();
+if(stay){
+base.property=document.getElementById("travelPropertyInput").value.trim();
+base.dates=document.getElementById("travelDatesInput").value.trim();
+base.room=document.getElementById("travelDetailsInput").value.trim();
+var idx=travelStays().findIndex(function(v){return v.id===base.id});
+if(idx>=0)travelStays()[idx]=base;else travelStays().push(base);
+}else{
+base.route=document.getElementById("travelRouteInput").value.trim();
+base.details=document.getElementById("travelDetailsInput").value.trim();
+var j=travelFlights().findIndex(function(v){return v.id===base.id});
+if(j>=0)travelFlights()[j]=base;else travelFlights().push(base);
+}
+save();
+e.style.display="none";e.innerHTML="";
+renderTravel();
 };
 document.getElementById("travelCancelBtn").onclick=function(){e.style.display="none";e.innerHTML=""};
 }
-function removeTravelBooking(type,id){var list=type==="stay"?travelStays():travelFlights(),i=list.findIndex(function(v){return v.id===id});if(i<0)return;if(!confirm("Remove this "+type+" record?"))return;list.splice(i,1);save();renderTravel()}
-window.showStayForm=function(){showTravelBookingForm("stay")};window.showFlightForm=function(){showTravelBookingForm("flight")};
+function removeTravelBooking(type,id){
+var list=type==="stay"?travelStays():travelFlights(),i=list.findIndex(function(v){return v.id===id});
+if(i<0)return;
+if(!confirm("Remove this "+type+" record?"))return;
+list.splice(i,1);save();renderTravel();
+}
+window.showTravelBookingForm=showTravelBookingForm;
+window.showStayForm=function(){showTravelBookingForm("stay")};
+window.showFlightForm=function(){showTravelBookingForm("flight")};
+window.showTravelGroupForm=showTravelGroupForm;
+
 function money(n){return Number(n||0).toLocaleString(undefined,{style:"currency",currency:"USD"})}
 function budgetItems(){if(!Array.isArray(trip.budgetItems))trip.budgetItems=[];return trip.budgetItems}
 function fxKey(cur){return "big-trip-fx-"+String(cur||"USD").toUpperCase()}
