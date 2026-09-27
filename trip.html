@@ -372,6 +372,13 @@ button,a{max-width:100%}
   white-space:nowrap;
 }
 </style>
+<style id="guide-cost-explanation">
+.guideCost{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:12px 0 8px;padding-top:10px;border-top:1px solid rgba(23,34,30,.10);font-size:11px;letter-spacing:.03em}
+.guideCost b{font-size:9px;letter-spacing:.12em;text-transform:uppercase;opacity:.68}
+.guideCost span{font-weight:700;white-space:nowrap}
+.guidePricingNote{margin:0 0 18px;padding:13px 16px;border-left:3px solid #c9a85a;background:rgba(201,168,90,.08);border-radius:4px;font-size:12px;line-height:1.55}
+.guidePricingNote strong{font-weight:700}
+</style>
 </head>
 <body>
 <header class="top"><div class="nav">
@@ -424,7 +431,7 @@ button,a{max-width:100%}
 
 <section class="section" id="food">
 <div class="sectionHead"><div><div class="kicker">Local guide</div><h2>Food, drinks & things to do.</h2></div><p id="guideLead">Suggestions are organized by meal, neighborhood, entertainment and interest instead of one long tourist list.</p></div>
-<div class="panel" style="padding:22px"><div class="guideFilter" id="guideFilter"></div><select class="guideSelect" id="guideSelect"></select><div class="guideMeta"><span class="guideCount" id="guideCount"></span><span class="guideHint">Open Maps, check the place, or research before you go.</span></div><div class="guideGrid" id="guideGrid"></div></div>
+<div class="guidePricingNote"><strong>How pricing works:</strong> $ = budget, $ = moderate, $$ = mid-range, $$ = expensive, $$$ = very expensive. “Typical food spend” is a planning estimate per person before tax, tip and drinks, based on the restaurant's price level and the type of meal. New Orleans-wide reference data currently puts an inexpensive restaurant meal around $26, while a three-course mid-range meal for two is around $141, so these ranges are meant for planning rather than a guaranteed bill. Check the current menu before booking. citeturn0search0turn0search9</div><div class="panel" style="padding:22px"><div class="guideFilter" id="guideFilter"></div><select class="guideSelect" id="guideSelect"></select><div class="guideMeta"><span class="guideCount" id="guideCount"></span><span class="guideHint">Open Maps, check the place, or research before you go.</span></div><div class="guideGrid" id="guideGrid"></div></div>
 <div class="sourceBar">For New Orleans, the guide is informed by current local destination guidance and current Eater New Orleans restaurant reporting; hours and menus should still be checked before visiting. <a href="https://www.neworleans.com/" target="_blank">New Orleans & Company</a> · <a href="https://nola.eater.com/" target="_blank">Eater New Orleans</a></div>
 </section>
 
@@ -870,6 +877,21 @@ var s="",i;
 for(i=1;i<=5;i++)s+=i<=level?"$":"";
 return "<span class='priceLevel' title='"+level+" of 5 · 1 = budget · 5 = very expensive' aria-label='Price level "+level+" of 5'>"+s+"</span>";
 }
+function guideCost(level,category){
+var c=slug(category||"");
+if(c.indexOf("breakfast")>=0||c.indexOf("coffee")>=0)return level<=1?"$8–15":level===2?"$12–20":level===3?"$18–30":level===4?"$25–40":"$40+";
+if(c==="lunch")return level<=1?"$12–18":level===2?"$18–28":level===3?"$28–40":level===4?"$40–60":"$60+";
+if(c==="dinner"||c.indexOf("special occasions")>=0)return level<=1?"$15–25":level===2?"$20–35":level===3?"$30–50":level===4?"$50–80":"$80+";
+if(c.indexOf("bars")>=0||c.indexOf("breweries")>=0)return level<=1?"$10–20":level===2?"$15–30":level===3?"$25–40":level===4?"$35–55":"$55+";
+if(c.indexOf("music")>=0||c.indexOf("theater")>=0||c.indexOf("shows")>=0)return level<=1?"$10–25":level===2?"$20–40":level===3?"$30–60":level===4?"$50–90":"$90+";
+if(c.indexOf("family")>=0||c.indexOf("museums")>=0)return level<=1?"$10–20":level===2?"$15–30":level===3?"$25–45":level===4?"$40–65":"$65+";
+return level<=1?"$10–20":level===2?"$15–30":level===3?"$25–45":level===4?"$40–65":"$65+";
+}
+function guideDescription(name,type,note,category){
+var text=type||"";
+if(note&&note!=="Local"&&note!=="Local favorite"&&note!=="Neighborhood"&&note!=="Central")text+=" · "+note;
+return text||("A "+(category||"destination").toLowerCase()+" option worth considering in New Orleans.");
+}
 function renderGuide(){
 var isN=!!cityProfile(),filter=document.getElementById("guideFilter"),sel=document.getElementById("guideSelect"),grid=document.getElementById("guideGrid"),count=document.getElementById("guideCount");filter.innerHTML="";sel.innerHTML="";
 var cats=isN?categories:["Breakfast","Lunch","Dinner","Special Occasions","Bars","Breweries","Coffee & Bakeries","Music","Theater & Shows","Family","Neighborhoods","Museums","Markets"];var active=trip.guideCategory||"Dinner";
@@ -878,10 +900,10 @@ grid.innerHTML="";
 var items=isN?nolaGuide[active]:[[active+" near "+baseLabel(),"Around your home base","Search current local options","Destination-specific"]];
 count.textContent=(items.length||0)+" suggestions · "+active;
 for(var i=0;i<items.length;i++){
-var it=items[i],name=it[0],neighborhood=it[1],type=it[2],note=it[3],price=guidePrice(name,active),card=document.createElement("article");
+var it=items[i],name=it[0],neighborhood=it[1],type=it[2],note=it[3],price=guidePrice(name,active),cost=guideCost(price,active),description=guideDescription(name,type,note,active),card=document.createElement("article");
 card.className="card guideCard";
 var q=name+" "+((trip.destinations||[])[0]||"");
-card.innerHTML="<div class='ey guideEyebrow'><span>"+esc(active)+"</span>"+priceMarkup(price)+"</div><h3>"+esc(name)+"</h3><span class='guideNeighborhood'>"+esc(neighborhood)+"</span><p class='guideType'>"+esc(type)+"</p><p class='guideNote'>"+esc(note)+". Check current hours, menus and reservations before visiting.</p><div class='guideActions'><a class='guideButton primary' target='_blank' rel='noopener' href='"+maps(q)+"'>Open in Maps</a><a class='guideButton' target='_blank' rel='noopener' href='"+search(q+" official website")+"' >Website / hours</a><a class='guideButton' target='_blank' rel='noopener' href='"+search(q+" reviews")+"' >Reviews</a></div>";
+card.innerHTML="<div class='ey guideEyebrow'><span>"+esc(active)+"</span>"+priceMarkup(price)+"</div><h3>"+esc(name)+"</h3><span class='guideNeighborhood'>"+esc(neighborhood)+"</span><div class='guideCost'><b>Typical food spend</b><span>"+cost+" / person</span></div><p class='guideType'>"+esc(description)+"</p><p class='guideNote'>Check current hours, menus and reservations before visiting.</p><div class='guideActions'><a class='guideButton primary' target='_blank' rel='noopener' href='"+maps(q)+"'>Open in Maps</a><a class='guideButton' target='_blank' rel='noopener' href='"+search(q+" official website")+"' >Website / hours</a><a class='guideButton' target='_blank' rel='noopener' href='"+search(q+" reviews")+"' >Reviews</a></div>";
 grid.appendChild(card)
 }}
 for(var i=0;i<cats.length;i++){(function(cat){var b=document.createElement("button");b.textContent=cat;b.className=cat===active?"active":"";b.onclick=function(){active=cat;trip.guideCategory=cat;save();renderGuide()};filter.appendChild(b);var o=document.createElement("option");o.value=cat;o.textContent=cat+" · "+(isN?(nolaGuide[cat]||[]).length+" places":"local options");o.selected=cat===active;sel.appendChild(o)})(cats[i])}
