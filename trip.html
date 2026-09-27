@@ -270,8 +270,8 @@ button,a{max-width:100%}
 <body>
 <header class="top"><div class="nav">
 <a class="logo" href="index.html"><span class="logoMark">TRIP</span><span><strong id="brand" class="logoRoam">ROAMWELL</strong><small class="logoTag">TRAVEL BETTER · REMEMBER MORE</small></span></a>
-<nav class="navlinks"><a href="index.html">Home</a><a href="#dashboard">Dashboard</a><a href="my-trips.html">My Trips</a><a href="build-trip.html">Build Your Trip</a><a href="#itinerary">Itinerary</a><a href="#destinations">Destinations</a><a href="#food">Food Guide</a><a href="#weather">Weather</a><a href="#webcams">Webcams</a><a href="#travel">Stay & Budget</a><a href="#packing">Travel Info</a></nav>
-<span class="datepill" id="datePill">TRIP</span><button class="menu" onclick="document.querySelector('.navlinks').classList.toggle('open')">Menu</button>
+<nav class="navlinks" id="tripNav"><a href="index.html">Home</a><a href="#dashboard">Dashboard</a><a href="my-trips.html">My Trips</a><a href="build-trip.html">Build Your Trip</a><a href="#itinerary">Itinerary</a><a href="#destinations">Destinations</a><a href="#food">Food Guide</a><a href="#weather">Weather</a><a href="#webcams">Webcams</a><a href="#travel">Stay & Budget</a><a href="#packing">Travel Info</a></nav>
+<span class="datepill" id="datePill">TRIP</span><button type="button" class="menu" id="menuToggle" aria-expanded="false" aria-controls="tripNav">Menu</button>
 </div></header>
 
 <header class="hero" id="home">
@@ -405,6 +405,13 @@ button,a{max-width:100%}
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script>
 (function(){
+var menuToggle=document.getElementById("menuToggle"),tripNav=document.getElementById("tripNav");
+function closeTripMenu(){if(tripNav){tripNav.classList.remove("open")}if(menuToggle){menuToggle.setAttribute("aria-expanded","false")}}
+function toggleTripMenu(e){if(e){e.preventDefault();e.stopPropagation()}if(!tripNav)return;var open=tripNav.classList.toggle("open");if(menuToggle)menuToggle.setAttribute("aria-expanded",open?"true":"false")}
+if(menuToggle){menuToggle.addEventListener("click",toggleTripMenu)}
+if(tripNav){tripNav.querySelectorAll("a").forEach(function(a){a.addEventListener("click",function(){closeTripMenu()})})}
+document.addEventListener("click",function(e){if(tripNav&&tripNav.classList.contains("open")&&!tripNav.contains(e.target)&&e.target!==menuToggle)closeTripMenu()});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeTripMenu()});
 var KEY="big-thanksgiving-trips-v1";
 var params=new URLSearchParams(location.search),id=params.get("id")||sessionStorage.getItem("openTripId");
 function load(){try{return JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){return[]}}
