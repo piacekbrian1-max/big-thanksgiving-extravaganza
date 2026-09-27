@@ -773,7 +773,7 @@ for(var i=0;i<items.length;i++){var x=items[i];h+="<div class='budgetRow'><div><
 t.innerHTML=h;
 }
 window.deleteBudgetItem=function(i){budgetItems().splice(i,1);save();renderBudget()}
-async function addBudgetItem(){
+async async function addBudgetItem(){
 var desc=document.getElementById("budgetDesc").value.trim(),amount=Number(document.getElementById("budgetAmount").value.replace(/[$,]/g,"")),cur=document.getElementById("budgetCurrency").value,cat=document.getElementById("budgetCategory").value,date=document.getElementById("budgetDate").value||new Date().toISOString().slice(0,10),manualRate=Number(document.getElementById("budgetRate").value);
 if(!desc||!isFinite(amount)||amount<=0){alert("Add a description and a valid amount.");return}
 var rate=cur==="USD"?1:manualRate||await fetchFx(cur);if(!rate){alert("I couldn't retrieve a USD exchange rate for "+cur+". Enter the rate manually.");return}
