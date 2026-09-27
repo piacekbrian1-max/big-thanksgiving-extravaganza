@@ -1049,7 +1049,7 @@ var icon=type==="flight"?"✈":type==="stay"?"⌂":type==="car"?"🚗":"🚆",ti
 var meta=[x.destination,x.travelers,x.dates||x.pickupDates,x.pickup&&("Pickup "+x.pickup),x.dropoff&&("Drop-off "+x.dropoff),x.route,x.room||x.vehicleDetails||x.details].filter(Boolean).join(" · ");
 var card=document.createElement("div");card.className="bookingCard";
 var proof="";
-if(x.link)proof+="<a href='"+esc(normalizeTravelUrl(x.link))+"' target='_blank' rel='noopener'>"+(type==="flight"?"Open flight link":type==="car"?"Open rental booking link":"Open stay booking link")+"</a>";
+if(x.link)proof+="<a href='"+esc(normalizeTravelUrl(x.link))+"' target='_blank' rel='noopener'>"+(type==="flight"?"Open flight link":type==="car"?"Open rental booking link":type==="train"?"Open train booking link":"Open stay booking link")+"</a>";
 if(x.propertyLink&&type==="stay")proof+="<a href='"+esc(normalizeTravelUrl(x.propertyLink))+"' target='_blank' rel='noopener'>Open property link</a>";
 if(x.screenshot)proof+="<button type='button' data-proof='"+esc(x.id)+"'>View screenshot</button>";
 card.innerHTML="<div class='bookingIcon'>"+icon+"</div><div><div class='bookingTitle'>"+esc(title)+"</div><div class='bookingMeta'>"+esc(meta||"Details not added yet")+"</div>"+(proof?"<div class='travelProof'>"+proof+"</div>":"")+"<div class='bookingActions'><button type='button' data-edit='"+esc(x.id)+"'>Edit</button><button type='button' data-remove='"+esc(x.id)+"'>Remove</button></div></div><span class='bookingStatus'>"+esc(x.status||"Planning")+"</span>";
@@ -1069,6 +1069,7 @@ if(!confirm("Delete "+(g.name||"this traveler/group")+"? This will also remove f
 travelFlights().splice(0,travelFlights().length,...travelFlights().filter(function(v){return v.groupId!==id}));
 travelStays().splice(0,travelStays().length,...travelStays().filter(function(v){return v.groupId!==id}));
 travelCars().splice(0,travelCars().length,...travelCars().filter(function(v){return v.groupId!==id}));
+travelTrains().splice(0,travelTrains().length,...travelTrains().filter(function(v){return v.groupId!==id}));
 groups.splice(i,1);
 save();
 var view=document.getElementById("travelView");if(view)view.value="all";
