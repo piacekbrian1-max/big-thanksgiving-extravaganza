@@ -415,6 +415,7 @@ button,a{max-width:100%}
 .guideReviewSave{margin-top:8px;border:0;background:transparent;color:#8b7135;font-size:7px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 0;cursor:pointer}
 .guideReviewNote{width:100%;margin-top:8px;border:1px solid #d9d5ca;background:#fffdf9;border-radius:7px;padding:8px;font:inherit;font-size:9px;min-height:44px;resize:vertical;box-sizing:border-box;color:var(--ink)}
 .guideReviewSource{font-size:7px;color:#8b918c;text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
+.myCollectionToolbar{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:18px;flex-wrap:wrap}.myCollectionTabs{display:flex;gap:7px;flex-wrap:wrap}.myCollectionTab{border:1px solid #d5d0c5;background:#f4f1e9;color:#52615c;padding:9px 12px;border-radius:999px;font-size:8px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;cursor:pointer}.myCollectionTab.active{background:var(--green);border-color:var(--green);color:#fff}.myCollectionCount{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#7b8681}.myCollectionGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.myCollectionCard{border:1px solid var(--line);border-radius:12px;padding:17px;background:#fffdf9}.myCollectionCard .collectionType{font-size:7px;letter-spacing:.16em;text-transform:uppercase;color:#967b35;font-weight:800}.myCollectionCard h3{font:600 24px "Playfair Display",serif;margin:6px 0}.myCollectionMeta{font-size:9px;color:#71807c}.myCollectionRating{display:flex;align-items:center;gap:8px;margin-top:13px}.myCollectionStars{letter-spacing:1px;color:#b08d3f;font-size:15px}.myCollectionRating strong{font-size:10px}.myCollectionFlags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.myCollectionFlag{border:1px solid #d8d1c1;border-radius:999px;padding:5px 8px;font-size:7px;letter-spacing:.08em;text-transform:uppercase;color:#64716c}.myCollectionNote{margin-top:10px;font-size:9px;line-height:1.55;color:#68746f}.myCollectionActions{margin-top:13px;display:flex;gap:7px;flex-wrap:wrap}.myCollectionActions a{font-size:7px;letter-spacing:.08em;text-transform:uppercase;font-weight:800;color:#24312d;border:1px solid #cfc9bb;padding:7px 9px;border-radius:6px}.myCollectionEmpty{padding:35px;text-align:center;color:#7b8681;border:1px dashed #d5d0c5;border-radius:10px;font-size:11px;line-height:1.6}@media(max-width:1000px){.myCollectionGrid{grid-template-columns:1fr 1fr}}@media(max-width:600px){.myCollectionGrid{grid-template-columns:1fr}}
 .guideLiveBadge{display:inline-flex;align-items:center;gap:5px;color:#60756d;font-weight:700}
 .guideLiveBadge:before{content:"";width:5px;height:5px;border-radius:50%;background:#6f8f7e;box-shadow:0 0 0 2px #6f8f7e22}
 .guideLiveLoading{color:#967b35!important}
@@ -424,7 +425,7 @@ button,a{max-width:100%}
 <body>
 <header class="top"><div class="nav">
 <a class="logo" href="index.html"><span class="logoMark">TRIP</span><span><strong id="brand" class="logoRoam">ROAMWELL</strong><small class="logoTag">TRAVEL BETTER · REMEMBER MORE</small></span></a>
-<nav class="navlinks" id="tripNav"><a href="index.html">Home</a><a href="#dashboard">Dashboard</a><a href="my-trips.html">My Trips</a><a href="build-trip.html">Build Your Trip</a><a href="#itinerary">Itinerary</a><a href="#destinations">Destinations</a><a href="#food">Food Guide</a><a href="#weather">Weather</a><a href="#webcams">Webcams</a><a href="#travel">Stay & Budget</a><a href="#packing">Travel Info</a></nav>
+<nav class="navlinks" id="tripNav"><a href="index.html">Home</a><a href="#dashboard">Dashboard</a><a href="my-trips.html">My Trips</a><a href="build-trip.html">Build Your Trip</a><a href="#itinerary">Itinerary</a><a href="#destinations">Destinations</a><a href="#food">Food Guide</a><a href="#my-roamwell">My Roamwell</a><a href="#weather">Weather</a><a href="#webcams">Webcams</a><a href="#travel">Stay & Budget</a><a href="#packing">Travel Info</a></nav>
 <span class="datepill" id="datePill">TRIP</span><button type="button" class="menu" id="menuToggle" aria-expanded="false" aria-controls="tripNav">Menu</button>
 </div></header>
 
@@ -481,6 +482,13 @@ button,a{max-width:100%}
 <div class="three" id="eventGrid"></div>
 </section>
 
+<section class="section" id="my-roamwell">
+<div class="sectionHead"><div><div class="kicker">Your Roamwell collection</div><h2>My Roamwell.</h2></div><p>Everything you have rated, favorited, recommended or visited — food, activities, attractions and experiences — collected in one place for this trip.</p></div>
+<div class="panel" style="padding:22px">
+<div class="myCollectionToolbar"><div class="myCollectionTabs" id="myCollectionTabs"></div><div class="myCollectionCount" id="myCollectionCount"></div></div>
+<div class="myCollectionGrid" id="myCollectionGrid"></div>
+</div>
+</section>
 <section class="section" id="weather">
 <div class="sectionHead"><div><div class="kicker">Weather dashboard</div><h2>Current + your stay averages.</h2></div><p id="weatherText">Loading the destination weather snapshot.</p></div>
 <div class="weatherGrid" id="weatherGrid"></div>
@@ -1022,6 +1030,10 @@ return h+"</span>";
 function saveGuideReview(name,patch){
 var rs=guideReviews(),k=guideReviewKey(name);
 if(!rs[k])rs[k]={};
+if(!rs[k].name)rs[k].name=name;
+if(!rs[k].category)rs[k].category=trip.guideCategory||"Food & places";
+if(!rs[k].type)rs[k].type="Food / Guide";
+if(!rs[k].destination)rs[k].destination=(trip.destinations||[])[0]||"";
 Object.keys(patch).forEach(function(key){rs[k][key]=patch[key]});
 try{save();return true}catch(e){
 try{sessionStorage.setItem("roamwellGuideReview:"+k,JSON.stringify(rs[k]));return true}catch(_){return false}
@@ -1150,6 +1162,54 @@ guideCuisineOptions(active).forEach(function(option){var o=document.createElemen
 cuisineSel.onchange=function(){cuisine=this.value;trip.guideCuisine=cuisine;save();draw()};
 }else{cuisineRow.style.display="none";cuisineSel.innerHTML="";cuisine="All cuisines"}
 sel.onchange=function(){trip.guideCategory=this.value;trip.guideCuisine="All cuisines";save();renderGuide()};draw();
+}
+function roamwellCollections(){
+var out=[],rs=guideReviews();
+Object.keys(rs).forEach(function(k){
+var x=rs[k]||{};
+if(!x.rating&&!x.favorite&&!x.recommend&&!x.visited&&!(x.note&&x.note.trim()))return;
+var category=x.category||"Food & places",type=x.type||"Food / Guide";
+out.push({key:k,name:x.name||k,category:category,type:type,rating:Number(x.rating||0),favorite:!!x.favorite,recommend:!!x.recommend,visited:!!x.visited,note:x.note||"",destination:x.destination||((trip.destinations||[])[0]||"")});
+});
+if(Array.isArray(trip.roamwellExperiences))trip.roamwellExperiences.forEach(function(x){
+if(!x||!x.name)return;
+var key=guideReviewKey(x.name+" "+(x.destination||""));
+if(out.some(function(y){return y.key===key}))return;
+out.push({key:key,name:x.name,category:x.category||"Experiences",type:x.type||"Activity",rating:Number(x.rating||0),favorite:!!x.favorite,recommend:!!x.recommend,visited:!!x.visited,note:x.note||"",destination:x.destination||""});
+});
+return out;
+}
+function saveRoamwellExperience(name,patch){
+if(!Array.isArray(trip.roamwellExperiences))trip.roamwellExperiences=[];
+var key=guideReviewKey(name+" "+(patch.destination||"")),found=trip.roamwellExperiences.find(function(x){return guideReviewKey((x.name||"")+" "+(x.destination||""))===key});
+if(!found){found={name:name};trip.roamwellExperiences.push(found)}
+Object.keys(patch).forEach(function(k){found[k]=patch[k]});
+save();
+}
+function renderMyRoamwell(){
+var tabs=document.getElementById("myCollectionTabs"),grid=document.getElementById("myCollectionGrid"),count=document.getElementById("myCollectionCount");if(!tabs||!grid)return;
+tabs.innerHTML="";var active=trip.myCollectionFilter||"All",all=roamwellCollections();
+["All","Rated","Favorites","Would recommend","Visited"].forEach(function(filter){
+var b=document.createElement("button");b.className="myCollectionTab"+(filter===active?" active":"");b.textContent=filter;b.onclick=function(){trip.myCollectionFilter=filter;save();renderMyRoamwell()};tabs.appendChild(b)
+});
+var items=all.filter(function(x){
+if(active==="Rated")return x.rating>0;
+if(active==="Favorites")return x.favorite;
+if(active==="Would recommend")return x.recommend;
+if(active==="Visited")return x.visited;
+return true;
+});
+count.textContent=items.length+" saved experience"+(items.length===1?"":"s");
+if(!items.length){grid.innerHTML="<div class='myCollectionEmpty'>Your personal collection will build automatically as you rate, favorite, recommend or visit places and activities.</div>";return}
+grid.innerHTML="";
+items.sort(function(a,b){return (b.rating||0)-(a.rating||0)||a.name.localeCompare(b.name)});
+items.forEach(function(x){
+var card=document.createElement("article");card.className="myCollectionCard";
+var stars=x.rating?"★".repeat(x.rating)+"☆".repeat(Math.max(0,5-x.rating)):"Not rated";
+var q=x.name+" "+x.destination;
+card.innerHTML="<div class='collectionType'>"+esc(x.type)+" · "+esc(x.category)+"</div><h3>"+esc(x.name)+"</h3><div class='myCollectionMeta'>"+esc(x.destination||"This trip")+"</div><div class='myCollectionRating'><span class='myCollectionStars'>"+stars+"</span>"+(x.rating?"<strong>"+x.rating+"/5</strong>":"")+"</div><div class='myCollectionFlags'>"+(x.favorite?"<span class='myCollectionFlag'>Favorite</span>":"")+(x.recommend?"<span class='myCollectionFlag'>Would recommend</span>":"")+(x.visited?"<span class='myCollectionFlag'>Visited</span>":"")+"</div>"+(x.note?"<div class='myCollectionNote'>"+esc(x.note)+"</div>":"")+"<div class='myCollectionActions'><a target='_blank' rel='noopener' href='"+maps(q)+"'>Open in Maps</a></div>";
+grid.appendChild(card)
+});
 }
 function renderEvents(){
 var e=document.getElementById("eventGrid");e.innerHTML="";var n=slug((trip.destinations||[])[0]||"").indexOf("new orleans")>=0;
@@ -1400,7 +1460,7 @@ function renderResources(){var e=document.getElementById("resourceGrid"),d=(trip
 if(slug(d).indexOf("new orleans")>=0){rs[0]=["New Orleans & Company","https://www.neworleans.com/"];rs[2]=["January / event guide","https://www.neworleans.com/plan/january-in-new-orleans/"];rs[3]=["Eater New Orleans","https://nola.eater.com/"];rs.push(["Mardi Gras parade schedule","https://www.neworleans.com/events/holidays-seasonal/mardi-gras/mardi-gras-parade-schedule/"])}
 e.innerHTML="";for(var i=0;i<rs.length;i++){var a=document.createElement("a");a.className="link";a.target="_blank";a.href=rs[i][1];a.innerHTML="<b>"+esc(rs[i][0])+"</b><small>Open resource</small>";e.appendChild(a)}}
 
-ensureOriginalPlan();renderHeader();renderRoute();renderDestinations();renderPlan();renderGuide();renderEvents();renderWeather();renderCams();renderTravel();renderBudget();renderMemories();renderResources();
+ensureOriginalPlan();renderHeader();renderRoute();renderDestinations();renderPlan();renderGuide();renderMyRoamwell();renderEvents();renderWeather();renderCams();renderTravel();renderBudget();renderMemories();renderResources();
 })();
 </script>
 </body></html>
