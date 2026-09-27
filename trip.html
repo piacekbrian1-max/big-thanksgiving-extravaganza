@@ -393,6 +393,37 @@ button,a{max-width:100%}
     height:38px !important;
   }
 }
+</style>
+<style id="roamwell-budget-buttons-compact-final">
+#budget .budgetActions{
+  display:grid !important;
+  grid-template-columns:120px 145px 155px !important;
+  gap:7px !important;
+  justify-content:start !important;
+  align-items:center !important;
+}
+#budget .budgetActions .btn,
+#budget .budgetActions .miniBtn{
+  width:100% !important;
+  min-width:0 !important;
+  max-width:100% !important;
+  height:32px !important;
+  padding:0 5px !important;
+  margin:0 !important;
+  font-size:7px !important;
+  line-height:1 !important;
+  letter-spacing:.045em !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+}
+@media (min-width:601px) and (max-width:899px){
+ #budget .budgetActions{grid-template-columns:115px 135px 145px !important}
+}
+@media (max-width:600px){
+ #budget .budgetActions{grid-template-columns:1fr !important}
+ #budget .budgetActions .btn,#budget .budgetActions .miniBtn{height:34px !important}
+}
 </style></style></head>
 <body>
 <header class="top"><div class="nav">
@@ -906,7 +937,17 @@ function renderResources(){var e=document.getElementById("resourceGrid"),d=(trip
 ["Webcams","https://www.google.com/search?q="+encodeURIComponent(d+" live webcam")]];
 if(slug(d).indexOf("new orleans")>=0){rs[0]=["New Orleans & Company","https://www.neworleans.com/"];rs[2]=["January / event guide","https://www.neworleans.com/plan/january-in-new-orleans/"];rs[3]=["Eater New Orleans","https://nola.eater.com/"];rs.push(["Mardi Gras parade schedule","https://www.neworleans.com/events/holidays-seasonal/mardi-gras/mardi-gras-parade-schedule/"])}
 e.innerHTML="";for(var i=0;i<rs.length;i++){var a=document.createElement("a");a.className="link";a.target="_blank";a.href=rs[i][1];a.innerHTML="<b>"+esc(rs[i][0])+"</b><small>Open resource</small>";e.appendChild(a)}}
-renderHeader();renderRoute();renderDestinations();renderPlan();renderGuide();renderEvents();renderWeather();renderCams();renderTravel();renderBudget();renderMemories();renderResources();
+
+// Normalize the expense description control even if an older cached HTML copy is present.
+(function normalizeBudgetDescription(){
+  var old=document.getElementById("budgetDesc");
+  if(!old || old.tagName==="SELECT") return;
+  var s=document.createElement("select");
+  s.id="budgetDesc";
+  s.innerHTML="<option value=''>Choose expense</option><option>Dinner</option><option>Breakfast</option><option>Lunch</option><option>Hotel / Lodging</option><option>Flights</option><option>Rental Car</option><option>Gas / Fuel</option><option>Parking</option><option>Tickets / Admission</option><option>Tour / Activity</option><option>Public Transit</option><option>Rideshare / Taxi</option><option>Shopping</option><option>Groceries</option><option>Drinks</option><option>Other</option>";
+  s.value="";
+  old.replaceWith(s);
+})();renderHeader();renderRoute();renderDestinations();renderPlan();renderGuide();renderEvents();renderWeather();renderCams();renderTravel();renderBudget();renderMemories();renderResources();
 })();
 </script>
 </body></html>
