@@ -313,8 +313,8 @@ return score;
 function eventFor(date){
 var ds=slug((trip.destinations||[])[0]||"");if(ds.indexOf("new orleans")<0)return null;
 var d=date;
-if(d==="2027-01-14"||d==="2027-01-15"||d==="2027-01-16"||d==="2027-01-17")return {name:"Teaser Fest",when:"Jan 14–17, 2027",note:"Date-specific festival; verify the day's lineup and ticketing before locking the evening."};
-if(d==="2027-01-16")return {name:"Intergalactic Krewe of Chewbacchus",when:"Jan 16, 2027",note:"A Carnival-season parade through the Marigny / French Quarter area; check the official route and timing."};
+if(d==="2027-01-16")return {name:"Teaser Fest + Intergalactic Krewe of Chewbacchus",when:"Jan 16, 2027",note:"Two date-specific events overlap this day. Check the official schedules and parade route before locking the evening."};
+if(d==="2027-01-14"||d==="2027-01-15"||d==="2027-01-17")return {name:"Teaser Fest",when:"Jan 14–17, 2027",note:"Date-specific festival; verify the day's lineup and ticketing before locking the evening."};
 return null;
 }
 function smartCandidates(area,index){
@@ -339,7 +339,7 @@ if((trip.mustSee||[]).length&&i===0)reason+=" Your must-see list is given priori
 if(ev)reason+=" A date-specific event was promoted because it falls during this stay.";
 plan.push({day:i+1,date:isoDay(i),area:area,title:area+" day",morning:c.morning,afternoon:c.afternoon,evening:c.evening,note:reason,event:ev||null})
 }
-trip.plan=plan;trip.homeBase=baseLabel();trip.days=n;save();renderPlan();document.getElementById("smartExplain").textContent="Rebuilt "+n+" days around "+trip.homeBase+". Each day now has a geographic area, three time blocks, interest matching and date-specific event checks.";
+trip.plan=plan;trip.homeBase=baseLabel();trip.days=n;trip.smartVersion=2;save();renderPlan();document.getElementById("smartExplain").textContent="Rebuilt "+n+" days around "+trip.homeBase+". Each day now has a geographic area, three time blocks, interest matching and date-specific event checks.";
 }
 window.buildSmartPlan=buildSmartPlan;
 window.saveSmartSettings=function(){trip.homeBase=document.getElementById("homeBase").value.trim()||"Downtown / city center";trip.transport=document.getElementById("smartTransport").value;trip.walkingRadius=document.getElementById("smartRadius").value;save();buildSmartPlan()};
@@ -368,7 +368,9 @@ var e=document.getElementById("destGrid"),ds=trip.destinations||[];e.innerHTML="
 for(var i=0;i<Math.max(ds.length,1);i++){var d=ds[i]||"Your destination";var x=document.createElement("div");x.className="dest "+(i===0?"tall":"");x.innerHTML="<img src='"+destinationImage(d,i)+"' alt='"+esc(d)+"'><div class='destText'><div class='num'>"+String(i+1).padStart(2,"0")+" · destination</div><h3>"+esc(d)+"</h3><p>"+esc(i===0?baseLabel()+" · "+(trip.preferences||[]).slice(0,3).join(" · "):"Explore by neighborhood, not by random pins.")+"</p></div>";e.appendChild(x)}
 }
 function renderPlan(){
-var e=document.getElementById("smartPlan");e.innerHTML="";if(!trip.plan||!trip.plan.length)buildSmartPlan();
+var e=document.getElementById("smartPlan");e.innerHTML="";
+if(trip.smartVersion!==2){buildSmartPlan();return}
+if(!trip.plan||!trip.plan.length)buildSmartPlan();
 for(var i=0;i<trip.plan.length;i++){(function(d,idx){
 var x=document.createElement("article");x.className="smartDay";var ev=d.event?"<span class='tag'>Date-specific event</span>":"<span class='tag'>Smart day</span>";
 x.innerHTML="<div class='smartDayHead'><div><div class='kicker'>Day "+(idx+1)+" · "+fmtDate(d.date)+"</div><h3>"+esc(d.title||d.area)+"</h3><p>"+esc(d.area||"Destination center")+" · based around "+esc(baseLabel())+"</p></div>"+ev+"</div><div class='smartSlots'>"+
