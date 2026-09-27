@@ -65,7 +65,7 @@ jobs:
           test "$(file -b --mime-type images/prague-christmas.jpg)" = "image/jpeg"
           test "$(file -b --mime-type images/trnava-advent.jpg)" = "image/jpeg"
           test "$(file -b --mime-type images/pilsen-christmas.jpg)" = "image/jpeg"
-          test "$(file -b --mime-type images/hluboka-castle.jpg)" = "image/jpeg"
+          test "$(file -b --mime-type images/hluboka-winter.webp)" = "image/jpeg"
 
       - name: Repoint page to verified image versions
         shell: bash
