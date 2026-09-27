@@ -65,7 +65,7 @@ jobs:
           test "$(file -b --mime-type images/prague-christmas.jpg)" = "image/jpeg"
           test "$(file -b --mime-type images/trnava-advent.jpg)" = "image/jpeg"
           test "$(file -b --mime-type images/pilsen-christmas.jpg)" = "image/jpeg"
-          test "$(file -b --mime-type images/hluboka-winter.webp)" = "image/jpeg"
+          test "$(file -b --mime-type images/hluboka-winter.jpg)" = "image/jpeg"
 
       - name: Repoint page to verified image versions
         shell: bash
@@ -78,13 +78,13 @@ jobs:
           s=s.replace("images/prague-christmas.jpg","images/prague-christmas.jpg?v="+v)
           s=s.replace("images/trnava-advent.jpg","images/trnava-advent.jpg?v="+v)
           s=s.replace("images/pilsen-christmas.jpg","images/pilsen-christmas.jpg?v="+v)
-          s=s.replace("images/hluboka-winter.webp","images/hluboka-winter.webp?v="+v)
+          s=s.replace("images/hluboka-winter.jpg","images/hluboka-winter.jpg?v="+v)
           open(p,"w",encoding="utf-8").write(s)
           PY
           test -s images/prague-christmas.jpg
           test -s images/trnava-advent.jpg
           test -s images/pilsen-christmas.jpg
-          test -s images/hluboka-winter.webp
+          test -s images/hluboka-winter.jpg
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
