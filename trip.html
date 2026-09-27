@@ -89,7 +89,56 @@ main{max-width:1500px;width:94%;margin:auto}.dash{margin-top:-34px;position:rela
 @media(max-width:1000px){.tripHub{grid-template-columns:1fr}.suggestionGrid,.foodGrid{grid-template-columns:1fr 1fr}}
 @media(max-width:600px){.formGrid{grid-template-columns:1fr}.full{grid-column:auto}.suggestionGrid,.foodGrid{grid-template-columns:1fr}}
 
-.budgetSummary{display:grid;grid-template-columns:1.2fr .8fr .8fr;gap:12px;margin-bottom:14px}.budgetTotal{padding:22px;background:var(--green);color:#fff;border-radius:14px}.budgetTotal .label{font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:#d8e0db}.budgetTotal strong{display:block;font:600 39px "Playfair Display",serif;margin-top:5px}.budgetTotal small{color:#b9c8c1;font-size:9px}.budgetForm{background:#f0ede5;border-radius:13px;padding:16px;margin-bottom:14px}.budgetFormGrid{display:grid;grid-template-columns:1.3fr .8fr .55fr .7fr;gap:9px}.budgetForm label{display:block;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:#967b35;font-weight:700;margin-bottom:5px}.budgetForm input,.budgetForm select{width:100%;padding:10px;border:1px solid #d4cec1;background:#fffdf9;border-radius:8px;font:inherit;font-size:10px}.budgetActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.budgetTable{background:var(--paper);border:1px solid var(--line);border-radius:14px;overflow:hidden}.budgetRow{display:grid;grid-template-columns:1.4fr .7fr .5fr .7fr 1.2fr auto;gap:10px;align-items:center;padding:13px 16px;border-bottom:1px solid var(--line);font-size:10px}.budgetRow:last-child{border-bottom:0}.budgetHead{background:#efebe2;font-size:8px;text-transform:uppercase;letter-spacing:.1em;color:#6e7974;font-weight:700}.budgetAmount{font-weight:700}.budgetUsd{font-weight:700;color:var(--green)}.budgetDelete{border:1px solid #d3cdc0;background:#fffdf9;border-radius:6px;padding:6px 8px;font-size:8px;cursor:pointer}.budgetEmpty{padding:28px;text-align:center;color:var(--muted);font-size:10px}.ocrStatus{font-size:9px;color:#66736e;margin-top:7px;min-height:14px}.currencyNote{font-size:9px;color:var(--muted);line-height:1.55;margin-top:8px}.specialBadge{display:inline-flex;margin-top:9px;padding:5px 8px;border-radius:999px;background:#eee3ce;color:#775f25;font-size:8px;text-transform:uppercase;letter-spacing:.08em;font-weight:800}@media(max-width:1000px){.budgetSummary{grid-template-columns:1fr 1fr}.budgetFormGrid{grid-template-columns:1fr 1fr}.budgetRow{grid-template-columns:1.3fr .7fr .5fr .7fr auto}}@media(max-width:700px){.budgetSummary{grid-template-columns:1fr}.budgetFormGrid{grid-template-columns:1fr}.budgetRow{grid-template-columns:1fr 1fr}.budgetHead{display:none}}
+.budgetSummary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:16px}
+.budgetTotal{position:relative;padding:22px 24px;background:var(--paper);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);min-width:0;overflow:hidden}
+.budgetTotal:first-child{background:var(--green);color:#fff}
+.budgetTotal .label{font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:#967b35;font-weight:700}
+.budgetTotal:first-child .label{color:#d8e0db}
+.budgetTotal strong{display:block;font:600 38px "Playfair Display",serif;margin:6px 0 3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.budgetTotal small{font-size:9px;color:var(--muted)}
+.budgetTotal:first-child small{color:#b9c8c1}
+.budgetForm{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:var(--shadow);margin-bottom:16px}
+.budgetFormTitle{display:flex;justify-content:space-between;gap:16px;align-items:end;margin-bottom:16px}
+.budgetFormTitle h3{font:600 28px "Playfair Display",serif;margin:3px 0}
+.budgetFormTitle p{margin:0;color:var(--muted);font-size:10px;line-height:1.5}
+.budgetFields{display:grid;grid-template-columns:1.4fr .8fr .65fr .8fr;gap:12px}
+.budgetField{min-width:0}
+.budgetField label{display:block;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:#967b35;font-weight:700;margin-bottom:6px}
+.budgetField input,.budgetField select{display:block;width:100%;min-width:0;height:42px;padding:0 11px;border:1px solid #d4cec1;background:#fffdf9;border-radius:8px;font:inherit;font-size:11px;color:var(--ink);box-sizing:border-box}
+.budgetField input:focus,.budgetField select:focus{outline:2px solid #c7a55a55;outline-offset:1px}
+.budgetReceipt{display:grid;grid-template-columns:1fr 180px;gap:12px;margin-top:12px}
+.budgetReceipt .miniBtn{width:100%;height:42px}
+.budgetActions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+.budgetActions .btn,.budgetActions .miniBtn{width:100%;height:42px;min-width:0;margin:0;padding:0 12px;display:flex;align-items:center;justify-content:center;box-sizing:border-box;font-size:9px;line-height:1.2;letter-spacing:.06em;white-space:normal;text-align:center}
+.budgetActions .btn.primary{background:#d2b25e;color:#18231f;border-color:#d2b25e}
+.budgetTable{background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
+.budgetRow{display:grid;grid-template-columns:minmax(180px,1.5fr) minmax(90px,.7fr) minmax(70px,.55fr) minmax(90px,.7fr) minmax(120px,1fr) 80px;gap:12px;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line);font-size:10px;min-width:0}
+.budgetRow:last-child{border-bottom:0}
+.budgetRow>div{min-width:0;overflow-wrap:anywhere}
+.budgetHead{background:#efebe2;font-size:8px;text-transform:uppercase;letter-spacing:.1em;color:#6e7974;font-weight:700}
+.budgetAmount{font-weight:700}.budgetUsd{font-weight:700;color:var(--green)}
+.budgetDelete{width:100%;border:1px solid #d3cdc0;background:#fffdf9;color:var(--ink);border-radius:7px;padding:8px 6px;font-size:8px;cursor:pointer}
+.budgetDelete:hover{background:#eeeae0}
+.budgetEmpty{padding:32px;text-align:center;color:var(--muted);font-size:10px}
+.ocrStatus{font-size:9px;color:#66736e;margin-top:7px;min-height:14px}
+.currencyNote{font-size:9px;color:var(--muted);line-height:1.55;margin-top:10px}
+@media(max-width:1000px){
+ .budgetSummary{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+ .budgetFields{grid-template-columns:1fr 1fr}
+ .budgetReceipt{grid-template-columns:1fr 1fr}
+ .budgetRow{grid-template-columns:minmax(150px,1.4fr) minmax(75px,.7fr) minmax(65px,.6fr) minmax(80px,.7fr) minmax(105px,1fr) 72px}
+}
+@media(max-width:700px){
+ .budgetSummary{grid-template-columns:1fr}
+ .budgetForm{padding:16px}
+ .budgetFormTitle{display:block}
+ .budgetFormTitle p{margin-top:5px}
+ .budgetFields,.budgetReceipt,.budgetActions{grid-template-columns:1fr}
+ .budgetRow{grid-template-columns:1fr 1fr;gap:8px;padding:12px 14px}
+ .budgetHead{display:none}
+ .budgetRow>div:nth-child(5){grid-column:1}
+ .budgetRow>div:nth-child(6){grid-column:2}
+}
 .smartPanel{padding:26px;background:var(--green);color:white;border-radius:16px}.smartGrid{display:grid;grid-template-columns:1.4fr .8fr .8fr;gap:10px}.smartField label{display:block;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:#d9e2dd;font-weight:700}.smartField input,.smartField select{width:100%;box-sizing:border-box;margin-top:6px;padding:10px;border:1px solid #ffffff2a;border-radius:7px;background:#ffffff0d;color:white}.smartField option{color:#172222}.smartExplain{font-size:10px;color:#c9d5cf;line-height:1.6;margin-top:13px}.smartDay{border:1px solid var(--line);background:var(--paper);border-radius:14px;overflow:hidden;margin-bottom:12px}.smartDayHead{display:flex;justify-content:space-between;gap:15px;align-items:start;padding:20px 22px;background:#f0ede5}.smartDayHead h3{font:600 27px "Playfair Display",serif;margin:3px 0}.smartDayHead p{margin:0;color:var(--muted);font-size:10px}.smartSlots{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:15px}.smartSlot{border:1px solid var(--line);border-radius:11px;padding:14px}.smartSlot .time{font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:#967b35;font-weight:700}.smartSlot h4{font:600 19px "Playfair Display",serif;margin:6px 0}.smartSlot p{font-size:9px;line-height:1.55;color:var(--muted);margin:0}.smartSlot .why{margin-top:8px;padding-top:8px;border-top:1px solid var(--line);font-size:8px;color:#66736e}.smartActions{display:flex;gap:7px;flex-wrap:wrap;padding:0 15px 15px}.smartActions .btn{border-color:var(--line);color:var(--ink);background:#fffdf9}.editSmart{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:15px;border-top:1px solid var(--line)}.editSmart label{display:block;font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:#967b35;font-weight:700}.editSmart input,.editSmart textarea{width:100%;box-sizing:border-box;margin-top:5px;padding:9px;border:1px solid var(--line);border-radius:7px;background:#fffdf9;font:inherit;font-size:10px}.editSmart textarea{min-height:62px}.sourceBar{font-size:8px;color:#82918a;line-height:1.6;margin-top:12px}.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.card{background:var(--paper);border:1px solid var(--line);border-radius:15px;padding:22px;box-shadow:0 10px 30px #15231b0b}.card h3{font:600 25px "Playfair Display",serif;margin:7px 0 8px;color:var(--ink)}.card p{font-size:11px;line-height:1.65;color:var(--muted);margin:0}.card .ey{font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:#967b35;font-weight:700}.card .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.guideFilter{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;padding-bottom:17px;border-bottom:1px solid var(--line)}.guideFilter button{border:1px solid #d5d0c5;background:#f4f1e9;color:#52615c;padding:10px 13px;border-radius:999px;font-size:8px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;cursor:pointer;transition:.2s}.guideFilter button:hover{border-color:#bba76b;background:#ece7da}.guideFilter button.active{background:var(--green);color:#fff;border-color:var(--green)}.guideSelect{display:none;width:100%;padding:11px;border:1px solid var(--line);border-radius:9px;background:#fffdf9;margin-bottom:15px}.guideMeta{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px}.guideCount{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#7b8681}.guideHint{font-size:10px;color:var(--muted)}.guideGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.guideCard{min-height:218px;display:flex;flex-direction:column}.guideCard .guideNeighborhood{display:inline-flex;align-self:flex-start;margin-top:4px;padding:5px 8px;border-radius:999px;background:#eeeae0;color:#65716c;font-size:8px;text-transform:uppercase;letter-spacing:.08em}.guideCard .guideType{margin-top:12px;font-weight:700;color:#293833}.guideCard .guideNote{margin-top:4px}.guideActions{margin-top:auto;padding-top:18px;display:flex;gap:7px;flex-wrap:wrap}.guideButton{display:inline-flex;align-items:center;justify-content:center;padding:9px 11px;border:1px solid #cfc9bb;background:#fffdf9;color:#24312d!important;border-radius:7px;font-size:8px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.guideButton.primary{background:var(--green);border-color:var(--green);color:#fff!important}.guideButton:hover{background:#eeeae0}.guideButton.primary:hover{background:#2b4d43}.smartActions .btn,.info .btn,.card .btn{border-color:#cfc9bb;color:#24312d;background:#fffdf9}.smartActions .btn:hover,.info .btn:hover,.card .btn:hover{background:#eeeae0}.heroPhotoCredit{position:absolute;z-index:4;right:14px;top:14px;font-size:8px;color:#f7f2e6aa;letter-spacing:.04em;background:#07131066;padding:6px 8px;border-radius:4px;backdrop-filter:blur(5px)}@media(max-width:1000px){.three,.guideGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:700px){.smartGrid,.smartSlots,.editSmart{grid-template-columns:1fr}.guideFilter{display:none}.guideSelect{display:block}.smartDayHead{display:block}.smartActions{padding-top:0}.guideGrid{grid-template-columns:1fr}.guideMeta{display:block}.guideHint{margin-top:5px}} 
 .discoveryBox,.practicalBox{margin-top:12px;padding:14px 16px;border-radius:11px;border:1px solid var(--line);background:#f7f3e9}.discoveryBox{border-left:3px solid var(--gold)}.practicalBox{border-left:3px solid var(--green)}.discoveryBox b,.practicalBox b{display:block;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:#967b35}.discoveryBox p,.practicalBox p{margin:6px 0 0;font-size:11px;line-height:1.55;color:#5f6d68}</style>
 <style id="roamwell-final-responsive">
@@ -205,228 +254,7 @@ button,a{max-width:100%}
   .foot{display:block}
 }
 
-<style id="roamwell-ipad-landscape-budget">
-/* iPad landscape / wide tablet: keep the budget module balanced instead of
-   dropping the three summary cards into an unintended 2+1 layout. */
-@media (min-width:900px) and (max-width:1180px){
-  .budgetSummary{
-    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
-  }
-  .budgetFormGrid{
-    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
-  }
-  .budgetFormGrid > div{
-    min-width:0;
-  }
-  .budgetForm input,
-  .budgetForm select{
-    min-width:0;
-    width:100%;
-  }
-  .budgetActions{
-    align-items:center;
-  }
-  .budgetActions .btn,
-  .budgetActions .miniBtn{
-    flex:0 1 auto;
-    width:auto !important;
-    white-space:nowrap;
-  }
-}
-@media (min-width:601px) and (max-width:899px){
-  .budgetSummary{
-    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
-  }
-  .budgetFormGrid{
-    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
-  }
-}
-</style>
-<style id="roamwell-ipad-landscape-final">
-/* iPad landscape can report a ~768px CSS viewport even on a 2048px screenshot.
-   This rule therefore keys off landscape + touch/tablet width, not physical pixels. */
-@media (orientation:landscape) and (min-width:700px) and (max-width:899px){
-  .budgetSummary{
-    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
-    gap:10px !important;
-  }
-  .budgetTotal{
-    min-width:0 !important;
-    padding:20px !important;
-  }
-  .budgetTotal strong{
-    font-size:34px !important;
-  }
-  .budgetFormGrid{
-    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
-    gap:9px !important;
-  }
-  .budgetFormGrid > div{
-    min-width:0 !important;
-  }
-  .budgetForm input,
-  .budgetForm select,
-  .budgetForm button{
-    width:100% !important;
-    min-width:0 !important;
-  }
-  .budgetForm input[type="date"]{
-    text-align:left !important;
-    text-align-last:left !important;
-    padding-left:10px !important;
-  }
-  .budgetActions{
-    display:flex !important;
-    flex-wrap:nowrap !important;
-    align-items:center !important;
-    gap:8px !important;
-  }
-  .budgetActions .btn,
-  .budgetActions .miniBtn{
-    width:auto !important;
-    flex:0 1 auto !important;
-    white-space:nowrap !important;
-  }
-}
-@media (orientation:landscape) and (min-width:900px) and (max-width:1180px){
-  .budgetSummary{
-    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
-  }
-  .budgetFormGrid{
-    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
-  }
-  .budgetForm input[type="date"]{
-    text-align:left !important;
-    text-align-last:left !important;
-  }
-}
-</style>
-<style id="roamwell-budget-controls-final">
-/* Compact budget controls for iPad/tablet. Never allow action buttons to overlap. */
-.budgetFormGrid{min-width:0}
-.budgetFormGrid>div{min-width:0}
-.budgetForm input,.budgetForm select{min-width:0;max-width:100%;box-sizing:border-box}
-.budgetActions{display:flex;align-items:center;justify-content:flex-start;flex-wrap:wrap;gap:6px}
-.budgetActions .btn,.budgetActions .miniBtn{
-  display:inline-flex !important;
-  width:auto !important;
-  min-width:0 !important;
-  max-width:none !important;
-  flex:0 0 auto !important;
-  padding:8px 11px !important;
-  font-size:8px !important;
-  line-height:1.15 !important;
-  white-space:nowrap !important;
-  height:34px !important;
-}
-@media (orientation:landscape) and (min-width:700px) and (max-width:1180px){
-  .budgetActions{flex-wrap:nowrap !important}
-  .budgetActions .btn,.budgetActions .miniBtn{
-    padding:7px 9px !important;
-    font-size:7.5px !important;
-    letter-spacing:.06em !important;
-  }
-}
-@media (max-width:600px){
-  .budgetActions{display:grid !important;grid-template-columns:1fr !important}
-  .budgetActions .btn,.budgetActions .miniBtn{
-    width:100% !important;
-  }
-}
-</style>
-<style id="roamwell-budget-buttons-definitive">
-/* Definitive budget action layout.
-   Use CSS Grid instead of flex so Safari/iPad cannot shrink buttons into each other. */
-#budget .budgetActions{
-  display:grid !important;
-  grid-template-columns:145px 170px 185px !important;
-  justify-content:start !important;
-  align-items:center !important;
-  gap:8px !important;
-  width:100% !important;
-  min-width:0 !important;
-}
-#budget .budgetActions .btn,
-#budget .budgetActions .miniBtn{
-  display:flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-  box-sizing:border-box !important;
-  width:100% !important;
-  min-width:0 !important;
-  max-width:100% !important;
-  height:38px !important;
-  margin:0 !important;
-  padding:0 8px !important;
-  border-radius:7px !important;
-  font-size:7.5px !important;
-  line-height:1.15 !important;
-  letter-spacing:.055em !important;
-  white-space:nowrap !important;
-  overflow:hidden !important;
-  text-overflow:ellipsis !important;
-  flex:none !important;
-}
-#budget .budgetActions .btn.primary{
-  width:100% !important;
-}
-@media (min-width:601px) and (max-width:899px){
-  #budget .budgetActions{
-    grid-template-columns:135px 155px 170px !important;
-    gap:7px !important;
-  }
-  #budget .budgetActions .btn,
-  #budget .budgetActions .miniBtn{
-    height:36px !important;
-    font-size:7px !important;
-    padding:0 6px !important;
-  }
-}
-@media (max-width:600px){
-  #budget .budgetActions{
-    grid-template-columns:1fr !important;
-    gap:7px !important;
-  }
-  #budget .budgetActions .btn,
-  #budget .budgetActions .miniBtn{
-    width:100% !important;
-    height:38px !important;
-  }
-}
-</style>
-<style id="roamwell-budget-buttons-compact-final">
-#budget .budgetActions{
-  display:grid !important;
-  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
-  gap:10px !important;
-  justify-content:stretch !important;
-  align-items:stretch !important;
-  width:100% !important;
-  min-width:0 !important;
-}
-#budget .budgetActions .btn,
-#budget .budgetActions .miniBtn{
-  display:flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-  width:100% !important;
-  min-width:0 !important;
-  max-width:100% !important;
-  height:42px !important;
-  padding:0 12px !important;
-  margin:0 !important;
-  font-size:9px !important;
-  line-height:1.15 !important;
-  letter-spacing:.055em !important;
-  white-space:normal !important;
-  overflow-wrap:anywhere !important;
-  text-align:center !important;
-}
-@media (max-width:600px){
- #budget .budgetActions{grid-template-columns:1fr !important}
- #budget .budgetActions .btn,#budget .budgetActions .miniBtn{height:40px !important}
-}
-</style></head>
+</head>
 <body>
 <header class="top"><div class="nav">
 <a class="logo" href="index.html"><span class="logoMark">TRIP</span><span><strong id="brand" class="logoRoam">ROAMWELL</strong><small class="logoTag">TRAVEL BETTER · REMEMBER MORE</small></span></a>
@@ -506,29 +334,46 @@ button,a{max-width:100%}
 </section>
 
 <section class="section" id="budget">
-<div class="sectionHead"><div><div class="kicker">Trip budget</div><h2>Track every spend.</h2></div><p>Add expenses manually or use a screenshot of a receipt, booking confirmation or bill. Amounts can be entered in EUR, CZK or another currency and converted to U.S. dollars using the current exchange rate.</p></div>
+<div class="sectionHead">
+  <div><div class="kicker">Trip budget</div><h2>Know where the money goes.</h2></div>
+  <p>Record expenses in one simple workspace. Add the amount and currency, attach a receipt when useful, and Roamwell keeps the running total in U.S. dollars.</p>
+</div>
+
 <div class="budgetSummary">
-<div class="budgetTotal"><div class="label">Total in USD</div><strong id="budgetUsdTotal">$0.00</strong><small id="budgetItemCount">0 expenses</small></div>
-<div class="budgetTotal"><div class="label">Planned budget</div><strong id="budgetPlanTotal">$0.00</strong><small>Editable trip target</small></div>
-<div class="budgetTotal"><div class="label">Remaining</div><strong id="budgetRemaining">$0.00</strong><small>Target minus recorded spending</small></div>
+  <div class="budgetTotal"><div class="label">Spent so far</div><strong id="budgetUsdTotal">$0.00</strong><small id="budgetItemCount">0 expenses</small></div>
+  <div class="budgetTotal"><div class="label">Trip budget</div><strong id="budgetPlanTotal">$0.00</strong><small>Set your planned spending limit</small></div>
+  <div class="budgetTotal"><div class="label">Remaining</div><strong id="budgetRemaining">$0.00</strong><small>Budget minus recorded spending</small></div>
 </div>
+
 <div class="budgetForm">
-<div class="budgetFormGrid">
-<div><label>Description</label><select id="budgetDesc"><option value="">Choose expense</option><option>Dinner</option><option>Breakfast</option><option>Lunch</option><option>Hotel / Lodging</option><option>Flights</option><option>Rental Car</option><option>Gas / Fuel</option><option>Parking</option><option>Tickets / Admission</option><option>Tour / Activity</option><option>Public Transit</option><option>Rideshare / Taxi</option><option>Shopping</option><option>Groceries</option><option>Drinks</option><option>Other</option></select></div>
-<div><label>Amount</label><input id="budgetAmount" inputmode="decimal" placeholder="125.00"></div>
-<div><label>Currency</label><select id="budgetCurrency"><option>USD</option><option>EUR</option><option>CZK</option><option>GBP</option><option>CHF</option><option>CAD</option><option>PLN</option><option>HUF</option><option>Other</option></select></div>
-<div><label>Category</label><select id="budgetCategory"><option>Food</option><option>Stay</option><option>Flights</option><option>Transportation</option><option>Activities</option><option>Shopping</option><option>Other</option></select></div>
+  <div class="budgetFormTitle">
+    <div><div class="kicker">Add an expense</div><h3>Enter it once. Roamwell handles the math.</h3></div>
+    <p>Use your local currency or USD. Exchange rates can be automatic or entered manually.</p>
+  </div>
+
+  <div class="budgetFields">
+    <div class="budgetField"><label for="budgetDesc">What did you spend on?</label><input id="budgetDesc" placeholder="Dinner, hotel, tickets, gas…"></div>
+    <div class="budgetField"><label for="budgetAmount">Amount</label><input id="budgetAmount" inputmode="decimal" placeholder="125.00"></div>
+    <div class="budgetField"><label for="budgetCurrency">Currency</label><select id="budgetCurrency"><option>USD</option><option>EUR</option><option>CZK</option><option>GBP</option><option>CHF</option><option>CAD</option><option>PLN</option><option>HUF</option><option>Other</option></select></div>
+    <div class="budgetField"><label for="budgetCategory">Category</label><select id="budgetCategory"><option>Food</option><option>Stay</option><option>Flights</option><option>Transportation</option><option>Activities</option><option>Shopping</option><option>Other</option></select></div>
+  </div>
+
+  <div class="budgetFields" style="margin-top:12px">
+    <div class="budgetField"><label for="budgetDate">Date</label><input id="budgetDate" type="date"></div>
+    <div class="budgetField"><label for="budgetRate">Exchange rate to USD</label><input id="budgetRate" inputmode="decimal" placeholder="Auto"></div>
+    <div class="budgetField"><label for="budgetShot">Receipt / screenshot</label><input id="budgetShot" type="file" accept="image/*"></div>
+    <div class="budgetField"><label>Receipt helper</label><button class="miniBtn" style="width:100%;height:42px" onclick="readBudgetScreenshot()">Read screenshot</button></div>
+  </div>
+
+  <div class="ocrStatus" id="budgetOcrStatus"></div>
+  <div class="budgetActions">
+    <button class="btn primary" onclick="addBudgetItem()">Add Expense</button>
+    <button class="miniBtn" onclick="setBudgetTarget()">Set Trip Budget</button>
+    <button class="miniBtn" onclick="refreshFx()">Refresh Rates</button>
+  </div>
+  <div class="currencyNote">Exchange rates are fetched for the selected currency when available. You can override the rate manually for your card rate, cash exchange or receipt rate.</div>
 </div>
-<div class="budgetFormGrid" style="margin-top:9px">
-<div><label>Date</label><input id="budgetDate" type="date"></div>
-<div><label>Exchange rate to USD</label><input id="budgetRate" inputmode="decimal" placeholder="Auto"></div>
-<div><label>Receipt / screenshot</label><input id="budgetShot" type="file" accept="image/*"></div>
-<div><label>OCR screenshot</label><button class="miniBtn" style="width:100%;height:36px" onclick="readBudgetScreenshot()">Read screenshot</button></div>
-</div>
-<div class="ocrStatus" id="budgetOcrStatus"></div>
-<div class="budgetActions"><button class="btn primary" onclick="addBudgetItem()">Add Expense</button><button class="miniBtn" onclick="setBudgetTarget()">Trip Budget</button><button class="miniBtn" onclick="refreshFx()">Refresh Rates</button></div>
-<div class="currencyNote">Exchange rates are fetched for the selected currency when available. You can override the rate manually when a receipt uses a different rate, card rate or cash exchange rate.</div>
-</div>
+
 <div class="budgetTable" id="budgetTable"></div>
 </section>
 
@@ -940,7 +785,7 @@ function renderResources(){var e=document.getElementById("resourceGrid"),d=(trip
 if(slug(d).indexOf("new orleans")>=0){rs[0]=["New Orleans & Company","https://www.neworleans.com/"];rs[2]=["January / event guide","https://www.neworleans.com/plan/january-in-new-orleans/"];rs[3]=["Eater New Orleans","https://nola.eater.com/"];rs.push(["Mardi Gras parade schedule","https://www.neworleans.com/events/holidays-seasonal/mardi-gras/mardi-gras-parade-schedule/"])}
 e.innerHTML="";for(var i=0;i<rs.length;i++){var a=document.createElement("a");a.className="link";a.target="_blank";a.href=rs[i][1];a.innerHTML="<b>"+esc(rs[i][0])+"</b><small>Open resource</small>";e.appendChild(a)}}
 
-// Budget controls are defined directly in the page markup so Safari/iPad uses one stable DOM.renderHeader();renderRoute();renderDestinations();renderPlan();renderGuide();renderEvents();renderWeather();renderCams();renderTravel();renderBudget();renderMemories();renderResources();
+renderHeader();renderRoute();renderDestinations();renderPlan();renderGuide();renderEvents();renderWeather();renderCams();renderTravel();renderBudget();renderMemories();renderResources();
 })();
 </script>
 </body></html>
