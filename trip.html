@@ -1037,13 +1037,12 @@ var e=document.getElementById(id);e.innerHTML="";
 var rows=list.filter(travelMatches);
 if(!rows.length){e.innerHTML="<div class='travelEmpty'>No "+type+" records for this view yet. Use + Add "+type+" to create one.</div>";return}
 rows.forEach(function(x){
-var icon=type==="flight"?"✈":type==="stay"?"⌂":"🚗",title=type==="flight"?(x.route||"Flight")+" · "+travelGroupLabel(x.groupId):type==="stay"?(x.property||"Stay")+" · "+travelGroupLabel(x.groupId):(x.vehicle||"Car rental")+" · "+travelGroupLabel(x.groupId);
+var icon=type==="flight"?"✈":type==="stay"?"⌂":"🚗",title=type==="flight"?(x.route||"Flight")+" · "+travelGroupLabel(x.groupId):type==="stay"?(x.property||"Stay")+" · "+travelGroupLabel(x.groupId):(x.rentalCompany||"Car rental")+" · "+(x.vehicle||"Vehicle")+" · "+travelGroupLabel(x.groupId);
 var meta=[x.destination,x.travelers,x.dates||x.pickupDates,x.pickup&&("Pickup "+x.pickup),x.dropoff&&("Drop-off "+x.dropoff),x.route,x.room||x.vehicleDetails||x.details].filter(Boolean).join(" · ");
 var card=document.createElement("div");card.className="bookingCard";
 var proof="";
-if(x.link)proof+="<a href='"+esc(normalizeTravelUrl(x.link))+"' target='_blank' rel='noopener'>"+(type==="flight"?"Open flight link":"Open stay booking link")+"</a>";
+if(x.link)proof+="<a href='"+esc(normalizeTravelUrl(x.link))+"' target='_blank' rel='noopener'>"+(type==="flight"?"Open flight link":type==="car"?"Open rental booking link":"Open stay booking link")+"</a>";
 if(x.propertyLink&&type==="stay")proof+="<a href='"+esc(normalizeTravelUrl(x.propertyLink))+"' target='_blank' rel='noopener'>Open property link</a>";
-if(x.link&&type==="car")proof+="<a href='"+esc(normalizeTravelUrl(x.link))+"' target='_blank' rel='noopener'>Open rental booking link</a>";
 if(x.screenshot)proof+="<button type='button' data-proof='"+esc(x.id)+"'>View screenshot</button>";
 card.innerHTML="<div class='bookingIcon'>"+icon+"</div><div><div class='bookingTitle'>"+esc(title)+"</div><div class='bookingMeta'>"+esc(meta||"Details not added yet")+"</div>"+(proof?"<div class='travelProof'>"+proof+"</div>":"")+"<div class='bookingActions'><button type='button' data-edit='"+esc(x.id)+"'>Edit</button><button type='button' data-remove='"+esc(x.id)+"'>Remove</button></div></div><span class='bookingStatus'>"+esc(x.status||"Planning")+"</span>";
 e.appendChild(card);
