@@ -6,17 +6,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-/* Budget form hardening: keep hotel dates and action buttons separated on iPad/tablet */
-@media (min-width:601px) and (max-width:1000px){
-  .budgetFields{grid-template-columns:minmax(0,1fr) minmax(0,1fr);}
-  .budgetDetails{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:end;}
-  .budgetFieldHotel{grid-column:1/-1;}
-  .hotelDates{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);}
-  .budgetActions{grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch;}
-  .budgetActions > *{width:100%;min-width:0;max-width:none;white-space:normal;overflow-wrap:anywhere;text-align:center;line-height:1.25;min-height:42px;}
-  .budgetForm{overflow:hidden;}
-}
-
 
 :root{--navy:#101b1b;--ink:#172222;--muted:#71807c;--cream:#f5f2ea;--paper:#fffdf9;--gold:#c7a55a;--line:#dedbd2;--green:#203b35;--red:#8e2631;--pine:#17372d;--shadow:0 18px 50px #15231b12}
 *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:82px}body{margin:0;background:var(--cream);color:var(--ink);font-family:"DM Sans",sans-serif}a{text-decoration:none;color:inherit}button{font:inherit}.serif{font-family:"Playfair Display",Georgia,serif}
@@ -121,9 +110,6 @@ main{max-width:1500px;width:94%;margin:auto}.dash{margin-top:-34px;position:rela
 .budgetDateWrap{width:150px;max-width:150px;height:42px;overflow:hidden}
 .budgetDateWrap input[type="date"]{display:block;width:150px;max-width:150px;min-width:0;height:42px;padding:0 6px;font-size:11px;letter-spacing:0;box-sizing:border-box;-webkit-appearance:auto;appearance:auto}
 .budgetDateWrap input[type="date"]::-webkit-date-and-time-value{text-align:left}
-.hotelDates{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:6px;align-items:center}
-.hotelDates input{width:100%;height:42px;min-width:0;padding:0 6px;border:1px solid #d4cec1;background:#fffdf9;border-radius:8px;font:inherit;font-size:10px;box-sizing:border-box}
-.hotelDates span{font-size:9px;color:var(--muted);text-transform:uppercase}
 .budgetHelperBtn{display:flex!important;width:160px!important;max-width:160px!important;height:42px!important;align-items:center;justify-content:center;box-sizing:border-box;margin:0}
 .budgetField input:focus,.budgetField select:focus{outline:2px solid #c7a55a55;outline-offset:1px}
 .budgetReceipt{display:grid;grid-template-columns:1fr 180px;gap:12px;margin-top:12px}
@@ -157,7 +143,7 @@ main{max-width:1500px;width:94%;margin:auto}.dash{margin-top:-34px;position:rela
  .budgetFormTitle{display:block}
  .budgetFormTitle p{margin-top:5px}
  .budgetFields,.budgetDetails,.budgetActions{grid-template-columns:1fr}
- .budgetDateField,.budgetDateWrap,.budgetDateWrap input[type="date"]{width:100%;max-width:100%} .budgetFieldHotel{grid-column:1/-1}.hotelDates{grid-template-columns:1fr auto 1fr}
+ .budgetDateField,.budgetDateWrap,.budgetDateWrap input[type="date"]{width:100%;max-width:100%}
  .budgetHelperBtn{width:100%!important;max-width:100%!important}
  .budgetRow{grid-template-columns:1fr 1fr;gap:8px;padding:12px 14px}
  .budgetHead{display:none}
@@ -279,323 +265,6 @@ button,a{max-width:100%}
   .foot{display:block}
 }
 
-
-/* Final tablet budget layout override */
-@media (min-width:601px) and (max-width:1000px){
-  .budgetForm .budgetDetails{
-    display:grid !important;
-    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
-    gap:12px !important;
-    align-items:end !important;
-  }
-  .budgetForm .budgetDetails .budgetDateField{
-    grid-column:1 !important;
-    width:auto !important;
-    max-width:none !important;
-  }
-  .budgetForm .budgetDetails .budgetFieldHotel{
-    grid-column:1 / -1 !important;
-    width:auto !important;
-  }
-  .budgetForm .budgetDetails .budgetFieldHotel .hotelDates{
-    display:grid !important;
-    grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) !important;
-    gap:8px !important;
-    width:100% !important;
-  }
-  .budgetForm .budgetDetails .budgetFieldHotel .hotelDates input{
-    width:100% !important;
-    min-width:0 !important;
-  }
-  .budgetForm .budgetDetails .budgetField:not(.budgetDateField):not(.budgetFieldHotel){
-    width:auto !important;
-    max-width:none !important;
-  }
-  .budgetForm .budgetDetails .budgetField:nth-last-child(2),
-  .budgetForm .budgetDetails .budgetField:last-child{
-    grid-column:auto !important;
-  }
-  .budgetForm .budgetDetails .budgetHelperBtn{
-    width:100% !important;
-    max-width:none !important;
-  }
-  .budgetForm .budgetActions{
-    display:grid !important;
-    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
-    gap:10px !important;
-  }
-  .budgetForm .budgetActions > *{
-    width:100% !important;
-    min-width:0 !important;
-    max-width:none !important;
-    white-space:normal !important;
-    overflow-wrap:anywhere !important;
-  }
-}
-
-/* Budget layout: hotel dates always occupy a dedicated full row so they can never overlap other fields */
-.budgetForm .budgetDetails{
-  display:grid !important;
-  grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) !important;
-  gap:12px !important;
-  align-items:end !important;
-}
-.budgetForm .budgetDetails .budgetFieldHotel{
-  grid-column:1 / -1 !important;
-  width:100% !important;
-  min-width:0 !important;
-}
-.budgetForm .budgetDetails .budgetFieldHotel .hotelDates{
-  display:grid !important;
-  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) !important;
-  gap:8px !important;
-  width:100% !important;
-}
-.budgetForm .budgetDetails .budgetFieldHotel .hotelDates input{
-  width:100% !important;
-  min-width:0 !important;
-}
-@media (max-width:1180px){
-  .budgetForm .budgetDetails{
-    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
-  }
-}
-@media (max-width:700px){
-  .budgetForm .budgetDetails{
-    grid-template-columns:1fr !important;
-  }
-}
-
-
-/* Budget hotel dates: treat From and To as normal grid fields, not a nested row */
-.budgetForm .budgetDetails{
-  display:grid !important;
-  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
-  gap:12px !important;
-  align-items:end !important;
-}
-.budgetForm .budgetDetails .budgetHotelDateField{
-  display:block;
-  width:auto !important;
-  min-width:0 !important;
-}
-.budgetForm .budgetDetails .budgetHotelDateField input{
-  width:100% !important;
-  height:42px;
-  min-width:0;
-  box-sizing:border-box;
-}
-@media(max-width:1000px){
-  .budgetForm .budgetDetails{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
-}
-@media(max-width:700px){
-  .budgetForm .budgetDetails{grid-template-columns:1fr !important;}
-}
-
-
-/* Budget tablet: balanced two-column detail rows */
-@media (min-width:701px) and (max-width:1000px){
-  .budgetForm .budgetDetails{
-    display:grid !important;
-    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
-    grid-template-areas:
-      "expenseDate exchange"
-      "hotelFrom hotelTo"
-      "receipt helper" !important;
-    gap:12px !important;
-    align-items:end !important;
-  }
-  .budgetForm .budgetDetails .budgetDateField{grid-area:expenseDate !important;width:auto !important;max-width:none !important;}
-  .budgetForm .budgetDetails #budgetHotelFromField{grid-area:hotelFrom !important;}
-  .budgetForm .budgetDetails #budgetHotelToField{grid-area:hotelTo !important;}
-  .budgetForm .budgetDetails #budgetRate{width:100% !important;}
-  .budgetForm .budgetDetails .budgetField:nth-of-type(4){grid-area:exchange !important;}
-  .budgetForm .budgetDetails .budgetField:nth-of-type(5){grid-area:receipt !important;}
-  .budgetForm .budgetDetails .budgetField:nth-of-type(6){grid-area:helper !important;}
-  .budgetForm .budgetDetails .budgetHotelDateField input,
-  .budgetForm .budgetDetails .budgetDateWrap,
-  .budgetForm .budgetDetails .budgetDateWrap input,
-  .budgetForm .budgetDetails #budgetShot,
-  .budgetForm .budgetDetails .budgetHelperBtn{
-    width:100% !important;
-    max-width:none !important;
-    box-sizing:border-box;
-  }
-}
-
-</style>
-<style id="budget-layout-last">
-/* LAST-WORD budget layout: tablet/iPad */
-@media (min-width:701px) and (max-width:1000px){
-  .budgetForm .budgetDetails{
-    display:grid !important;
-    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
-    grid-template-areas:
-      "expense rate"
-      "from to"
-      "receipt helper" !important;
-    gap:14px !important;
-    align-items:end !important;
-  }
-  .budgetForm .budgetDetails .budgetDateField{
-    grid-area:expense !important;
-    width:auto !important;
-    max-width:none !important;
-  }
-  .budgetForm .budgetDetails #budgetHotelFromField{
-    grid-area:from !important;
-    display:block !important;
-    width:auto !important;
-  }
-  .budgetForm .budgetDetails #budgetHotelToField{
-    grid-area:to !important;
-    display:block !important;
-    width:auto !important;
-  }
-  .budgetForm .budgetDetails .budgetField:has(#budgetRate){
-    grid-area:rate !important;
-  }
-  .budgetForm .budgetDetails .budgetField:has(#budgetShot){
-    grid-area:receipt !important;
-  }
-  .budgetForm .budgetDetails .budgetField:has(.budgetHelperBtn){
-    grid-area:helper !important;
-  }
-  .budgetForm .budgetDetails input,
-  .budgetForm .budgetDetails select,
-  .budgetForm .budgetDetails .budgetDateWrap,
-  .budgetForm .budgetDetails .budgetDateWrap input,
-  .budgetForm .budgetDetails .budgetHelperBtn{
-    width:100% !important;
-    max-width:none !important;
-    box-sizing:border-box !important;
-  }
-  .budgetForm .budgetDetails .budgetHotelDateField input{
-    height:42px !important;
-  }
-}
-</style>
-<style id="budget-ipad-final">
-/* iPad Safari can use a desktop CSS viewport. Detect touch/tablet as well as width. */
-@media (pointer: coarse) and (min-width:701px) and (max-width:1400px){
-  .budgetForm .budgetDetails{
-    display:grid !important;
-    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
-    grid-template-areas:
-      "expense rate"
-      "from to"
-      "receipt helper" !important;
-    gap:14px !important;
-    align-items:end !important;
-  }
-  .budgetForm .budgetDetails .budgetDateField{grid-area:expense !important;}
-  .budgetForm .budgetDetails .budgetHotelDateField{display:block !important;width:auto !important;}
-  .budgetForm .budgetDetails #budgetHotelFromField{grid-area:from !important;}
-  .budgetForm .budgetDetails #budgetHotelToField{grid-area:to !important;}
-  .budgetForm .budgetDetails .budgetRateField{grid-area:rate !important;}
-  .budgetForm .budgetDetails .budgetReceiptField{grid-area:receipt !important;}
-  .budgetForm .budgetDetails .budgetHelperField{grid-area:helper !important;}
-  .budgetForm .budgetDetails .budgetDateWrap,
-  .budgetForm .budgetDetails input,
-  .budgetForm .budgetDetails .budgetHelperBtn{
-    width:100% !important;
-    max-width:none !important;
-    box-sizing:border-box !important;
-  }
-}
-<style id="budget-clean-layout">
-/* Clean tablet/iPad budget layout. JavaScript marks touch tablets because iPad Safari may expose a wide desktop viewport. */
-.budgetForm.budgetTablet .budgetDetails{
-  display:grid !important;
-  grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
-  grid-template-areas:
-    "expense rate"
-    "from to"
-    "receipt helper" !important;
-  gap:14px !important;
-  align-items:end !important;
-}
-.budgetForm.budgetTablet .budgetDateField{grid-area:expense !important;width:auto !important;max-width:none !important;}
-.budgetForm.budgetTablet .budgetHotelDateField{display:block !important;width:auto !important;max-width:none !important;}
-.budgetForm.budgetTablet #budgetHotelFromField{grid-area:from !important;}
-.budgetForm.budgetTablet #budgetHotelToField{grid-area:to !important;}
-.budgetForm.budgetTablet .budgetRateField{grid-area:rate !important;width:auto !important;}
-.budgetForm.budgetTablet .budgetReceiptField{grid-area:receipt !important;width:auto !important;}
-.budgetForm.budgetTablet .budgetHelperField{grid-area:helper !important;width:auto !important;}
-.budgetForm.budgetTablet .budgetDetails input,
-.budgetForm.budgetTablet .budgetDetails .budgetDateWrap,
-.budgetForm.budgetTablet .budgetDetails .budgetHelperBtn{
-  width:100% !important;
-  max-width:none !important;
-  box-sizing:border-box !important;
-}
-.budgetForm.budgetTablet .budgetDetails input{height:42px !important;}
-@media(max-width:700px){
-  .budgetForm.budgetTablet .budgetDetails{
-    grid-template-columns:1fr !important;
-    grid-template-areas:
-      "expense"
-      "rate"
-      "from"
-      "to"
-      "receipt"
-      "helper" !important;
-  }
-}
-</style>
-<style id="budget-authoritative-layout">
-/* Authoritative budget behavior: the expense selector controls the hotel fields. */
-.budgetForm .budgetHotelDateField{display:none !important;}
-.budgetForm.hotelMode .budgetHotelDateField{display:block !important;}
-
-@media (pointer:coarse) and (min-width:701px){
-  .budgetForm .budgetDetails{
-    display:grid !important;
-    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
-    gap:14px !important;
-    align-items:end !important;
-  }
-  .budgetForm .budgetDetails .budgetDateField{grid-column:auto !important;}
-  .budgetForm .budgetDetails .budgetRateField{grid-column:auto !important;}
-  .budgetForm .budgetDetails .budgetReceiptField{grid-column:auto !important;}
-  .budgetForm .budgetDetails .budgetHelperField{grid-column:auto !important;}
-
-  /* Non-hotel: two clean rows, no empty hotel space. */
-  .budgetForm:not(.hotelMode) .budgetDetails{
-    grid-template-areas:"expense rate" "receipt helper" !important;
-  }
-  .budgetForm:not(.hotelMode) .budgetDateField{grid-area:expense !important;}
-  .budgetForm:not(.hotelMode) .budgetRateField{grid-area:rate !important;}
-  .budgetForm:not(.hotelMode) .budgetReceiptField{grid-area:receipt !important;}
-  .budgetForm:not(.hotelMode) .budgetHelperField{grid-area:helper !important;}
-
-  /* Hotel: add From/To as the middle row. */
-  .budgetForm.hotelMode .budgetDetails{
-    grid-template-areas:"expense rate" "from to" "receipt helper" !important;
-  }
-  .budgetForm.hotelMode .budgetDateField{grid-area:expense !important;}
-  .budgetForm.hotelMode #budgetHotelFromField{grid-area:from !important;}
-  .budgetForm.hotelMode #budgetHotelToField{grid-area:to !important;}
-  .budgetForm.hotelMode .budgetRateField{grid-area:rate !important;}
-  .budgetForm.hotelMode .budgetReceiptField{grid-area:receipt !important;}
-  .budgetForm.hotelMode .budgetHelperField{grid-area:helper !important;}
-
-  .budgetForm .budgetDetails input,
-  .budgetForm .budgetDetails .budgetDateWrap,
-  .budgetForm .budgetDetails .budgetHelperBtn{
-    width:100% !important;
-    max-width:none !important;
-    box-sizing:border-box !important;
-  }
-}
-@media (max-width:700px){
-  .budgetForm .budgetDetails{
-    display:grid !important;
-    grid-template-columns:1fr !important;
-    gap:12px !important;
-  }
-  .budgetForm .budgetDetails > *{grid-area:auto !important;}
-}
 </style>
 </head>
 <body>
@@ -702,18 +371,16 @@ button,a{max-width:100%}
   </div>
 
   <div class="budgetFields budgetDetails">
-    <div class="budgetField budgetDateField"><label for="budgetDate">Expense date</label><div class="budgetDateWrap"><input id="budgetDate" type="date" aria-label="Expense date"></div></div>
-    <div class="budgetField budgetHotelDateField" id="budgetHotelFromField"><label for="budgetHotelFrom">Hotel stay · From</label><input id="budgetHotelFrom" type="date" aria-label="Hotel stay from"></div>
-    <div class="budgetField budgetHotelDateField" id="budgetHotelToField"><label for="budgetHotelTo">Hotel stay · To</label><input id="budgetHotelTo" type="date" aria-label="Hotel stay to"></div>
-    <div class="budgetField budgetRateField"><label for="budgetRate">Exchange rate to USD</label><input id="budgetRate" inputmode="decimal" placeholder="Auto"></div>
-    <div class="budgetField budgetReceiptField"><label for="budgetShot">Receipt / screenshot</label><input id="budgetShot" type="file" accept="image/*"></div>
-    <div class="budgetField budgetHelperField"><label>Receipt helper</label><button type="button" class="miniBtn budgetHelperBtn" onclick="readBudgetScreenshot()">Read screenshot</button></div>
+    <div class="budgetField budgetDateField"><label for="budgetDate">Date</label><div class="budgetDateWrap"><input id="budgetDate" type="date" aria-label="Expense date"></div></div>
+    <div class="budgetField"><label for="budgetRate">Exchange rate to USD</label><input id="budgetRate" inputmode="decimal" placeholder="Auto"></div>
+    <div class="budgetField"><label for="budgetShot">Receipt / screenshot</label><input id="budgetShot" type="file" accept="image/*"></div>
+    <div class="budgetField"><label>Receipt helper</label><button type="button" class="miniBtn budgetHelperBtn" onclick="readBudgetScreenshot()">Read screenshot</button></div>
   </div>
 
   <div class="ocrStatus" id="budgetOcrStatus"></div>
   <div class="budgetActions">
     <button type="button" class="btn primary" onclick="addBudgetItem()">Add Expense</button>
-    <button type="button" class="miniBtn" onclick="setBudgetTarget()">Edit Trip Budget</button>
+    <button type="button" class="miniBtn" onclick="setBudgetTarget()">Set Trip Budget</button>
     <button type="button" class="miniBtn" onclick="refreshFx()">Refresh Rates</button>
   </div>
   <div class="currencyNote">Exchange rates are fetched for the selected currency when available. You can override the rate manually for your card rate, cash exchange or receipt rate.</div>
@@ -1106,21 +773,14 @@ for(var i=0;i<items.length;i++){var x=items[i];h+="<div class='budgetRow'><div><
 t.innerHTML=h;
 }
 window.deleteBudgetItem=function(i){budgetItems().splice(i,1);save();renderBudget()}
-function syncBudgetTypeFields(){
-var form=document.querySelector(".budgetForm");
-var isHotel=document.getElementById("budgetDesc")&&document.getElementById("budgetDesc").value==="Hotel / lodging";
-if(form)form.classList.toggle("hotelMode",!!isHotel);
-}
-document.getElementById("budgetDesc").addEventListener("change",syncBudgetTypeFields);
-syncBudgetTypeFields();
 window.addBudgetItem=async function addBudgetItem(){
-var desc=document.getElementById("budgetDesc").value.trim(),amount=Number(document.getElementById("budgetAmount").value.replace(/[$,]/g,"")),cur=document.getElementById("budgetCurrency").value,cat=document.getElementById("budgetCategory").value,date=document.getElementById("budgetDate").value||new Date().toISOString().slice(0,10),hotelFrom=document.getElementById("budgetHotelFrom").value,hotelTo=document.getElementById("budgetHotelTo").value,manualRate=Number(document.getElementById("budgetRate").value);
-if(!desc||!isFinite(amount)||amount<=0){alert("Add a description and a valid amount.");return}if(desc==="Hotel / lodging"&&(!hotelFrom||!hotelTo||hotelTo<hotelFrom)){alert("For hotel expenses, enter a valid From and To date.");return}
+var desc=document.getElementById("budgetDesc").value.trim(),amount=Number(document.getElementById("budgetAmount").value.replace(/[$,]/g,"")),cur=document.getElementById("budgetCurrency").value,cat=document.getElementById("budgetCategory").value,date=document.getElementById("budgetDate").value||new Date().toISOString().slice(0,10),manualRate=Number(document.getElementById("budgetRate").value);
+if(!desc||!isFinite(amount)||amount<=0){alert("Add a description and a valid amount.");return}
 var rate=cur==="USD"?1:manualRate||await fetchFx(cur);if(!rate){alert("I couldn't retrieve a USD exchange rate for "+cur+". Enter the rate manually.");return}
 var shot=document.getElementById("budgetShot").files[0],shotData=null;
 if(shot){shotData=await new Promise(function(resolve){var rr=new FileReader();rr.onload=function(){resolve(rr.result)};rr.readAsDataURL(shot)})}
-budgetItems().push({description:desc,amount:amount,currency:cur,category:cat,date:date,hotelFrom:desc==="Hotel / lodging"?hotelFrom:"",hotelTo:desc==="Hotel / lodging"?hotelTo:"",rate:rate,usd:amount*rate,source:manualRate?"Manual rate":"Live / cached rate",screenshot:shotData});
-save();["budgetDesc","budgetAmount","budgetRate"].forEach(function(id){document.getElementById(id).value=""});document.getElementById("budgetShot").value="";document.getElementById("budgetHotelFrom").value="";document.getElementById("budgetHotelTo").value="";syncBudgetTypeFields();document.getElementById("budgetOcrStatus").textContent="Expense added.";renderBudget()
+budgetItems().push({description:desc,amount:amount,currency:cur,category:cat,date:date,rate:rate,usd:amount*rate,source:manualRate?"Manual rate":"Live / cached rate",screenshot:shotData});
+save();["budgetDesc","budgetAmount","budgetRate"].forEach(function(id){document.getElementById(id).value=""});document.getElementById("budgetShot").value="";document.getElementById("budgetOcrStatus").textContent="Expense added.";renderBudget()
 }
 window.readBudgetScreenshot=async function(){
 var f=document.getElementById("budgetShot").files[0];if(!f){alert("Choose a receipt or budget screenshot first.");return}
@@ -1145,13 +805,6 @@ if(slug(d).indexOf("new orleans")>=0){rs[0]=["New Orleans & Company","https://ww
 e.innerHTML="";for(var i=0;i<rs.length;i++){var a=document.createElement("a");a.className="link";a.target="_blank";a.href=rs[i][1];a.innerHTML="<b>"+esc(rs[i][0])+"</b><small>Open resource</small>";e.appendChild(a)}}
 
 renderHeader();renderRoute();renderDestinations();renderPlan();renderGuide();renderEvents();renderWeather();renderCams();renderTravel();renderBudget();renderMemories();renderResources();
-})();
-(function(){
-var bf=document.querySelector(".budgetForm");
-if(bf){
-  var tablet=("ontouchstart" in window || navigator.maxTouchPoints>0) && Math.min(window.innerWidth,window.screen.width)>=700;
-  if(tablet)bf.classList.add("budgetTablet");
-}
 })();
 </script>
 </body></html>
