@@ -198,9 +198,9 @@ prague:"images/prague-christmas.jpg",
 trnava:"images/trnava-advent.jpg",
 pilsen:"images/pilsen-christmas.jpg",
 hluboka:"images/hluboka-winter.jpg",
-neworleans:"https://images.unsplash.com/photo-1647180745449-a19b776f8761?auto=format&fit=crop&fm=jpg&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&ixlib=rb-4.1.0&q=85&w=2400",
-neworleans2:"https://images.unsplash.com/photo-1689568914834-57f6c180e0b1?auto=format&fit=crop&fm=jpg&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&ixlib=rb-4.1.0&q=85&w=2400",
-neworleans3:"https://images.unsplash.com/photo-1560110734-f03640ca8eda?auto=format&fit=crop&fm=jpg&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&ixlib=rb-4.1.0&q=85&w=2400",
+neworleans:"https://images.unsplash.com/photo-1617893620448-3b4e44fd57dc?auto=format&fit=crop&fm=jpg&q=88&w=3000",
+neworleans2:"https://images.unsplash.com/photo-1689568914860-4ecf6e58099c?auto=format&fit=crop&fm=jpg&q=88&w=3000",
+neworleans3:"https://images.unsplash.com/photo-1678839041538-f5b45013e377?auto=format&fit=crop&fm=jpg&q=88&w=3000",
 vienna:"images/prague-christmas.jpg"};
 
 var nolaGuide={
@@ -405,7 +405,7 @@ document.getElementById("homeBase").value=trip.homeBase&&trip.homeBase!=="Downto
 document.getElementById("smartTransport").value=trip.transport||"Walk + transit";document.getElementById("smartRadius").value=trip.walkingRadius||"Moderate — combine nearby areas";
 var d0=ds[0]||"";document.getElementById("heroMain").src=destinationImage(d0,0);document.getElementById("heroMain").alt=d0;
 document.getElementById("heroSide1").src=destinationImage(d0,1);document.getElementById("heroSide2").src=destinationImage(d0,2);document.getElementById("side1Label").textContent=d0+" · local character";document.getElementById("side2Label").textContent=d0+" · seasonal atmosphere";
- document.getElementById("heroPhotoCredit").textContent=slug(d0).indexOf("new orleans")>=0?"Photography · Unsplash contributors":"Photography · destination image";
+ document.getElementById("heroPhotoCredit").textContent=slug(d0).indexOf("new orleans")>=0?"Unsplash · free-use editorial photography":"Destination editorial image";
 document.getElementById("routeMap").href="https://www.google.com/maps/dir/"+encodeURIComponent((trip.homeBase||"Downtown "+d0))+"/"+encodeURIComponent(d0);
 }
 function renderRoute(){
