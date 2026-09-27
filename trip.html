@@ -241,6 +241,65 @@ button,a{max-width:100%}
     grid-template-columns:repeat(2,minmax(0,1fr)) !important;
   }
 }
+</style>
+<style id="roamwell-ipad-landscape-final">
+/* iPad landscape can report a ~768px CSS viewport even on a 2048px screenshot.
+   This rule therefore keys off landscape + touch/tablet width, not physical pixels. */
+@media (orientation:landscape) and (min-width:700px) and (max-width:899px){
+  .budgetSummary{
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+    gap:10px !important;
+  }
+  .budgetTotal{
+    min-width:0 !important;
+    padding:20px !important;
+  }
+  .budgetTotal strong{
+    font-size:34px !important;
+  }
+  .budgetFormGrid{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:9px !important;
+  }
+  .budgetFormGrid > div{
+    min-width:0 !important;
+  }
+  .budgetForm input,
+  .budgetForm select,
+  .budgetForm button{
+    width:100% !important;
+    min-width:0 !important;
+  }
+  .budgetForm input[type="date"]{
+    text-align:left !important;
+    text-align-last:left !important;
+    padding-left:10px !important;
+  }
+  .budgetActions{
+    display:flex !important;
+    flex-wrap:nowrap !important;
+    align-items:center !important;
+    gap:8px !important;
+  }
+  .budgetActions .btn,
+  .budgetActions .miniBtn{
+    width:auto !important;
+    flex:0 1 auto !important;
+    white-space:nowrap !important;
+  }
+}
+@media (orientation:landscape) and (min-width:900px) and (max-width:1180px){
+  .budgetSummary{
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  }
+  .budgetFormGrid{
+    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  }
+  .budgetForm input[type="date"]{
+    text-align:left !important;
+    text-align-last:left !important;
+  }
+}
 </style></style></head>
 <body>
 <header class="top"><div class="nav">
