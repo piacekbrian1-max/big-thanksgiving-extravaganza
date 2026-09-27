@@ -58,9 +58,9 @@ jobs:
           set -euo pipefail
           mkdir -p images
           curl -fsSL -L "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Christmas_Tree_in_Old_Town_Square_Prague.jpg&width=1600" -o images/prague-christmas.jpg
-          curl -fsSL -L "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Trnava_-_Hlavn%C3%A1_Street.jpg&width=1600" -o images/trnava-advent.jpg
+          curl -fsSL -L "https://trnavske.radio/data/images/113788.jpg" -o images/trnava-advent.jpg
           curl -fsSL -L "https://s3-eu-central-1.amazonaws.com/tf-prod-visitplzen/visitplzen/var/www/rocketstack/web/app/uploads/vhristmas-amrket-visit-plzen.jpg" -o images/pilsen-christmas.jpg
-          curl -fsSL -L "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Hluboka_nad_Vltavou_Schloss.jpg&width=1600" -o images/hluboka-winter.webp
+          curl -fsSL -L "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Hluboka_nad_Vltavou_Schloss.jpg&width=1600" -o images/hluboka-winter.jpg
           file images/*
           test "$(file -b --mime-type images/prague-christmas.jpg)" = "image/jpeg"
           test "$(file -b --mime-type images/trnava-advent.jpg)" = "image/jpeg"
