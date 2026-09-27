@@ -920,6 +920,30 @@ trip.plan=clonePlan(trip.originalPlan);save();renderPlan();
 function guideReviewKey(name){return slug(name)}
 function guideReviews(){if(!trip.guideReviews||typeof trip.guideReviews!=="object")trip.guideReviews={};return trip.guideReviews}
 var guideOnlineRatings={
+"parkway bakery tavern":[4.5,2889,"Google"],
+"domilise s po boy bar":[4.2,782,"Google"],
+"cochon butcher":[4.5,4842,"Google"],
+"turkey and the wolf":[4.4,1128,"Google"],
+"dian xin":[4.4,682,"Google"],
+"cafe reconcile":[4.5,221,"Google"],
+"katie s restaurant bar":[4.2,1979,"Google"],
+"cafe degas":[4.0,502,"Google"],
+"willa jean":[4.3,2734,"Google"],
+"satsuma cafe":[4.1,404,"Google"],
+"surrey s cafe juice bar":[4.5,2447,"Google"],
+"ayu bakehouse":[4.6,246,"Google"],
+"bywater bakery":[4.4,321,"Google"],
+"restaurant august":[4.7,1466,"Google"],
+"brennans":[4.5,6054,"Google"],
+"zassu":[4.8,1080,"OpenTable"],
+"zasu":[4.8,1080,"OpenTable"],
+"bayona":[4.5,1900,"Google"],
+"n7":[4.8,253,"OpenTable"],
+"la petite grocery":[4.6,1502,"Google"],
+"dooky chase s restaurant":[4.4,1900,"Google"],
+"cane table":[4.6,1261,"Google"],
+"peche seafood grill":[4.7,4800,"Google"],
+"clancys restaurant":[4.7,1300,"Google"],
 "atchafalaya":[4.5,2533,"Google"],
 "atchafalaya restaurant":[4.5,2533,"Google"],
 "emeril s":[4.4,2893,"Google"],
@@ -958,7 +982,7 @@ return x?{rating:x[0],reviews:x[1],source:x[2]||"Google"}:null;
 function guideOnlineHtml(name){
 var x=guideOnlineRating(name);
 if(x)return "<div class='guideOnline'><span>Current online rating</span><span><strong>"+Number(x.rating).toFixed(1)+" / 5</strong> · "+Number(x.reviews).toLocaleString()+" reviews</span></div><div class='guideReviewSource'>"+esc(x.source)+" · rating snapshot · check source for latest score</div>";
-return "<div class='guideOnline'><span>Current online rating</span><span class='guideRatingUnavailable'>Not yet sourced</span></div><div class='guideReviewSource'>Roamwell checks global rating sources by destination · Google, Tripadvisor, MICHELIN, Booking.com or a stronger regional source</div>";
+var q=name+" "+((trip.destinations||[])[0]||"");return "<div class='guideOnline'><span>Current online rating</span><span class='guideRatingUnavailable'>Check current rating</span></div><div class='guideReviewSource'>No verified snapshot stored yet · <a href='"+maps(q)+"' target='_blank' rel='noopener'>Open Maps for the live rating</a></div>";
 }
 function guideStarButtons(name,current){
 var h="<span class='guideStars' aria-label='Your rating "+(current||0)+" out of 5'>";
