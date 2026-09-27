@@ -605,6 +605,155 @@ var KEY="big-thanksgiving-trips-v1";
 var params=new URLSearchParams(location.search),id=params.get("id")||sessionStorage.getItem("openTripId");
 function load(){try{return JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){return[]}}
 var trips=load(),trip=trips.find(function(t){return t.id===id})||trips[trips.length-1];
+var inspiration=params.get("inspiration");
+function makeInspirationTrip(name){
+  var key=slug(name), profiles={
+    "new orleans":{
+      title:"New Orleans · 7-Day Inspiration",
+      intro:"A food, music, history and neighborhood journey built to be customized.",
+      days:[
+        ["French Quarter arrival","Jackson Square, St. Louis Cathedral and the historic Quarter","Architecture walk + French Market + photo stops","Beignets and coffee; Creole dinner"],
+        ["Tremé & the roots of New Orleans","Louis Armstrong Park and Congo Square","Backstreet Cultural Museum + Tremé history walk","Dooky Chase's or a neighborhood Creole favorite"],
+        ["Garden District & Magazine Street","St. Charles Avenue and Garden District mansions","Streetcar ride + Magazine Street shops + Audubon Park","Local café lunch + Uptown dinner"],
+        ["City Park & culture","New Orleans Museum of Art and Besthoff Sculpture Garden","City Park + Bayou St. John + relaxed neighborhood time","Parkway Bakery & Tavern + local dinner"],
+        ["Marigny & Bywater","Colorful Marigny/Bywater streets and Crescent Park","Neighborhood art + Frenchmen Street live music","Ayu Bakehouse + N7 or another neighborhood dinner"],
+        ["Louisiana beyond the city","Bayou country and Louisiana landscapes","Swamp/bayou excursion or plantation/history day trip","Cajun/Creole dinner back in New Orleans"],
+        ["Choose your favorites","Return to the place you liked most","Last shopping, photos, café time and flexible exploring","Celebration dinner + final live music"]
+      ]},
+    "charleston":{
+      title:"Charleston · 7-Day Inspiration",intro:"Historic streets, Lowcountry food, beaches and relaxed Southern evenings.",
+      days:[
+        ["Historic Charleston","Rainbow Row, The Battery and historic homes","Walking architecture tour + Waterfront Park","Shrimp & grits + Lowcountry dinner"],
+        ["French Quarter & markets","Historic churches and French Quarter streets","Charleston City Market + local shops","Southern breakfast + seafood dinner"],
+        ["Food & Lowcountry flavors","Harleston Village and neighborhood cafés","Food tour + cooking or tasting experience","She-crab soup + Lowcountry specialties"],
+        ["Beach day","Folly Beach or Sullivan's Island","Beach time + lighthouse/coastal walk","Casual seafood by the water"],
+        ["Gardens & plantations","Boone Hall or a Lowcountry garden","Plantation/history experience + scenic drive","Farm-to-table dinner"],
+        ["Local neighborhoods","Cannonborough/Upper King","Boutiques, galleries and relaxed café stops","Upper King restaurant + cocktails"],
+        ["Slow Charleston","Favorite square and waterfront","Brunch + final shopping + flexible afternoon","Farewell dinner"]
+      ]},
+    "santa fe":{
+      title:"Santa Fe · 7-Day Inspiration",intro:"Adobe architecture, art, high-desert scenery and exceptional Southwestern food.",
+      days:[
+        ["Plaza & old Santa Fe","Santa Fe Plaza, Cathedral Basilica and adobe streets","Historic walking tour + galleries","New Mexican breakfast + chile-focused dinner"],
+        ["Canyon Road","Canyon Road galleries and historic homes","Gallery hopping + sculpture gardens","Local café + contemporary Southwestern dinner"],
+        ["Art & culture","Georgia O'Keeffe Museum","Museum time + Railyard arts district","Farmers market or local lunch + dinner"],
+        ["Bandelier day","Bandelier National Monument","Cliff dwellings + high-desert scenery","Return to Santa Fe for regional cuisine"],
+        ["Canyon & mountains","Santa Fe National Forest","Scenic drive + easy hike","Green chile lunch + relaxed dinner"],
+        ["Markets & local life","Railyard and local markets","Shopping, crafts and cooking experience","Tacos, tamales or modern New Mexican dining"],
+        ["Final Santa Fe","Favorite plaza and neighborhood","Coffee + last galleries + flexible afternoon","Celebration dinner"]
+      ]},
+    "new york city":{
+      title:"New York City · 7-Day Inspiration",intro:"Neighborhoods, museums, food, Broadway and iconic city experiences.",
+      days:[
+        ["Classic Manhattan","Central Park and Fifth Avenue","Top of the Rock or Empire State Building","New York deli lunch + classic dinner"],
+        ["Downtown","9/11 Memorial and Financial District","SoHo, Chinatown and Lower East Side","Dim sum + neighborhood dinner"],
+        ["Museum day","The Metropolitan Museum of Art","Central Park + Museum Mile","Upper East Side café + special dinner"],
+        ["Brooklyn","Brooklyn Bridge and DUMBO","Brooklyn Heights + waterfront","Pizza + Brooklyn neighborhood dinner"],
+        ["Culture & shows","Grand Central and Midtown","Broadway show or major performance","Pre-theater dinner"],
+        ["Neighborhood New York","Greenwich Village and West Village","Chelsea Market + High Line","Village café + late dinner"],
+        ["Choose your favorites","Favorite landmark or museum","Shopping, food and flexible exploration","Farewell dinner"]
+      ]},
+    "lisbon":{
+      title:"Lisbon · 7-Day Inspiration",intro:"Historic neighborhoods, Atlantic light, viewpoints, food and easy day trips.",
+      days:[
+        ["Baixa & Alfama","Praça do Comércio, Sé Cathedral and Alfama","Tram ride + viewpoints + old streets","Pastéis de nata + Portuguese dinner"],
+        ["Belém","Jerónimos Monastery and Belém Tower","Monuments + riverside walk + Pastéis de Belém","Seafood lunch + riverside dinner"],
+        ["Chiado & Bairro Alto","Chiado squares and historic cafés","Bookshops, boutiques and viewpoints","Petiscos + evening fado"],
+        ["Sintra day","Pena Palace and Sintra old town","Palace gardens + historic center","Return to Lisbon for relaxed dinner"],
+        ["Local neighborhoods","Graça and Mouraria","Miradouros + street art + local shops","Neighborhood bakery + Portuguese cooking"],
+        ["Cascais coast","Atlantic coastline and Cascais","Beach promenade + coastal scenery","Fresh seafood by the water"],
+        ["Lisbon favorites","Return to your favorite viewpoint","Markets, cafés and final shopping","Farewell Portuguese dinner"]
+      ]},
+    "vienna":{
+      title:"Vienna · 7-Day Inspiration",intro:"Imperial architecture, cafés, museums, music and elegant neighborhood wandering.",
+      days:[
+        ["Historic center","St. Stephen's Cathedral and Graben","Hofburg + Ringstrasse","Viennese coffee + classic dinner"],
+        ["Imperial Vienna","Schönbrunn Palace","Palace gardens + Gloriette","Traditional Austrian lunch + dinner"],
+        ["Art & museums","Kunsthistorisches Museum","MuseumsQuartier + cafés","Museum district dinner"],
+        ["Belvedere & neighborhoods","Belvedere Palace","Gardens + Naschmarkt","Market lunch + neighborhood dinner"],
+        ["Music & culture","Vienna State Opera area","Classical concert or music experience","Elegant pre-show dinner"],
+        ["Wachau escape","Danube Valley scenery","Day trip to Dürnstein/Melk or surrounding countryside","Regional Austrian meal"],
+        ["Vienna favorites","Favorite café and historic street","Last shopping + relaxed park time","Farewell Austrian dinner"]
+      ]},
+    "kyoto":{
+      title:"Kyoto · 7-Day Inspiration",intro:"Temples, gardens, traditional neighborhoods, food and a slower rhythm.",
+      days:[
+        ["Higashiyama","Kiyomizu-dera and historic lanes","Gion + Yasaka Shrine","Matcha + Kyoto-style dinner"],
+        ["Arashiyama","Bamboo Grove and Tenryu-ji","Okochi Sanso + riverside walk","Tofu or kaiseki-style meal"],
+        ["Golden Pavilion","Kinkaku-ji","Ryoan-ji + northwest Kyoto","Local noodle lunch + dinner"],
+        ["Fushimi Inari","Torii gates and shrine paths","Fushimi neighborhood + sake district","Local Kyoto lunch + dinner"],
+        ["Philosopher's Path","Ginkaku-ji and canal walk","Nanzen-ji + gardens","Tea house + neighborhood dinner"],
+        ["Nishiki & downtown","Nishiki Market","Pontocho + Kawaramachi shopping","Market tasting + Kyoto dinner"],
+        ["Kyoto favorites","Return to a favorite temple or garden","Flexible photos, shopping and cafés","Farewell Japanese dinner"]
+      ]},
+    "savannah":{
+      title:"Savannah · 7-Day Inspiration",intro:"Live-oak squares, historic architecture, Southern food and coastal escapes.",
+      days:[
+        ["Historic squares","Forsyth Park and historic squares","Walking architecture tour","Southern breakfast + historic-district dinner"],
+        ["River Street","Savannah Riverfront","River Street + City Market","Seafood lunch + riverfront dinner"],
+        ["Architecture & culture","Historic homes and churches","Telfair Museums + galleries","Lowcountry dinner"],
+        ["Coastal day","Tybee Island","Beach + lighthouse + coastal drive","Fresh seafood"],
+        ["Local neighborhoods","Starland District","Murals, shops and cafés","Neighborhood restaurant + drinks"],
+        ["Food & gardens","Wormsloe Historic Site","Bonaventure Cemetery + scenic drive","Lowcountry specialties"],
+        ["Slow Savannah","Favorite square and café","Shopping + flexible afternoon","Farewell dinner"]
+      ]},
+    "montreal":{
+      title:"Montreal · 7-Day Inspiration",intro:"Old-world streets, markets, food, design and distinct neighborhood character.",
+      days:[
+        ["Old Montréal","Notre-Dame Basilica and Old Port","Historic streets + waterfront","French café + Québecois dinner"],
+        ["Plateau & Mile End","Colorful row houses and neighborhood streets","Bagels, boutiques and cafés","Mile End dinner"],
+        ["Markets & food","Jean-Talon Market","Little Italy + food tasting","Market lunch + local dinner"],
+        ["Mount Royal","Mount Royal viewpoints","Park walk + neighborhoods","Casual Montréal favorite"],
+        ["Culture & design","Montréal Museum of Fine Arts","Downtown + Golden Square Mile","French-Canadian dinner"],
+        ["Québec countryside","Nearby Laurentian or Eastern Townships scenery","Scenic day trip","Regional meal"],
+        ["Montreal favorites","Return to favorite neighborhood","Shopping + café + flexible time","Farewell dinner"]
+      ]},
+    "barcelona":{
+      title:"Barcelona · 7-Day Inspiration",intro:"Gaudí architecture, markets, beaches, old-city streets and Mediterranean food.",
+      days:[
+        ["Gothic Barcelona","Barcelona Cathedral and Gothic Quarter","Plaça Reial + old streets","Tapas + Catalan dinner"],
+        ["Gaudí day","Sagrada Família","Hospital de Sant Pau + Gràcia","Market lunch + neighborhood dinner"],
+        ["Park Güell & Gràcia","Park Güell","Gràcia squares + boutiques","Catalan specialties"],
+        ["Waterfront","Barceloneta and Port Vell","Beach + waterfront walk","Seafood lunch + evening tapas"],
+        ["Montjuïc","Montjuïc viewpoints and gardens","MNAC + cable car/scenic areas","Poble-sec tapas"],
+        ["Markets & neighborhoods","La Boqueria","El Born + Picasso Museum","Market tasting + modern Catalan dinner"],
+        ["Barcelona favorites","Favorite Gaudí or neighborhood","Last shopping + flexible afternoon","Farewell tapas dinner"]
+      ]},
+    "munich":{
+      title:"Munich · 7-Day Inspiration",intro:"Bavarian culture, museums, beer gardens, historic streets and Alpine scenery.",
+      days:[
+        ["Old Munich","Marienplatz and Neues Rathaus","Viktualienmarkt + historic center","Bavarian lunch + traditional dinner"],
+        ["Museums & parks","Deutsches Museum","Englischer Garten + local neighborhoods","Beer garden or Bavarian dinner"],
+        ["Nymphenburg","Nymphenburg Palace","Palace gardens + nearby cafés","Regional specialties"],
+        ["Bavarian day trip","Neuschwanstein or Alpine scenery","Castle/lake/mountain experience","Return to Munich dinner"],
+        ["Markets & neighborhoods","Viktualienmarkt","Maxvorstadt museums + cafés","Neighborhood dinner"],
+        ["Culture & beer","Residenz and historic center","Local brewery/beer-hall experience","Bavarian specialties"],
+        ["Munich favorites","Favorite square or museum","Shopping + relaxed final afternoon","Farewell dinner"]
+      ]}
+  };
+  var p=profiles[key]||{
+    title:name+" · 7-Day Inspiration",intro:"A ready-to-edit week designed to showcase the destination before you customize it.",
+    days:[
+      ["Arrival & orientation","Historic center and signature landmark","Neighborhood walk + local market","Local specialty dinner"],
+      ["Signature sights","Top cultural attraction","Historic district + scenic viewpoint","Neighborhood restaurant"],
+      ["Food & local life","Main market or food district","Food experience + independent shops","Local favorite dinner"],
+      ["Culture day","Major museum or cultural site","Second cultural attraction + café time","Regional dinner"],
+      ["Outdoors & scenery","Main park, waterfront or viewpoint","Easy outdoor experience","Casual local dinner"],
+      ["Beyond the center","Best nearby day trip or excursion","Scenic experience","Regional meal"],
+      ["Choose your favorites","Return to your favorite area","Flexible shopping, photos and cafés","Farewell dinner"]
+    ]};
+  var start=new Date();start.setDate(start.getDate()+14);var end=new Date(start);end.setDate(end.getDate()+6);
+  function iso(d){return d.toISOString().slice(0,10)}
+  var plan=p.days.map(function(x,i){var d=new Date(start);d.setDate(start.getDate()+i);return {day:i+1,date:iso(d),area:x[0],title:x[0],morning:x[1],afternoon:x[2],evening:x[3],note:"Inspiration day · edit any block, swap restaurants, change the pace, or remove the day entirely.",event:null,refreshCount:0}});
+  return {id:"inspiration-"+slug(name).replace(/ /g,"-")+"-"+Date.now(),name:p.title,travelers:2,start:iso(start),end:iso(end),destinations:[name],groupType:"Couples / friends",pace:"Balanced — see a lot without rushing",transport:"Walk + transit",preferences:["Local food","History & culture","Neighborhoods","Seasonal events","Photography"],mustSee:[],plan:plan,originalPlan:JSON.parse(JSON.stringify(plan)),smartVersion:2,status:"Inspiration · ready to edit",days:7,homeBase:"Downtown / city center",intro:p.intro,occasion:"Inspiration trip",foodBudget:"Mixed — casual + special dinners",mobility:"Normal walking",energy:"Balanced days",evening:"Mix of dinner and occasional nightlife",localFood:[],food:[],sights:[],areas:[],resources:[],created:new Date().toISOString(),isInspiration:true};
+}
+if(!trip && inspiration){
+  trip=makeInspirationTrip(inspiration);
+  trips.push(trip);
+  localStorage.setItem(KEY,JSON.stringify(trips));
+  sessionStorage.setItem("openTripId",trip.id);
+  id=trip.id;
+}
 if(!trip){location.href="my-trips.html";return}
 function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
 function save(){var a=load(),i=a.findIndex(function(t){return t.id===trip.id});if(i>=0)a[i]=trip;else a.push(trip);localStorage.setItem(KEY,JSON.stringify(a));sessionStorage.setItem("openTripId",trip.id)}
