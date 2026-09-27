@@ -503,6 +503,45 @@ button,a{max-width:100%}
     box-sizing:border-box !important;
   }
 }
+<style id="budget-clean-layout">
+/* Clean tablet/iPad budget layout. JavaScript marks touch tablets because iPad Safari may expose a wide desktop viewport. */
+.budgetForm.budgetTablet .budgetDetails{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+  grid-template-areas:
+    "expense rate"
+    "from to"
+    "receipt helper" !important;
+  gap:14px !important;
+  align-items:end !important;
+}
+.budgetForm.budgetTablet .budgetDateField{grid-area:expense !important;width:auto !important;max-width:none !important;}
+.budgetForm.budgetTablet .budgetHotelDateField{display:block !important;width:auto !important;max-width:none !important;}
+.budgetForm.budgetTablet #budgetHotelFromField{grid-area:from !important;}
+.budgetForm.budgetTablet #budgetHotelToField{grid-area:to !important;}
+.budgetForm.budgetTablet .budgetRateField{grid-area:rate !important;width:auto !important;}
+.budgetForm.budgetTablet .budgetReceiptField{grid-area:receipt !important;width:auto !important;}
+.budgetForm.budgetTablet .budgetHelperField{grid-area:helper !important;width:auto !important;}
+.budgetForm.budgetTablet .budgetDetails input,
+.budgetForm.budgetTablet .budgetDetails .budgetDateWrap,
+.budgetForm.budgetTablet .budgetDetails .budgetHelperBtn{
+  width:100% !important;
+  max-width:none !important;
+  box-sizing:border-box !important;
+}
+.budgetForm.budgetTablet .budgetDetails input{height:42px !important;}
+@media(max-width:700px){
+  .budgetForm.budgetTablet .budgetDetails{
+    grid-template-columns:1fr !important;
+    grid-template-areas:
+      "expense"
+      "rate"
+      "from"
+      "to"
+      "receipt"
+      "helper" !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -1053,6 +1092,13 @@ if(slug(d).indexOf("new orleans")>=0){rs[0]=["New Orleans & Company","https://ww
 e.innerHTML="";for(var i=0;i<rs.length;i++){var a=document.createElement("a");a.className="link";a.target="_blank";a.href=rs[i][1];a.innerHTML="<b>"+esc(rs[i][0])+"</b><small>Open resource</small>";e.appendChild(a)}}
 
 renderHeader();renderRoute();renderDestinations();renderPlan();renderGuide();renderEvents();renderWeather();renderCams();renderTravel();renderBudget();renderMemories();renderResources();
+})();
+(function(){
+var bf=document.querySelector(".budgetForm");
+if(bf){
+  var tablet=("ontouchstart" in window || navigator.maxTouchPoints>0) && Math.min(window.innerWidth,window.screen.width)>=700;
+  if(tablet)bf.classList.add("budgetTablet");
+}
 })();
 </script>
 </body></html>
