@@ -73,10 +73,12 @@ jobs:
           python3 - <<'PY'
           p="index.html"
           s=open(p,encoding="utf-8").read()
-          s=s.replace("images/prague-christmas.jpg","images/prague-christmas.jpg")
-          s=s.replace("images/trnava-advent.jpg","images/trnava-advent.jpg")
-          s=s.replace("images/pilsen-christmas.jpg","images/pilsen-christmas.jpg")
-          s=s.replace("images/hluboka-winter.webp","images/hluboka-castle.jpg")
+          import os
+          v=os.environ.get("GITHUB_SHA","latest")[:8]
+          s=s.replace("images/prague-christmas.jpg","images/prague-christmas.jpg?v="+v)
+          s=s.replace("images/trnava-advent.jpg","images/trnava-advent.jpg?v="+v)
+          s=s.replace("images/pilsen-christmas.jpg","images/pilsen-christmas.jpg?v="+v)
+          s=s.replace("images/hluboka-winter.webp","images/hluboka-winter.webp?v="+v)
           open(p,"w",encoding="utf-8").write(s)
           PY
           test -s images/prague-christmas.jpg
