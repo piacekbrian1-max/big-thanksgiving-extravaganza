@@ -20,12 +20,14 @@
 footer{background:#101b1b;color:#9eaaa5;padding:38px 0}.foot{max-width:1440px;width:94%;margin:auto;display:flex;justify-content:space-between;gap:20px}.foot b{font:600 24px "Playfair Display",serif;color:#eee7d4}.foot p{font-size:9px;line-height:1.6;margin:0}
 @media(max-width:900px){.shelf{grid-template-columns:1fr}.stack{grid-template-columns:1fr 1fr;grid-template-rows:none}.savedGrid{grid-template-columns:1fr 1fr}.working{grid-template-columns:1fr}}
 @media(max-width:600px){.hero{padding:52px 0 40px}.albumHead{display:block}.albumHead p{margin-top:8px}.shelf,.stack,.savedGrid{grid-template-columns:1fr}.card{min-height:390px}.card.small{min-height:300px}.navright a{display:none}.working{padding:24px}}
+
+.roamwellHome{margin-top:58px}.roamwellHomeHead{display:flex;justify-content:space-between;align-items:end;gap:25px;margin-bottom:20px}.roamwellHomeHead h2{font:600 43px "Playfair Display",serif;margin:6px 0}.roamwellHomeHead p{max-width:520px;color:var(--muted);font-size:11px;line-height:1.6}.rwHomePanel{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:24px}.rwHomeToolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}.rwHomeFilters{display:flex;gap:7px;flex-wrap:wrap}.rwHomeFilter{border:1px solid #d5d0c5;background:#f4f1e9;color:#52615c;padding:9px 12px;border-radius:999px;font-size:8px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;cursor:pointer}.rwHomeFilter.active{background:var(--green);border-color:var(--green);color:#fff}.rwHomeCount{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#7b8681}.rwTripGroup{border-top:1px solid var(--line);padding-top:20px;margin-top:20px}.rwTripGroup:first-child{border-top:0;padding-top:0;margin-top:0}.rwTripGroupHead{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:12px}.rwTripGroupHead h3{font:600 27px "Playfair Display",serif;margin:3px 0}.rwTripGroupHead small{color:var(--muted);font-size:9px}.rwTripGroupHead a{border:1px solid #cfc9bb;background:#fffdf9;padding:7px 9px;border-radius:6px;font-size:7px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.rwHomeGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.rwHomeCard{border:1px solid var(--line);border-radius:11px;padding:15px;background:#fffdf9}.rwHomeCard .type{font-size:7px;letter-spacing:.14em;text-transform:uppercase;color:#967b35;font-weight:800}.rwHomeCard h4{font:600 21px "Playfair Display",serif;margin:5px 0}.rwHomeMeta{font-size:9px;color:var(--muted)}.rwHomeStars{margin-top:9px;color:#b08d3f;letter-spacing:1px;font-size:14px}.rwHomeFlags{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}.rwHomeFlag{border:1px solid #d8d1c1;border-radius:999px;padding:4px 7px;font-size:7px;letter-spacing:.07em;text-transform:uppercase;color:#64716c}.rwHomeNote{margin-top:8px;color:#68746f;font-size:9px;line-height:1.5}.rwHomeEmpty{padding:30px;text-align:center;border:1px dashed #cfc9bb;border-radius:10px;color:var(--muted);font-size:10px;line-height:1.6}@media(max-width:900px){.rwHomeGrid{grid-template-columns:1fr 1fr}}@media(max-width:600px){.rwHomeHead{display:block}.rwHomeHead p{margin-top:8px}.rwHomeGrid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <header class="top"><div class="nav">
 <a class="brand" href="index.html"><span class="mark">26</span><span><strong>ROAMWELL</strong><small>TRAVEL BETTER · REMEMBER MORE</small></span></a>
-<div class="navright"><a href="my-trips.html">My Trips</a><a href="build-trip.html">Build Your Trip</a></div>
+<div class="navright"><a href="#my-roamwell">My Roamwell</a><a href="my-trips.html">My Trips</a><a href="build-trip.html">Build Your Trip</a></div>
 </div></header>
 
 <main>
@@ -66,7 +68,7 @@ footer{background:#101b1b;color:#9eaaa5;padding:38px 0}.foot{max-width:1440px;wi
 <div id="savedGrid" class="savedGrid"></div>
 </div>
 
-<div id="working" class="working" style="display:none"></div>
+<div class="roamwellHome" id="my-roamwell"><div class="roamwellHomeHead"><div><div class="ey">Your personal travel collection</div><h2>My Roamwell.</h2></div><p>Everything you personally rated, favorited, recommended or visited — organized by trip so you can find it again without opening every journey.</p></div><div class="rwHomePanel"><div class="rwHomeToolbar"><div class="rwHomeFilters" id="rwHomeFilters"></div><div class="rwHomeCount" id="rwHomeCount"></div></div><div id="rwHomeGroups"></div></div></div><div id="working" class="working" style="display:none"></div>
 </section>
 </main>
 
@@ -102,7 +104,55 @@ var del=document.createElement("button");del.textContent="Delete";del.onclick=fu
 row.appendChild(b);row.appendChild(del);info.appendChild(row);c.appendChild(info);grid.appendChild(c)
 })(trips[i])
 }
+function guideKey(s){return String(s||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim()}
+function collectTrip(t){
+  var out=[],rs=t&&t.guideReviews&&typeof t.guideReviews==="object"?t.guideReviews:{};
+  Object.keys(rs).forEach(function(k){
+    var x=rs[k]||{};
+    if(!x.rating&&!x.favorite&&!x.recommend&&!x.visited&&!(x.note&&String(x.note).trim()))return;
+    out.push({name:x.name||k,type:x.type||"Food / Guide",category:x.category||"Food & places",destination:x.destination||((t.destinations||[])[0]||""),rating:Number(x.rating||0),favorite:!!x.favorite,recommend:!!x.recommend,visited:!!x.visited,note:x.note||""});
+  });
+  (Array.isArray(t&&t.roamwellExperiences)?t.roamwellExperiences:[]).forEach(function(x){
+    if(!x||!x.name)return;
+    var key=guideKey(x.name+" "+(x.destination||""));
+    if(out.some(function(y){return guideKey(y.name+" "+y.destination)===key}))return;
+    out.push({name:x.name,type:x.type||"Activity",category:x.category||"Experiences",destination:x.destination||"",rating:Number(x.rating||0),favorite:!!x.favorite,recommend:!!x.recommend,visited:!!x.visited,note:x.note||""});
+  });
+  return out;
+}
+function renderHomeRoamwell(){
+  var filters=document.getElementById("rwHomeFilters"),groups=document.getElementById("rwHomeGroups"),count=document.getElementById("rwHomeCount");
+  if(!filters||!groups)return;
+  var active=sessionStorage.getItem("roamwellHomeFilter")||"All";
+  filters.innerHTML="";
+  ["All","Rated","Favorites","Would recommend","Visited"].forEach(function(f){
+    var b=document.createElement("button");b.className="rwHomeFilter"+(f===active?" active":"");b.textContent=f;
+    b.onclick=function(){sessionStorage.setItem("roamwellHomeFilter",f);renderHomeRoamwell()};filters.appendChild(b);
+  });
+  var trips=load(),total=0,html="";
+  for(var i=trips.length-1;i>=0;i--){
+    var t=trips[i],items=collectTrip(t).filter(function(x){
+      if(active==="Rated")return x.rating>0;
+      if(active==="Favorites")return x.favorite;
+      if(active==="Would recommend")return x.recommend;
+      if(active==="Visited")return x.visited;
+      return true;
+    });
+    if(!items.length)continue;
+    total+=items.length;
+    items.sort(function(a,b){return (b.rating||0)-(a.rating||0)||a.name.localeCompare(b.name)});
+    html+="<div class='rwTripGroup'><div class='rwTripGroupHead'><div><small>"+esc((t.destinations||[]).join(" · "))+"</small><h3>"+esc(t.name||"Untitled trip")+"</h3></div><a href='trip.html?id="+encodeURIComponent(t.id)+"'>Open trip</a></div><div class='rwHomeGrid'>";
+    items.forEach(function(x){
+      var stars=x.rating?"★".repeat(Math.min(5,x.rating))+"☆".repeat(Math.max(0,5-x.rating)):"Not rated";
+      html+="<article class='rwHomeCard'><div class='type'>"+esc(x.type)+" · "+esc(x.category)+"</div><h4>"+esc(x.name)+"</h4><div class='rwHomeMeta'>"+esc(x.destination||"This trip")+"</div><div class='rwHomeStars'>"+stars+(x.rating?" <span style='font-size:9px;color:var(--ink)'>"+x.rating+"/5</span>":"")+"</div><div class='rwHomeFlags'>"+(x.favorite?"<span class='rwHomeFlag'>Favorite</span>":"")+(x.recommend?"<span class='rwHomeFlag'>Would recommend</span>":"")+(x.visited?"<span class='rwHomeFlag'>Visited</span>":"")+"</div>"+(x.note?"<div class='rwHomeNote'>"+esc(x.note)+"</div>":"")+"</article>";
+    });
+    html+="</div></div>";
+  }
+  count.textContent=total+" saved experience"+(total===1?"":"s")+" across your trips";
+  groups.innerHTML=html||"<div class='rwHomeEmpty'>Your personal collection will appear here automatically as you rate, favorite, recommend or visit restaurants, attractions and activities inside your trips.</div>";
+}
 render();
+renderHomeRoamwell();
 })();
 </script>
 </body>
