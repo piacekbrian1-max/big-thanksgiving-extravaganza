@@ -1118,10 +1118,36 @@ save();e.style.display="none";e.innerHTML="";renderTravel();
 };
 document.getElementById("travelCancelBtn").onclick=function(){e.style.display="none";e.innerHTML=""};
 }
-function removeTravelBooking(type,id){
-var list=type==="stay"?travelStays():travelFlights(),i=list.findIndex(function(v){return v.id===id});if(i<0)return;if(!confirm("Remove this "+type+" record?"))return;list.splice(i,1);save();renderTravel();
+function showTrainBookingForm(id){
+var list=travelTrains(),selected=travelSelectedGroup(),x=list.find(function(v){return v.id===id})||{id:"",groupId:selected!=="all"?selected:"shared",travelers:"",destination:(trip.destinations||[])[0]||"",status:"Planning"};
+var e=document.getElementById("trainForm");e.style.display="block";
+var groups="<option value='shared' "+(x.groupId==="shared"?"selected":"")+">Shared trip · everyone</option>"+travelGroups().map(function(g){return "<option value='"+esc(g.id)+"' "+(g.id===x.groupId?"selected":"")+">"+esc(g.name)+"</option>"}).join("");
+e.innerHTML="<div class='travelFormGrid'>"+
+"<div class='travelFormField'><label>Traveler / group</label><select id='trainGroupInput'>"+groups+"</select></div>"+
+"<div class='travelFormField'><label>Traveler names</label><input id='trainPeopleInput' value='"+esc(x.travelers||"")+"' placeholder='Who is traveling on this booking?'></div>"+
+"<div class='travelFormField'><label>Destination</label><input id='trainDestInput' value='"+esc(x.destination||"")+"' placeholder='Prague'></div>"+
+"<div class='travelFormField'><label>Status</label><select id='trainStatusInput'><option>Planning</option><option>Reserved</option><option>Confirmed</option><option>Need to book</option><option>Cancelled</option></select></div>"+
+"<div class='travelFormField'><label>Rail operator</label><input id='trainOperatorInput' value='"+esc(x.operator||"")+"' placeholder='Railjet, České dráhy, Amtrak…'></div>"+
+"<div class='travelFormField'><label>Route</label><input id='trainRouteInput' value='"+esc(x.route||"")+"' placeholder='Vienna → Prague'></div>"+
+"<div class='travelFormField'><label>Travel date / time</label><input id='trainDatesInput' value='"+esc(x.dates||"")+"' placeholder='Departure → arrival'></div>"+
+"<div class='travelFormField'><label>Train / seat details</label><input id='trainDetailsInput' value='"+esc(x.details||"")+"' placeholder='Train number · class · seat'></div>"+
+"<div class='travelFormField travelFormFull'><label>Station details</label><input id='trainStationInput' value='"+esc(x.station||"")+"' placeholder='Departure station · arrival station'></div>"+
+"<div class='travelFormField travelFormFull'><label>Train booking link <span style='font-weight:400;text-transform:none;letter-spacing:0'>(optional)</span></label><input id='trainLinkInput' type='url' value='"+esc(x.link||"")+"' placeholder='https://...'></div>"+
+"<div class='travelFormField travelFormFull'><label>Train ticket screenshot <span style='font-weight:400;text-transform:none;letter-spacing:0'>(optional)</span></label><input id='trainScreenshotInput' type='file' accept='image/*'><div class='travelProofNote'>Add a ticket or booking confirmation for quick reference.</div></div>"+
+"<div class='travelFormActions travelFormFull'><button type='button' class='saveTravel' id='trainSaveBtn'>Save train</button><button type='button' id='trainCancelBtn'>Cancel</button></div></div>";
+document.getElementById("trainStatusInput").value=x.status||"Planning";
+document.getElementById("trainSaveBtn").onclick=async function(){
+var base={id:x.id||"train-"+Date.now(),groupId:document.getElementById("trainGroupInput").value,travelers:document.getElementById("trainPeopleInput").value.trim(),destination:document.getElementById("trainDestInput").value.trim(),status:document.getElementById("trainStatusInput").value,operator:document.getElementById("trainOperatorInput").value.trim(),route:document.getElementById("trainRouteInput").value.trim(),dates:document.getElementById("trainDatesInput").value.trim(),details:document.getElementById("trainDetailsInput").value.trim(),station:document.getElementById("trainStationInput").value.trim(),link:normalizeTravelUrl(document.getElementById("trainLinkInput").value.trim()),screenshot:x.screenshot||""};
+var f=document.getElementById("trainScreenshotInput");if(f&&f.files&&f.files[0])base.screenshot=await new Promise(function(resolve){readTravelFile(f,resolve)});
+var i=travelTrains().findIndex(function(v){return v.id===base.id});if(i>=0)travelTrains()[i]=base;else travelTrains().push(base);
+save();e.style.display="none";e.innerHTML="";renderTravel();
+};
+document.getElementById("trainCancelBtn").onclick=function(){e.style.display="none";e.innerHTML=""};
 }
-window.showTravelBookingForm=showTravelBookingForm;window.showStayForm=function(){showTravelBookingForm("stay")};window.showFlightForm=function(){showTravelBookingForm("flight")};window.showCarForm=function(){showTravelBookingForm("car")};window.showTravelGroupForm=showTravelGroupForm;
+function removeTravelBooking(type,id){
+var list=type==="stay"?travelStays():type==="car"?travelCars():type==="train"?travelTrains():travelFlights(),i=list.findIndex(function(v){return v.id===id});if(i<0)return;if(!confirm("Remove this "+type+" record?"))return;list.splice(i,1);save();renderTravel();
+}
+window.showTravelBookingForm=showTravelBookingForm;window.showStayForm=function(){showTravelBookingForm("stay")};window.showFlightForm=function(){showTravelBookingForm("flight")};window.showCarForm=function(){showTravelBookingForm("car")};window.showTrainForm=showTrainBookingForm;window.showTravelGroupForm=showTravelGroupForm;
 
 function money(n){return Number(n||0).toLocaleString(undefined,{style:"currency",currency:"USD"})}
 function budgetItems(){if(!Array.isArray(trip.budgetItems))trip.budgetItems=[];return trip.budgetItems}
