@@ -52,6 +52,21 @@ jobs:
           json.dump(out,open("weather.json","w"),separators=(",",":"))
           PY
 
+      - name: Download destination photography
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p images
+          curl -fsSL -L "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Christmas_Tree_in_Old_Town_Square_Prague.jpg&width=1600" -o images/prague-christmas.jpg
+          curl -fsSL -L "https://www.trnava.sk/podujatia/15234/download.dat?id=CB883F38B1AF43BEBDCD3BF370AC252F-E9FD3A1ACA52E7846C929A9370C10ECF" -o images/trnava-advent.jpg
+          curl -fsSL -L "https://s3-eu-central-1.amazonaws.com/tf-prod-visitplzen/visitplzen/var/www/rocketstack/web/app/uploads/vhristmas-amrket-visit-plzen.jpg" -o images/pilsen-christmas.jpg
+          curl -fsSL -L "https://www.hluboka.cz/thumbnails/514x386/2/n_b8285d537e822aef9399b6ab07f13e45.webp" -o images/hluboka-winter.webp
+          file images/*
+          test -s images/prague-christmas.jpg
+          test -s images/trnava-advent.jpg
+          test -s images/pilsen-christmas.jpg
+          test -s images/hluboka-winter.webp
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
