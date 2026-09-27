@@ -279,6 +279,59 @@ button,a{max-width:100%}
   .foot{display:block}
 }
 
+
+/* Final tablet budget layout override */
+@media (min-width:601px) and (max-width:1000px){
+  .budgetForm .budgetDetails{
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+    gap:12px !important;
+    align-items:end !important;
+  }
+  .budgetForm .budgetDetails .budgetDateField{
+    grid-column:1 !important;
+    width:auto !important;
+    max-width:none !important;
+  }
+  .budgetForm .budgetDetails .budgetFieldHotel{
+    grid-column:1 / -1 !important;
+    width:auto !important;
+  }
+  .budgetForm .budgetDetails .budgetFieldHotel .hotelDates{
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) !important;
+    gap:8px !important;
+    width:100% !important;
+  }
+  .budgetForm .budgetDetails .budgetFieldHotel .hotelDates input{
+    width:100% !important;
+    min-width:0 !important;
+  }
+  .budgetForm .budgetDetails .budgetField:not(.budgetDateField):not(.budgetFieldHotel){
+    width:auto !important;
+    max-width:none !important;
+  }
+  .budgetForm .budgetDetails .budgetField:nth-last-child(2),
+  .budgetForm .budgetDetails .budgetField:last-child{
+    grid-column:auto !important;
+  }
+  .budgetForm .budgetDetails .budgetHelperBtn{
+    width:100% !important;
+    max-width:none !important;
+  }
+  .budgetForm .budgetActions{
+    display:grid !important;
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+    gap:10px !important;
+  }
+  .budgetForm .budgetActions > *{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+  }
+}
 </style>
 </head>
 <body>
