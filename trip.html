@@ -475,6 +475,35 @@ button,a{max-width:100%}
   }
 }
 </style>
+<style id="budget-ipad-final">
+/* iPad Safari can use a desktop CSS viewport. Detect touch/tablet as well as width. */
+@media (pointer: coarse) and (min-width:701px) and (max-width:1400px){
+  .budgetForm .budgetDetails{
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+    grid-template-areas:
+      "expense rate"
+      "from to"
+      "receipt helper" !important;
+    gap:14px !important;
+    align-items:end !important;
+  }
+  .budgetForm .budgetDetails .budgetDateField{grid-area:expense !important;}
+  .budgetForm .budgetDetails .budgetHotelDateField{display:block !important;width:auto !important;}
+  .budgetForm .budgetDetails #budgetHotelFromField{grid-area:from !important;}
+  .budgetForm .budgetDetails #budgetHotelToField{grid-area:to !important;}
+  .budgetForm .budgetDetails .budgetRateField{grid-area:rate !important;}
+  .budgetForm .budgetDetails .budgetReceiptField{grid-area:receipt !important;}
+  .budgetForm .budgetDetails .budgetHelperField{grid-area:helper !important;}
+  .budgetForm .budgetDetails .budgetDateWrap,
+  .budgetForm .budgetDetails input,
+  .budgetForm .budgetDetails .budgetHelperBtn{
+    width:100% !important;
+    max-width:none !important;
+    box-sizing:border-box !important;
+  }
+}
+</style>
 </head>
 <body>
 <header class="top"><div class="nav">
@@ -583,9 +612,9 @@ button,a{max-width:100%}
     <div class="budgetField budgetDateField"><label for="budgetDate">Expense date</label><div class="budgetDateWrap"><input id="budgetDate" type="date" aria-label="Expense date"></div></div>
     <div class="budgetField budgetHotelDateField" id="budgetHotelFromField" style="display:none"><label for="budgetHotelFrom">Hotel stay · From</label><input id="budgetHotelFrom" type="date" aria-label="Hotel stay from"></div>
     <div class="budgetField budgetHotelDateField" id="budgetHotelToField" style="display:none"><label for="budgetHotelTo">Hotel stay · To</label><input id="budgetHotelTo" type="date" aria-label="Hotel stay to"></div>
-    <div class="budgetField"><label for="budgetRate">Exchange rate to USD</label><input id="budgetRate" inputmode="decimal" placeholder="Auto"></div>
-    <div class="budgetField"><label for="budgetShot">Receipt / screenshot</label><input id="budgetShot" type="file" accept="image/*"></div>
-    <div class="budgetField"><label>Receipt helper</label><button type="button" class="miniBtn budgetHelperBtn" onclick="readBudgetScreenshot()">Read screenshot</button></div>
+    <div class="budgetField budgetRateField"><label for="budgetRate">Exchange rate to USD</label><input id="budgetRate" inputmode="decimal" placeholder="Auto"></div>
+    <div class="budgetField budgetReceiptField"><label for="budgetShot">Receipt / screenshot</label><input id="budgetShot" type="file" accept="image/*"></div>
+    <div class="budgetField budgetHelperField"><label>Receipt helper</label><button type="button" class="miniBtn budgetHelperBtn" onclick="readBudgetScreenshot()">Read screenshot</button></div>
   </div>
 
   <div class="ocrStatus" id="budgetOcrStatus"></div>
