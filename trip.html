@@ -105,10 +105,13 @@ main{max-width:1500px;width:94%;margin:auto}.dash{margin-top:-34px;position:rela
 .budgetField{min-width:0}
 .budgetField label{display:block;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:#967b35;font-weight:700;margin-bottom:6px}
 .budgetField input,.budgetField select{display:block;width:100%;min-width:0;height:42px;padding:0 11px;border:1px solid #d4cec1;background:#fffdf9;border-radius:8px;font:inherit;font-size:11px;color:var(--ink);box-sizing:border-box}
+.budgetField input[type="date"]{width:100%;max-width:100%;min-width:0;padding:0 7px;font-size:10px;letter-spacing:0;overflow:hidden;-webkit-appearance:auto}
+.budgetField input[type="date"]::-webkit-date-and-time-value{text-align:left}
 .budgetField input:focus,.budgetField select:focus{outline:2px solid #c7a55a55;outline-offset:1px}
 .budgetReceipt{display:grid;grid-template-columns:1fr 180px;gap:12px;margin-top:12px}
 .budgetReceipt .miniBtn{width:100%;height:42px}
-.budgetActions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+.budgetActions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px;min-width:0}
+.budgetActions .btn,.budgetActions .miniBtn{min-width:0;max-width:100%;overflow:hidden;text-overflow:ellipsis}
 .budgetActions .btn,.budgetActions .miniBtn{width:100%;height:42px;min-width:0;margin:0;padding:0 12px;display:flex;align-items:center;justify-content:center;box-sizing:border-box;font-size:9px;line-height:1.2;letter-spacing:.06em;white-space:normal;text-align:center}
 .budgetActions .btn.primary{background:#d2b25e;color:#18231f;border-color:#d2b25e}
 .budgetTable{background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
@@ -152,7 +155,7 @@ button,a{max-width:100%}
   overflow-wrap:anywhere;word-break:normal;text-align:center;
   line-height:1.3;flex:0 1 auto;
 }
-.heroActions,.smartActions,.guideActions,.actions,.budgetActions,.builderActions,.suggestionActions{
+.heroActions,.smartActions,.guideActions,.actions,.builderActions,.suggestionActions{
   display:flex;flex-wrap:wrap;align-items:center;gap:8px;min-width:0;
 }
 .tripItem,.today,.row,.guideMeta,.sectionHead,.foot{min-width:0}
