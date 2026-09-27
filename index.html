@@ -50,7 +50,7 @@ footer{background:#101b1b;color:#9eaaa5;padding:38px 0}.foot{max-width:1440px;wi
   <div class="workingLabel"><span>THE JOURNEY YOU'RE WORKING ON</span><i></i></div>
   <div class="dashFeature" id="dashFeature"></div>
   <div class="dashStats" id="dashStats"></div>
-  <div class="suggestHead"><div><div class="ey">Roamwell discovery</div><h2>Where could you go next?</h2></div><p>Ideas for your next adventure — domestic and international, ready to turn into a full Roamwell trip whenever you are.</p></div>
+  <div class="suggestHead"><div><div class="ey">Roamwell discovery · <span id="suggestSeason">This week's edit</span></div><h2>Where could you go next?</h2></div><p>Seasonally curated destinations with magazine-quality photography. The edit changes each week so Roamwell keeps giving you new ideas.</p></div>
   <div class="suggestGrid" id="suggestGrid"></div>
   <div class="startTripFlow">
     <div class="startTripCopy"><div class="ey">Ready for another journey?</div><h2>Start a new trip.</h2><p>Choose a destination above or start from scratch. Roamwell will build the same complete planning workspace around it.</p></div>
@@ -99,18 +99,36 @@ function readiness(t){var checks=[
 function countdownLabel(t){var d=daysUntil(t.start);if(d===null)return"Dates not set";if(d>1)return d+" days";if(d===1)return"Tomorrow";if(d===0)return"Today";var left=Math.abs(d);return left+" days ago"}
 function currentTripModel(){return{name:"European Thanksgiving Adventure 2026",start:"2026-11-26",end:"2026-12-04",destinations:["Trnava","Prague","Pilsen","Hluboká nad Vltavou","Vienna"],travelers:3,state:"Upcoming",ready:true,missing:[],image:"images/prague-christmas.jpg",href:"current-trip.html"}}
 function buildSuggestions(){
-var items=[
-{name:"Charleston",place:"South Carolina · USA",tag:"Domestic · Food + history",why:"A compact historic city with exceptional food, architecture and easy weekend pacing.",image:"images/charleston.jpg"},
-{name:"Santa Fe",place:"New Mexico · USA",tag:"Domestic · Culture + scenery",why:"Adobe architecture, art, regional food and high-desert landscapes.",image:"images/santafe.jpg"},
-{name:"New York City",place:"New York · USA",tag:"Domestic · City + shows",why:"Museums, neighborhoods, restaurants and live entertainment in one trip.",image:"images/newyork.jpg"},
-{name:"Lisbon",place:"Portugal",tag:"International · City + coast",why:"Historic neighborhoods, great food, viewpoints and easy day-trip potential.",image:"images/lisbon.jpg"},
-{name:"Vienna",place:"Austria",tag:"International · Culture + Christmas",why:"Grand cafés, museums, classical culture and seasonal markets.",image:"images/vienna.jpg"},
-{name:"Kyoto",place:"Japan",tag:"International · Culture + discovery",why:"Temples, gardens, traditional neighborhoods and a completely different travel rhythm.",image:"images/kyoto.jpg"}
-];
+var seasonMonth=new Date().getMonth()+1;
+var season=seasonMonth<=2||seasonMonth===12?"Winter":seasonMonth<=5?"Spring":seasonMonth<=8?"Summer":"Fall";
+var pools={
+Winter:["Charleston","Santa Fe","New York City","Lisbon","Vienna","Montreal","Munich","Savannah"],
+Spring:["Charleston","Santa Fe","New York City","Lisbon","Vienna","Kyoto","Savannah","Barcelona","Munich"],
+Summer:["Charleston","Santa Fe","New York City","Lisbon","Kyoto","Savannah","Barcelona","Munich"],
+Fall:["Charleston","Santa Fe","New York City","Lisbon","Vienna","Kyoto","Savannah","Montreal","Barcelona","Munich"]
+};
+var catalog={
+"Charleston":{place:"South Carolina · USA",tag:"Domestic · Food + history",why:"Historic streets, exceptional food, waterfront walks and an easy long-weekend rhythm.",image:"https://images.unsplash.com/photo-1643063708982-0556158f4775?auto=format&fit=crop&fm=jpg&q=82&w=1800"},
+"Santa Fe":{place:"New Mexico · USA",tag:"Domestic · Art + scenery",why:"Adobe architecture, galleries, regional food and high-desert landscapes with a strong sense of place.",image:"https://images.unsplash.com/photo-1777931407549-86d4771c9063?auto=format&fit=crop&fm=jpg&q=82&w=1800"},
+"New York City":{place:"New York · USA",tag:"Domestic · City + culture",why:"Museums, neighborhoods, restaurants, live shows and an almost endless supply of new discoveries.",image:"https://images.unsplash.com/photo-1665399320309-e9757b31a5fe?auto=format&fit=crop&fm=jpg&q=82&w=1800"},
+"Lisbon":{place:"Portugal",tag:"International · City + coast",why:"Historic neighborhoods, Atlantic light, great food and viewpoints that make wandering part of the trip.",image:"https://images.unsplash.com/photo-1598535301312-5b3f8abd2a88?auto=format&fit=crop&fm=jpg&q=82&w=1800"},
+"Vienna":{place:"Austria",tag:"International · Culture + elegance",why:"Grand cafés, museums, classical culture and beautiful seasonal atmosphere in every neighborhood.",image:"https://images.unsplash.com/photo-1641309043676-34128e15917e?auto=format&fit=crop&fm=jpg&q=82&w=1800"},
+"Kyoto":{place:"Japan",tag:"International · Culture + discovery",why:"Temples, gardens, traditional neighborhoods and a completely different travel rhythm.",image:"https://images.unsplash.com/photo-1589908234698-8e38077ca1f0?auto=format&fit=crop&fm=jpg&q=82&w=1800"},
+"Savannah":{place:"Georgia · USA",tag:"Domestic · Architecture + food",why:"Live-oak streets, historic squares, strong restaurant culture and a slower, highly walkable pace.",image:"https://images.unsplash.com/photo-1780348544952-42690c752e19?auto=format&fit=crop&fm=jpg&q=82&w=1800"},
+"Montreal":{place:"Quebec · Canada",tag:"International · Food + design",why:"European character, excellent food, galleries and a distinct seasonal personality.",image:"https://images.unsplash.com/photo-1761920274681-18ba06a25d7c?auto=format&fit=crop&fm=jpg&q=82&w=1800"},
+"Barcelona":{place:"Spain",tag:"International · Architecture + coast",why:"Gaudí architecture, old-city streets, markets and Mediterranean energy in one compact city.",image:"https://images.unsplash.com/photo-1780305807326-5724054ae6c6?auto=format&fit=crop&fm=jpg&q=82&w=1800"},
+"Munich":{place:"Germany",tag:"International · Culture + Bavaria",why:"Elegant architecture, museums, beer gardens and an easy gateway to Bavarian scenery.",image:"https://images.unsplash.com/photo-1783091478517-e6fb341b516e?auto=format&fit=crop&fm=jpg&q=82&w=1800"}
+};
+var pool=pools[season]||pools.Fall;
+var now=new Date(),start=new Date(now.getFullYear(),0,1);
+var week=Math.floor((((now-start)/86400000)+start.getDay()+6)/7);
+var offset=(week*2)%pool.length;
+var selected=[];
+for(var i=0;i<pool.length&&selected.length<6;i++)selected.push(pool[(offset+i)%pool.length]);
 var box=document.getElementById("suggestGrid");if(!box)return;
-box.innerHTML=items.map(function(x){return "<article class='suggestCard' style=\"--suggest-image:url('"+x.image+"')\"><div class='suggestContent'><div class='suggestTag'>"+esc(x.tag)+"</div><h3>"+esc(x.name)+"</h3><p>"+esc(x.place)+" · "+esc(x.why)+"</p><a class='suggestAction' href='build-trip.html?destination="+encodeURIComponent(x.name)+"'>Explore this trip</a></div></article>"}).join("");
-}
-function renderNextJourney(saved,current,upcoming,attention){
+var seasonEl=document.getElementById("suggestSeason");if(seasonEl)seasonEl.textContent=season+" · refreshed weekly";
+box.innerHTML=selected.map(function(name){var x=catalog[name];return "<article class='suggestCard' style=\"--suggest-image:url('"+x.image+"')\"><div class='suggestContent'><div class='suggestTag'>"+esc(x.tag)+"</div><h3>"+esc(name)+"</h3><p>"+esc(x.place)+" · "+esc(x.why)+"</p><a class='suggestAction' href='build-trip.html?destination="+encodeURIComponent(name)+"'>Explore this trip</a></div></article>"}).join("");
+}function renderNextJourney(saved,current,upcoming,attention){
 var box=document.getElementById("nextJourney");if(!box)return;
 var lead=upcoming.slice().sort(function(a,b){return (daysUntil((a.t||a).start)||999999)-(daysUntil((b.t||b).start)||999999)})[0]||current;
 var t=lead.t||lead,d=daysUntil(t.start),r=lead.r||{missing:[]};
