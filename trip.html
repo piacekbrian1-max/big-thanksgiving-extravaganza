@@ -1023,7 +1023,30 @@ function saveGuideReview(name,patch){
 var rs=guideReviews(),k=guideReviewKey(name);
 if(!rs[k])rs[k]={};
 Object.keys(patch).forEach(function(key){rs[k][key]=patch[key]});
-save();
+try{save();return true}catch(e){
+try{sessionStorage.setItem("roamwellGuideReview:"+k,JSON.stringify(rs[k]));return true}catch(_){return false}
+}
+}
+function bindGuideReviewControls(card,name,review){
+card.querySelectorAll("[data-guide-star]").forEach(function(btn){
+btn.addEventListener("click",function(e){
+e.preventDefault();e.stopPropagation();
+var ok=saveGuideReview(name,{rating:Number(btn.getAttribute("data-guide-star"))});
+if(ok)renderGuide();
+});
+});
+var fav=card.querySelector("[data-favorite]");
+if(fav)fav.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();if(saveGuideReview(name,{favorite:!review.favorite}))renderGuide()});
+var rec=card.querySelector("[data-recommend]");
+if(rec)rec.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();if(saveGuideReview(name,{recommend:!review.recommend}))renderGuide()});
+var vis=card.querySelector("[data-visited]");
+if(vis)vis.addEventListener("change",function(e){e.stopPropagation();if(saveGuideReview(name,{visited:this.checked}))renderGuide()});
+var saveBtn=card.querySelector("[data-save-review]");
+if(saveBtn)saveBtn.addEventListener("click",function(e){
+e.preventDefault();e.stopPropagation();
+var note=card.querySelector("[data-note]");
+if(saveGuideReview(name,{note:note?note.value.trim():""})){saveBtn.textContent="Saved";setTimeout(function(){if(saveBtn.isConnected)saveBtn.textContent="Save your experience"},900)}
+});
 }
 function guidePrice(name,category){
 var n=slug(name),c=slug(category),p=2;
@@ -1077,7 +1100,7 @@ var q=name+" "+((trip.destinations||[])[0]||"");
 var review=guideReviews()[guideReviewKey(name)]||{},online=guideOnlineRating(name);
 var onlineHtml=guideOnlineHtml(name);
 card.innerHTML="<div class='ey guideEyebrow'><span>"+esc(active)+"</span>"+priceMarkup(price)+"</div><h3>"+esc(name)+"</h3><span class='guideNeighborhood'>"+esc(neighborhood)+"</span><div class='guideCost'><b>Typical food spend</b><span>"+cost+" / person</span></div><p class='guideType'>"+esc(description)+"</p><div class='guideReview'><div class='guideOnlineSlot'>"+onlineHtml+"</div><div class='guidePersonal'><span class='guidePersonalLabel'>Your rating</span>"+guideStarButtons(name,Number(review.rating||0))+"</div><div class='guideReviewActions'><button type='button' class='guideReviewToggle "+(review.favorite?"active":"")+"' data-favorite>Favorite</button><button type='button' class='guideReviewToggle "+(review.recommend?"active":"")+"' data-recommend>Would recommend</button><label class='guideVisited'><input type='checkbox' data-visited "+(review.visited?"checked":"")+"> Visited</label></div><textarea class='guideReviewNote' data-note placeholder='Add your private Roamwell note...'>"+esc(review.note||"")+"</textarea><button type='button' class='guideReviewSave' data-save-review>Save your experience</button></div><p class='guideNote'>Check current hours, menus and reservations before visiting.</p><div class='guideActions'><a class='guideButton primary' target='_blank' rel='noopener' href='"+maps(q)+"'>Open in Maps</a><a class='guideButton' target='_blank' rel='noopener' href='"+search(q+" official website")+"' >Website / hours</a><a class='guideButton' target='_blank' rel='noopener' href='"+search(q+" reviews")+"' >Reviews</a></div>";
-card.querySelectorAll("[data-guide-star]").forEach(function(btn){btn.onclick=function(){saveGuideReview(name,{rating:Number(btn.dataset.guideStar)});renderGuide()}});card.querySelector("[data-favorite]").onclick=function(){saveGuideReview(name,{favorite:!review.favorite});renderGuide()};card.querySelector("[data-recommend]").onclick=function(){saveGuideReview(name,{recommend:!review.recommend});renderGuide()};card.querySelector("[data-visited]").onchange=function(){saveGuideReview(name,{visited:this.checked});renderGuide()};card.querySelector("[data-save-review]").onclick=function(){saveGuideReview(name,{note:card.querySelector("[data-note]").value.trim()});this.textContent="Saved";setTimeout(function(){if(card.isConnected)card.querySelector("[data-save-review]").textContent="Save your experience"},900)};
+bindGuideReviewControls(card,name,review);
 grid.appendChild(card);hydrateGuideLiveRating(name,(trip.destinations||[])[0]||"",card)
 }}
 for(var i=0;i<cats.length;i++){(function(cat){var b=document.createElement("button");b.textContent=cat;b.className=cat===active?"active":"";b.onclick=function(){active=cat;trip.guideCategory=cat;save();renderGuide()};filter.appendChild(b);var o=document.createElement("option");o.value=cat;o.textContent=cat+" · "+(isN?(nolaGuide[cat]||[]).length+" places":"local options");o.selected=cat===active;sel.appendChild(o)})(cats[i])}
