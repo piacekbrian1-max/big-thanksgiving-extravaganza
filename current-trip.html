@@ -82,6 +82,37 @@ button,a{max-width:100%;}
   .row{flex-direction:column;gap:5px;}
   .row>span{overflow-wrap:anywhere;}
 }
+
+/* iPad / tablet landscape hardening (up to 1180px) */
+@media (max-width:1180px){
+  main,.nav,.coverGrid,.weatherLead,.photoCredits{width:92%;}
+  .navlinks{gap:14px;}
+  .navlinks a{font-size:10px;letter-spacing:.09em;}
+  .coverGrid{height:560px;}
+  .weatherLead{grid-template-columns:1fr 1fr;}
+  .weatherLeadIntro{grid-column:1/-1;}
+  .dash,.infoGrid,.tripHub{grid-template-columns:1fr;}
+  .destGrid{grid-template-columns:1fr 1fr;}
+  .weatherGrid,.camGrid{grid-template-columns:1fr 1fr;}
+  .day{grid-template-columns:80px 1fr;}
+  .dayActions,.day>div:last-child{grid-column:2;}
+  .suggestionGrid,.foodGrid{grid-template-columns:1fr 1fr;}
+  .budgetGrid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .linksGrid{grid-template-columns:1fr 1fr;}
+  .tripItem{align-items:flex-start;}
+  .tripItem>div:first-child{min-width:0;flex:1 1 0;}
+  .tripItem button{white-space:normal;line-height:1.2;min-width:58px;}
+  .builderActions,.suggestionActions,.guideActions{align-items:stretch;}
+  .builderActions .btn,.suggestionActions .miniBtn,.guideActions .guideButton{white-space:normal;line-height:1.2;text-align:center;}
+  .btn,.miniBtn{white-space:normal;line-height:1.2;text-align:center;}
+  .quick{grid-template-columns:repeat(2,1fr);}
+}
+@media (min-width:601px) and (max-width:1180px){
+  .top{height:68px;}
+  .nav{width:92%;}
+  .navlinks{flex-wrap:wrap;justify-content:flex-end;row-gap:5px;}
+  .datepill{white-space:normal;text-align:center;line-height:1.2;}
+}
 </style>
 </head>
 <body>
