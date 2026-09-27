@@ -604,7 +604,7 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape")closeTripMen
 var KEY="big-thanksgiving-trips-v1";
 var params=new URLSearchParams(location.search),id=params.get("id")||sessionStorage.getItem("openTripId");
 function load(){try{return JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){return[]}}
-var trips=load(),trip=trips.find(function(t){return t.id===id})||trips[trips.length-1];
+var trips=load(),trip=null;
 var inspiration=params.get("inspiration");
 function makeInspirationTrip(name){
   var key=slug(name), profiles={
@@ -747,12 +747,14 @@ function makeInspirationTrip(name){
   var plan=p.days.map(function(x,i){var d=new Date(start);d.setDate(start.getDate()+i);return {day:i+1,date:iso(d),area:x[0],title:x[0],morning:x[1],afternoon:x[2],evening:x[3],note:"Inspiration day · edit any block, swap restaurants, change the pace, or remove the day entirely.",event:null,refreshCount:0}});
   return {id:"inspiration-"+slug(name).replace(/ /g,"-")+"-"+Date.now(),name:p.title,travelers:2,start:iso(start),end:iso(end),destinations:[name],groupType:"Couples / friends",pace:"Balanced — see a lot without rushing",transport:"Walk + transit",preferences:["Local food","History & culture","Neighborhoods","Seasonal events","Photography"],mustSee:[],plan:plan,originalPlan:JSON.parse(JSON.stringify(plan)),smartVersion:2,status:"Inspiration · ready to edit",days:7,homeBase:"Downtown / city center",intro:p.intro,occasion:"Inspiration trip",foodBudget:"Mixed — casual + special dinners",mobility:"Normal walking",energy:"Balanced days",evening:"Mix of dinner and occasional nightlife",localFood:[],food:[],sights:[],areas:[],resources:[],created:new Date().toISOString(),isInspiration:true};
 }
-if(!trip && inspiration){
+if(inspiration){
   trip=makeInspirationTrip(inspiration);
   trips.push(trip);
   localStorage.setItem(KEY,JSON.stringify(trips));
   sessionStorage.setItem("openTripId",trip.id);
   id=trip.id;
+}else{
+  trip=trips.find(function(t){return t.id===id})||trips[trips.length-1];
 }
 if(!trip){location.href="my-trips.html";return}
 function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
