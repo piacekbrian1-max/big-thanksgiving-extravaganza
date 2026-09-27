@@ -66,6 +66,19 @@ jobs:
           test "$(file -b --mime-type images/trnava-advent-v2.jpg)" = "image/jpeg"
           test "$(file -b --mime-type images/pilsen-christmas-v2.jpg)" = "image/jpeg"
           test "$(file -b --mime-type images/hluboka-castle-v2.jpg)" = "image/jpeg"
+
+      - name: Repoint page to verified image versions
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          p="index.html"
+          s=open(p,encoding="utf-8").read()
+          s=s.replace("images/prague-christmas.jpg","images/prague-christmas-v2.jpg")
+          s=s.replace("images/trnava-advent.jpg","images/trnava-advent-v2.jpg")
+          s=s.replace("images/pilsen-christmas.jpg","images/pilsen-christmas-v2.jpg")
+          s=s.replace("images/hluboka-winter.webp","images/hluboka-castle-v2.jpg")
+          open(p,"w",encoding="utf-8").write(s)
+          PY
           test -s images/prague-christmas.jpg
           test -s images/trnava-advent.jpg
           test -s images/pilsen-christmas.jpg
