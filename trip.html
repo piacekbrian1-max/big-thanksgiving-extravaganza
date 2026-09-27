@@ -692,7 +692,7 @@ for(var i=0;i<areas.length;i++){
 return best||baseArea||areas[dayIndex%areas.length];
 }
 function clonePlan(p){return JSON.parse(JSON.stringify(p||[]))}
-function buildSmartPlan(){
+function makeOriginalPlan(){
 var n=dates().n,used=[],plan=[];
 for(var i=0;i<n;i++){
 var area=chooseArea(i,used);used.push(area);var c=smartCandidates(area,i,0),ev=eventFor(isoDay(i));
@@ -700,9 +700,19 @@ if(ev)c.evening=ev.name+" · "+ev.when;
 var reason="Built around "+baseLabel()+", keeping the main stops in one geographic cluster and matching your interests.";
 if((trip.mustSee||[]).length&&i===0)reason+=" Your must-see list is given priority on the first day.";
 if(ev)reason+=" A date-specific event was promoted because it falls during this stay.";
-plan.push({day:i+1,date:isoDay(i),area:area,title:area+" day",morning:c.morning,afternoon:c.afternoon,evening:c.evening,note:reason,event:ev||null,refreshCount:0})
+plan.push({day:i+1,date:isoDay(i),area:area,title:area+" day",morning:c.morning,afternoon:c.afternoon,evening:c.evening,note:reason,event:ev||null,refreshCount:0});
 }
-trip.plan=plan;trip.originalPlan=clonePlan(plan);trip.homeBase=baseLabel();trip.days=n;trip.smartVersion=2;save();renderPlan();document.getElementById("smartExplain").textContent="Rebuilt "+n+" days around "+trip.homeBase+". Each day now has a geographic area, three time blocks, interest matching and date-specific event checks.";
+return plan;
+}
+function ensureOriginalPlan(){
+if(!trip.originalPlan||!Array.isArray(trip.originalPlan)||!trip.originalPlan.length){
+trip.originalPlan=makeOriginalPlan();
+save();
+}
+}
+function buildSmartPlan(){
+var plan=makeOriginalPlan();
+trip.plan=clonePlan(plan);trip.originalPlan=clonePlan(plan);trip.homeBase=baseLabel();trip.days=plan.length;trip.smartVersion=2;save();renderPlan();document.getElementById("smartExplain").textContent="Rebuilt "+plan.length+" days around "+trip.homeBase+". Each day now has a geographic area, three time blocks, interest matching and date-specific event checks.";
 }
 window.buildSmartPlan=buildSmartPlan;
 window.saveSmartSettings=function(){trip.homeBase=document.getElementById("homeBase").value.trim()||"Downtown / city center";trip.transport=document.getElementById("smartTransport").value;trip.walkingRadius=document.getElementById("smartRadius").value;save();buildSmartPlan()};
@@ -768,7 +778,7 @@ if(!trip.originalPlan||!trip.originalPlan[idx]||!trip.plan)return;
 trip.plan[idx]=clonePlan([trip.originalPlan[idx]])[0];save();renderPlan();
 };
 window.restoreOriginalPlan=function(){
-if(!trip.originalPlan||!trip.originalPlan.length){alert("No original itinerary is saved yet.");return}
+ensureOriginalPlan();
 trip.plan=clonePlan(trip.originalPlan);save();renderPlan();
 };
 function renderGuide(){
@@ -868,7 +878,7 @@ function renderResources(){var e=document.getElementById("resourceGrid"),d=(trip
 if(slug(d).indexOf("new orleans")>=0){rs[0]=["New Orleans & Company","https://www.neworleans.com/"];rs[2]=["January / event guide","https://www.neworleans.com/plan/january-in-new-orleans/"];rs[3]=["Eater New Orleans","https://nola.eater.com/"];rs.push(["Mardi Gras parade schedule","https://www.neworleans.com/events/holidays-seasonal/mardi-gras/mardi-gras-parade-schedule/"])}
 e.innerHTML="";for(var i=0;i<rs.length;i++){var a=document.createElement("a");a.className="link";a.target="_blank";a.href=rs[i][1];a.innerHTML="<b>"+esc(rs[i][0])+"</b><small>Open resource</small>";e.appendChild(a)}}
 
-renderHeader();renderRoute();renderDestinations();renderPlan();renderGuide();renderEvents();renderWeather();renderCams();renderTravel();renderBudget();renderMemories();renderResources();
+ensureOriginalPlan();renderHeader();renderRoute();renderDestinations();renderPlan();renderGuide();renderEvents();renderWeather();renderCams();renderTravel();renderBudget();renderMemories();renderResources();
 })();
 </script>
 </body></html>
