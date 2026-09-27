@@ -392,6 +392,37 @@ button,a{max-width:100%}
   .budgetForm .budgetDetails{grid-template-columns:1fr !important;}
 }
 
+
+/* Budget tablet: balanced two-column detail rows */
+@media (min-width:701px) and (max-width:1000px){
+  .budgetForm .budgetDetails{
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+    grid-template-areas:
+      "expenseDate exchange"
+      "hotelFrom hotelTo"
+      "receipt helper" !important;
+    gap:12px !important;
+    align-items:end !important;
+  }
+  .budgetForm .budgetDetails .budgetDateField{grid-area:expenseDate !important;width:auto !important;max-width:none !important;}
+  .budgetForm .budgetDetails #budgetHotelFromField{grid-area:hotelFrom !important;}
+  .budgetForm .budgetDetails #budgetHotelToField{grid-area:hotelTo !important;}
+  .budgetForm .budgetDetails #budgetRate{width:100% !important;}
+  .budgetForm .budgetDetails .budgetField:nth-of-type(4){grid-area:exchange !important;}
+  .budgetForm .budgetDetails .budgetField:nth-of-type(5){grid-area:receipt !important;}
+  .budgetForm .budgetDetails .budgetField:nth-of-type(6){grid-area:helper !important;}
+  .budgetForm .budgetDetails .budgetHotelDateField input,
+  .budgetForm .budgetDetails .budgetDateWrap,
+  .budgetForm .budgetDetails .budgetDateWrap input,
+  .budgetForm .budgetDetails #budgetShot,
+  .budgetForm .budgetDetails .budgetHelperBtn{
+    width:100% !important;
+    max-width:none !important;
+    box-sizing:border-box;
+  }
+}
+
 </style>
 </head>
 <body>
