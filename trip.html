@@ -359,6 +359,19 @@ button,a{max-width:100%}
   .smartBrainActions .btn{min-height:46px}
 }
 </style>
+<style id="guide-price-levels">
+.guideEyebrow{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.priceLevel{
+  display:inline-flex;
+  flex:0 0 auto;
+  color:#b08d3f;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.12em;
+  line-height:1;
+  white-space:nowrap;
+}
+</style>
 </head>
 <body>
 <header class="top"><div class="nav">
@@ -834,6 +847,29 @@ window.restoreOriginalPlan=function(){
 ensureOriginalPlan();
 trip.plan=clonePlan(trip.originalPlan);save();renderPlan();
 };
+function guidePrice(name,category){
+var n=slug(name),c=slug(category),p=2;
+if(c.indexOf("special occasions")>=0)p=5;
+else if(c==="dinner")p=3;
+else if(c==="lunch")p=2;
+else if(c.indexOf("breakfast")>=0||c.indexOf("coffee")>=0)p=1;
+else if(c.indexOf("bars")>=0||c.indexOf("breweries")>=0)p=2;
+else if(c.indexOf("music")>=0||c.indexOf("theater")>=0||c.indexOf("shows")>=0)p=3;
+else if(c.indexOf("family")>=0||c.indexOf("museums")>=0)p=3;
+else if(c.indexOf("markets")>=0||c.indexOf("neighborhoods")>=0)p=1;
+var five=["emeril s","restaurant august","restaurant r evolution","dakar nola","galatoires","doris metropolitan"];
+var four=["brennans","bayona","clancys restaurant","la petite grocery","peche seafood grill","jewel of the south","carousel bar","preservation hall","snug harbor jazz bistro"];
+var one=["parkway bakery tavern","domilise s po boy bar","cafe reconcile","satsuma cafe","ayu bakehouse","bywater bakery","french truck coffee","hivolt coffee","mammoth espresso","big easy bucha"];
+if(five.indexOf(n)>=0)p=5;
+else if(four.indexOf(n)>=0)p=Math.max(p,4);
+else if(one.indexOf(n)>=0)p=1;
+return Math.max(1,Math.min(5,p));
+}
+function priceMarkup(level){
+var s="",i;
+for(i=1;i<=5;i++)s+=i<=level?"$":"";
+return "<span class='priceLevel' title='"+level+" of 5 · 1 = budget · 5 = very expensive' aria-label='Price level "+level+" of 5'>"+s+"</span>";
+}
 function renderGuide(){
 var isN=!!cityProfile(),filter=document.getElementById("guideFilter"),sel=document.getElementById("guideSelect"),grid=document.getElementById("guideGrid"),count=document.getElementById("guideCount");filter.innerHTML="";sel.innerHTML="";
 var cats=isN?categories:["Breakfast","Lunch","Dinner","Special Occasions","Bars","Breweries","Coffee & Bakeries","Music","Theater & Shows","Family","Neighborhoods","Museums","Markets"];var active=trip.guideCategory||"Dinner";
@@ -842,10 +878,10 @@ grid.innerHTML="";
 var items=isN?nolaGuide[active]:[[active+" near "+baseLabel(),"Around your home base","Search current local options","Destination-specific"]];
 count.textContent=(items.length||0)+" suggestions · "+active;
 for(var i=0;i<items.length;i++){
-var it=items[i],name=it[0],neighborhood=it[1],type=it[2],note=it[3],card=document.createElement("article");
+var it=items[i],name=it[0],neighborhood=it[1],type=it[2],note=it[3],price=guidePrice(name,active),card=document.createElement("article");
 card.className="card guideCard";
 var q=name+" "+((trip.destinations||[])[0]||"");
-card.innerHTML="<div class='ey'>"+esc(active)+"</div><h3>"+esc(name)+"</h3><span class='guideNeighborhood'>"+esc(neighborhood)+"</span><p class='guideType'>"+esc(type)+"</p><p class='guideNote'>"+esc(note)+". Check current hours, menus and reservations before visiting.</p><div class='guideActions'><a class='guideButton primary' target='_blank' rel='noopener' href='"+maps(q)+"'>Open in Maps</a><a class='guideButton' target='_blank' rel='noopener' href='"+search(q+" official website")+"' >Website / hours</a><a class='guideButton' target='_blank' rel='noopener' href='"+search(q+" reviews")+"' >Reviews</a></div>";
+card.innerHTML="<div class='ey guideEyebrow'><span>"+esc(active)+"</span>"+priceMarkup(price)+"</div><h3>"+esc(name)+"</h3><span class='guideNeighborhood'>"+esc(neighborhood)+"</span><p class='guideType'>"+esc(type)+"</p><p class='guideNote'>"+esc(note)+". Check current hours, menus and reservations before visiting.</p><div class='guideActions'><a class='guideButton primary' target='_blank' rel='noopener' href='"+maps(q)+"'>Open in Maps</a><a class='guideButton' target='_blank' rel='noopener' href='"+search(q+" official website")+"' >Website / hours</a><a class='guideButton' target='_blank' rel='noopener' href='"+search(q+" reviews")+"' >Reviews</a></div>";
 grid.appendChild(card)
 }}
 for(var i=0;i<cats.length;i++){(function(cat){var b=document.createElement("button");b.textContent=cat;b.className=cat===active?"active":"";b.onclick=function(){active=cat;trip.guideCategory=cat;save();renderGuide()};filter.appendChild(b);var o=document.createElement("option");o.value=cat;o.textContent=cat+" · "+(isN?(nolaGuide[cat]||[]).length+" places":"local options");o.selected=cat===active;sel.appendChild(o)})(cats[i])}
