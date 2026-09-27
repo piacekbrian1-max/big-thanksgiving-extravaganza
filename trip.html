@@ -6,6 +6,17 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
+/* Budget form hardening: keep hotel dates and action buttons separated on iPad/tablet */
+@media (min-width:601px) and (max-width:1000px){
+  .budgetFields{grid-template-columns:minmax(0,1fr) minmax(0,1fr);}
+  .budgetDetails{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:end;}
+  .budgetFieldHotel{grid-column:1/-1;}
+  .hotelDates{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);}
+  .budgetActions{grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch;}
+  .budgetActions > *{width:100%;min-width:0;max-width:none;white-space:normal;overflow-wrap:anywhere;text-align:center;line-height:1.25;min-height:42px;}
+  .budgetForm{overflow:hidden;}
+}
+
 
 :root{--navy:#101b1b;--ink:#172222;--muted:#71807c;--cream:#f5f2ea;--paper:#fffdf9;--gold:#c7a55a;--line:#dedbd2;--green:#203b35;--red:#8e2631;--pine:#17372d;--shadow:0 18px 50px #15231b12}
 *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:82px}body{margin:0;background:var(--cream);color:var(--ink);font-family:"DM Sans",sans-serif}a{text-decoration:none;color:inherit}button{font:inherit}.serif{font-family:"Playfair Display",Georgia,serif}
