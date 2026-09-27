@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+  schedule:
+    - cron: "17 * * * *"
   workflow_dispatch:
 
 permissions:
@@ -24,6 +26,31 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+
+      - name: Build hourly weather snapshot
+        shell: bash
+        run: |
+          curl -fsSL "https://api.open-meteo.com/v1/forecast?latitude=48.3774,50.0755,49.7384,49.051&longitude=17.5883,14.4378,13.3736,14.434&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&timezone=auto" -o /tmp/current.json
+          curl -fsSL "https://archive-api.open-meteo.com/v1/archive?latitude=48.3774,50.0755,49.7384,49.051&longitude=17.5883,14.4378,13.3736,14.434&start_date=1991-01-01&end_date=2020-12-31&daily=temperature_2m_max,temperature_2m_min&temperature_unit=fahrenheit&timezone=auto" -o /tmp/history.json
+          python3 - <<'PY'
+          import json, datetime
+          names=["trnava","prague","pilsen","hluboka"]
+          codes={0:"Clear",1:"Mostly clear",2:"Partly cloudy",3:"Overcast",45:"Fog",48:"Rime fog",51:"Light drizzle",53:"Drizzle",55:"Heavy drizzle",61:"Light rain",63:"Moderate rain",65:"Heavy rain",71:"Light snow",73:"Moderate snow",75:"Heavy snow",80:"Rain showers",81:"Moderate showers",82:"Heavy showers",85:"Snow showers",86:"Heavy snow showers",95:"Thunderstorm"}
+          cur=json.load(open("/tmp/current.json"))
+          hist=json.load(open("/tmp/history.json"))
+          def one(x):
+              times=x["daily"]["time"]; hi=[]; lo=[]
+              for i,t in enumerate(times):
+                  m,d=map(int,t[5:10].split("-"))
+                  if (m==11 and d>=26) or (m==12 and d<=4):
+                      hi.append(x["daily"]["temperature_2m_max"][i]); lo.append(x["daily"]["temperature_2m_min"][i])
+              return sum(hi)/len(hi),sum(lo)/len(lo)
+          out={"updated":datetime.datetime.now(datetime.timezone.utc).isoformat(),"locations":{}}
+          for i,n in enumerate(names):
+              c=cur[i]["current"]; h,l=one(hist[i])
+              out["locations"][n]={"temperature_f":c["temperature_2m"],"humidity":c["relative_humidity_2m"],"precipitation_in":c["precipitation"],"wind_mph":c["wind_speed_10m"],"weather_code":c["weather_code"],"condition":codes.get(c["weather_code"],"Current conditions"),"historical_high_f":h,"historical_low_f":l}
+          json.dump(out,open("weather.json","w"),separators=(",",":"))
+          PY
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
