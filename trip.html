@@ -543,6 +543,60 @@ button,a{max-width:100%}
   }
 }
 </style>
+<style id="budget-authoritative-layout">
+/* Authoritative budget behavior: the expense selector controls the hotel fields. */
+.budgetForm .budgetHotelDateField{display:none !important;}
+.budgetForm.hotelMode .budgetHotelDateField{display:block !important;}
+
+@media (pointer:coarse) and (min-width:701px){
+  .budgetForm .budgetDetails{
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+    gap:14px !important;
+    align-items:end !important;
+  }
+  .budgetForm .budgetDetails .budgetDateField{grid-column:auto !important;}
+  .budgetForm .budgetDetails .budgetRateField{grid-column:auto !important;}
+  .budgetForm .budgetDetails .budgetReceiptField{grid-column:auto !important;}
+  .budgetForm .budgetDetails .budgetHelperField{grid-column:auto !important;}
+
+  /* Non-hotel: two clean rows, no empty hotel space. */
+  .budgetForm:not(.hotelMode) .budgetDetails{
+    grid-template-areas:"expense rate" "receipt helper" !important;
+  }
+  .budgetForm:not(.hotelMode) .budgetDateField{grid-area:expense !important;}
+  .budgetForm:not(.hotelMode) .budgetRateField{grid-area:rate !important;}
+  .budgetForm:not(.hotelMode) .budgetReceiptField{grid-area:receipt !important;}
+  .budgetForm:not(.hotelMode) .budgetHelperField{grid-area:helper !important;}
+
+  /* Hotel: add From/To as the middle row. */
+  .budgetForm.hotelMode .budgetDetails{
+    grid-template-areas:"expense rate" "from to" "receipt helper" !important;
+  }
+  .budgetForm.hotelMode .budgetDateField{grid-area:expense !important;}
+  .budgetForm.hotelMode #budgetHotelFromField{grid-area:from !important;}
+  .budgetForm.hotelMode #budgetHotelToField{grid-area:to !important;}
+  .budgetForm.hotelMode .budgetRateField{grid-area:rate !important;}
+  .budgetForm.hotelMode .budgetReceiptField{grid-area:receipt !important;}
+  .budgetForm.hotelMode .budgetHelperField{grid-area:helper !important;}
+
+  .budgetForm .budgetDetails input,
+  .budgetForm .budgetDetails .budgetDateWrap,
+  .budgetForm .budgetDetails .budgetHelperBtn{
+    width:100% !important;
+    max-width:none !important;
+    box-sizing:border-box !important;
+  }
+}
+@media (max-width:700px){
+  .budgetForm .budgetDetails{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    gap:12px !important;
+  }
+  .budgetForm .budgetDetails > *{grid-area:auto !important;}
+}
+</style>
 </head>
 <body>
 <header class="top"><div class="nav">
@@ -649,8 +703,8 @@ button,a{max-width:100%}
 
   <div class="budgetFields budgetDetails">
     <div class="budgetField budgetDateField"><label for="budgetDate">Expense date</label><div class="budgetDateWrap"><input id="budgetDate" type="date" aria-label="Expense date"></div></div>
-    <div class="budgetField budgetHotelDateField" id="budgetHotelFromField" style="display:none"><label for="budgetHotelFrom">Hotel stay · From</label><input id="budgetHotelFrom" type="date" aria-label="Hotel stay from"></div>
-    <div class="budgetField budgetHotelDateField" id="budgetHotelToField" style="display:none"><label for="budgetHotelTo">Hotel stay · To</label><input id="budgetHotelTo" type="date" aria-label="Hotel stay to"></div>
+    <div class="budgetField budgetHotelDateField" id="budgetHotelFromField"><label for="budgetHotelFrom">Hotel stay · From</label><input id="budgetHotelFrom" type="date" aria-label="Hotel stay from"></div>
+    <div class="budgetField budgetHotelDateField" id="budgetHotelToField"><label for="budgetHotelTo">Hotel stay · To</label><input id="budgetHotelTo" type="date" aria-label="Hotel stay to"></div>
     <div class="budgetField budgetRateField"><label for="budgetRate">Exchange rate to USD</label><input id="budgetRate" inputmode="decimal" placeholder="Auto"></div>
     <div class="budgetField budgetReceiptField"><label for="budgetShot">Receipt / screenshot</label><input id="budgetShot" type="file" accept="image/*"></div>
     <div class="budgetField budgetHelperField"><label>Receipt helper</label><button type="button" class="miniBtn budgetHelperBtn" onclick="readBudgetScreenshot()">Read screenshot</button></div>
@@ -1053,10 +1107,9 @@ t.innerHTML=h;
 }
 window.deleteBudgetItem=function(i){budgetItems().splice(i,1);save();renderBudget()}
 function syncBudgetTypeFields(){
+var form=document.querySelector(".budgetForm");
 var isHotel=document.getElementById("budgetDesc")&&document.getElementById("budgetDesc").value==="Hotel / lodging";
-var fromBox=document.getElementById("budgetHotelFromField"),toBox=document.getElementById("budgetHotelToField");
-if(fromBox)fromBox.style.display=isHotel?"block":"none";
-if(toBox)toBox.style.display=isHotel?"block":"none";
+if(form)form.classList.toggle("hotelMode",!!isHotel);
 }
 document.getElementById("budgetDesc").addEventListener("change",syncBudgetTypeFields);
 syncBudgetTypeFields();
