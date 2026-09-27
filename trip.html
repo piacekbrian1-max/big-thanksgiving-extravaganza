@@ -101,18 +101,22 @@ main{max-width:1500px;width:94%;margin:auto}.dash{margin-top:-34px;position:rela
 .budgetFormTitle{display:flex;justify-content:space-between;gap:16px;align-items:end;margin-bottom:16px}
 .budgetFormTitle h3{font:600 28px "Playfair Display",serif;margin:3px 0}
 .budgetFormTitle p{margin:0;color:var(--muted);font-size:10px;line-height:1.5}
-.budgetFields{display:grid;grid-template-columns:1.4fr .8fr .65fr .8fr;gap:12px}
+.budgetFields{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(110px,.8fr) minmax(110px,.65fr) minmax(110px,.8fr);gap:12px}
 .budgetField{min-width:0}
 .budgetField label{display:block;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:#967b35;font-weight:700;margin-bottom:6px}
 .budgetField input,.budgetField select{display:block;width:100%;min-width:0;height:42px;padding:0 11px;border:1px solid #d4cec1;background:#fffdf9;border-radius:8px;font:inherit;font-size:11px;color:var(--ink);box-sizing:border-box}
-.budgetField input[type="date"]{width:100%;max-width:100%;min-width:0;padding:0 7px;font-size:10px;letter-spacing:0;overflow:hidden;-webkit-appearance:auto}
-.budgetField input[type="date"]::-webkit-date-and-time-value{text-align:left}
+.budgetDetails{margin-top:12px;grid-template-columns:150px minmax(150px,1fr) minmax(170px,1fr) 160px}
+.budgetDateField{width:150px;max-width:150px}
+.budgetDateWrap{width:150px;max-width:150px;height:42px;overflow:hidden}
+.budgetDateWrap input[type="date"]{display:block;width:150px;max-width:150px;min-width:0;height:42px;padding:0 6px;font-size:11px;letter-spacing:0;box-sizing:border-box;-webkit-appearance:auto;appearance:auto}
+.budgetDateWrap input[type="date"]::-webkit-date-and-time-value{text-align:left}
+.budgetHelperBtn{display:flex!important;width:160px!important;max-width:160px!important;height:42px!important;align-items:center;justify-content:center;box-sizing:border-box;margin:0}
 .budgetField input:focus,.budgetField select:focus{outline:2px solid #c7a55a55;outline-offset:1px}
 .budgetReceipt{display:grid;grid-template-columns:1fr 180px;gap:12px;margin-top:12px}
 .budgetReceipt .miniBtn{width:100%;height:42px}
-.budgetActions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px;min-width:0}
-.budgetActions .btn,.budgetActions .miniBtn{min-width:0;max-width:100%;overflow:hidden;text-overflow:ellipsis}
-.budgetActions .btn,.budgetActions .miniBtn{width:100%;height:42px;min-width:0;margin:0;padding:0 12px;display:flex;align-items:center;justify-content:center;box-sizing:border-box;font-size:9px;line-height:1.2;letter-spacing:.06em;white-space:normal;text-align:center}
+.budgetActions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px;width:100%;min-width:0}
+.budgetActions>*{min-width:0;width:100%;max-width:100%}
+.budgetActions .btn,.budgetActions .miniBtn{height:42px;min-width:0;width:100%;margin:0;padding:0 10px;display:flex;align-items:center;justify-content:center;box-sizing:border-box;font-size:9px;line-height:1.15;letter-spacing:.06em;white-space:nowrap;text-align:center;overflow:hidden;text-overflow:ellipsis}
 .budgetActions .btn.primary{background:#d2b25e;color:#18231f;border-color:#d2b25e}
 .budgetTable{background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
 .budgetRow{display:grid;grid-template-columns:minmax(180px,1.5fr) minmax(90px,.7fr) minmax(70px,.55fr) minmax(90px,.7fr) minmax(120px,1fr) 80px;gap:12px;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line);font-size:10px;min-width:0}
@@ -128,7 +132,9 @@ main{max-width:1500px;width:94%;margin:auto}.dash{margin-top:-34px;position:rela
 @media(max-width:1000px){
  .budgetSummary{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
  .budgetFields{grid-template-columns:1fr 1fr}
- .budgetReceipt{grid-template-columns:1fr 1fr}
+ .budgetDetails{grid-template-columns:150px minmax(0,1fr)}
+ .budgetDateField,.budgetDateWrap{width:150px;max-width:150px}
+ .budgetHelperBtn{width:100%!important;max-width:100%!important}
  .budgetRow{grid-template-columns:minmax(150px,1.4fr) minmax(75px,.7fr) minmax(65px,.6fr) minmax(80px,.7fr) minmax(105px,1fr) 72px}
 }
 @media(max-width:700px){
@@ -136,7 +142,9 @@ main{max-width:1500px;width:94%;margin:auto}.dash{margin-top:-34px;position:rela
  .budgetForm{padding:16px}
  .budgetFormTitle{display:block}
  .budgetFormTitle p{margin-top:5px}
- .budgetFields,.budgetReceipt,.budgetActions{grid-template-columns:1fr}
+ .budgetFields,.budgetDetails,.budgetActions{grid-template-columns:1fr}
+ .budgetDateField,.budgetDateWrap,.budgetDateWrap input[type="date"]{width:100%;max-width:100%}
+ .budgetHelperBtn{width:100%!important;max-width:100%!important}
  .budgetRow{grid-template-columns:1fr 1fr;gap:8px;padding:12px 14px}
  .budgetHead{display:none}
  .budgetRow>div:nth-child(5){grid-column:1}
@@ -362,18 +370,18 @@ button,a{max-width:100%}
     <div class="budgetField"><label for="budgetCategory">Category</label><select id="budgetCategory"><option>Food</option><option>Stay</option><option>Flights</option><option>Transportation</option><option>Activities</option><option>Shopping</option><option>Other</option></select></div>
   </div>
 
-  <div class="budgetFields" style="margin-top:12px">
-    <div class="budgetField"><label for="budgetDate">Date</label><input id="budgetDate" type="date"></div>
+  <div class="budgetFields budgetDetails">
+    <div class="budgetField budgetDateField"><label for="budgetDate">Date</label><div class="budgetDateWrap"><input id="budgetDate" type="date" aria-label="Expense date"></div></div>
     <div class="budgetField"><label for="budgetRate">Exchange rate to USD</label><input id="budgetRate" inputmode="decimal" placeholder="Auto"></div>
     <div class="budgetField"><label for="budgetShot">Receipt / screenshot</label><input id="budgetShot" type="file" accept="image/*"></div>
-    <div class="budgetField"><label>Receipt helper</label><button class="miniBtn" style="width:100%;height:42px" onclick="readBudgetScreenshot()">Read screenshot</button></div>
+    <div class="budgetField"><label>Receipt helper</label><button type="button" class="miniBtn budgetHelperBtn" onclick="readBudgetScreenshot()">Read screenshot</button></div>
   </div>
 
   <div class="ocrStatus" id="budgetOcrStatus"></div>
   <div class="budgetActions">
-    <button class="btn primary" onclick="addBudgetItem()">Add Expense</button>
-    <button class="miniBtn" onclick="setBudgetTarget()">Set Trip Budget</button>
-    <button class="miniBtn" onclick="refreshFx()">Refresh Rates</button>
+    <button type="button" class="btn primary" onclick="addBudgetItem()">Add Expense</button>
+    <button type="button" class="miniBtn" onclick="setBudgetTarget()">Set Trip Budget</button>
+    <button type="button" class="miniBtn" onclick="refreshFx()">Refresh Rates</button>
   </div>
   <div class="currencyNote">Exchange rates are fetched for the selected currency when available. You can override the rate manually for your card rate, cash exchange or receipt rate.</div>
 </div>
