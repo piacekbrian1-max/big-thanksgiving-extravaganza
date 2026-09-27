@@ -920,27 +920,45 @@ trip.plan=clonePlan(trip.originalPlan);save();renderPlan();
 function guideReviewKey(name){return slug(name)}
 function guideReviews(){if(!trip.guideReviews||typeof trip.guideReviews!=="object")trip.guideReviews={};return trip.guideReviews}
 var guideOnlineRatings={
-"atchafalaya restaurant":[4.5,2533],
-"emeril s":[4.4,2893],
-"dakar nola":[4.5,99],
-"doris metropolitan":[4.4,909],
-"jewel of the south":[4.4,303],
-"national wwii museum":[4.8,31493],
-"jackson square":[4.5,16428],
-"new orleans city park":[4.6,4387],
-"st louis cathedral":[4.6,8451],
-"new orleans museum of art":[4.5,1192],
-"sydney and walda besthoff sculpture garden":[4.8,1429],
-"new orleans pharmacy museum":[4.5,1251],
-"royal carriages":[4.8,7651],
-"audubon zoo":[4.4,3075],
-"saint germain":[4.5,93],
-"restaurant rebirth":[4.6,720],
-"nobu caesars new orleans":[4.0,96]
+"atchafalaya":[4.5,2533,"Google"],
+"atchafalaya restaurant":[4.5,2533,"Google"],
+"emeril s":[4.4,2893,"Google"],
+"dakar nola":[4.5,99,"Google"],
+"doris metropolitan":[4.4,909,"Google"],
+"jewel of the south":[4.4,303,"Google"],
+"national wwii museum":[4.8,31493,"Google"],
+"the national wwii museum":[4.8,31493,"Google"],
+"jackson square":[4.5,16428,"Google"],
+"new orleans city park":[4.6,4387,"Google"],
+"new orleans museum of art":[4.5,1192,"Google"],
+"st louis cathedral":[4.6,8451,"Google"],
+"french quarter":[4.4,22915,"Google"],
+"new orleans jazz museum":[4.0,690,"Google"],
+"mandina s restaurant":[4.3,1031,"Google"],
+"trenasse":[4.2,1423,"Google"],
+"criollo restaurant":[4.5,1452,"Google"],
+"nobu caesars new orleans":[4.0,96,"Google"],
+"gabrielle restaurant":[4.4,143,"Google"],
+"jean lafitte national historical park and preserve":[4.6,1010,"Google"],
+"rta streetcars":[4.4,16366,"Google"]
 };
+function guideRatingSources(){
+return {
+google:{label:"Google",scope:"Global baseline for places and businesses",scale:"5"},
+tripadvisor:{label:"Tripadvisor",scope:"Global travel reviews for restaurants, attractions and hotels",scale:"5"},
+michelin:{label:"MICHELIN Guide",scope:"International expert restaurant selection",scale:"1–3 stars"},
+booking:{label:"Booking.com",scope:"International hotel and accommodation guest ratings",scale:"10"},
+regional:{label:"Regional source",scope:"Local rating platform when stronger local coverage exists",scale:"varies"}
+};
+}
 function guideOnlineRating(name){
 var x=guideOnlineRatings[guideReviewKey(name)];
-return x?{rating:x[0],reviews:x[1],source:"Maps"}:null;
+return x?{rating:x[0],reviews:x[1],source:x[2]||"Google"}:null;
+}
+function guideOnlineHtml(name){
+var x=guideOnlineRating(name);
+if(x)return "<div class='guideOnline'><span>Current online rating</span><span><strong>"+Number(x.rating).toFixed(1)+" / 5</strong> · "+Number(x.reviews).toLocaleString()+" reviews</span></div><div class='guideReviewSource'>"+esc(x.source)+" · rating snapshot · check source for latest score</div>";
+return "<div class='guideOnline'><span>Current online rating</span><span class='guideRatingUnavailable'>Not yet sourced</span></div><div class='guideReviewSource'>Roamwell checks global rating sources by destination · Google, Tripadvisor, MICHELIN, Booking.com or a stronger regional source</div>";
 }
 function guideStarButtons(name,current){
 var h="<span class='guideStars' aria-label='Your rating "+(current||0)+" out of 5'>";
@@ -1003,7 +1021,7 @@ var it=items[i],name=it[0],neighborhood=it[1],type=it[2],note=it[3],price=guideP
 card.className="card guideCard";
 var q=name+" "+((trip.destinations||[])[0]||"");
 var review=guideReviews()[guideReviewKey(name)]||{},online=guideOnlineRating(name);
-var onlineHtml=online?"<div class='guideOnline'><span>Online rating</span><span><strong>"+online.rating.toFixed(1)+"</strong> / 5 · "+online.reviews.toLocaleString()+" reviews</span></div><div class='guideReviewSource'>"+online.source+" snapshot · verify current rating</div>":"<div class='guideOnline'><span>Online rating</span><span>See current reviews</span></div>";
+var onlineHtml=guideOnlineHtml(name);
 card.innerHTML="<div class='ey guideEyebrow'><span>"+esc(active)+"</span>"+priceMarkup(price)+"</div><h3>"+esc(name)+"</h3><span class='guideNeighborhood'>"+esc(neighborhood)+"</span><div class='guideCost'><b>Typical food spend</b><span>"+cost+" / person</span></div><p class='guideType'>"+esc(description)+"</p><div class='guideReview'>"+onlineHtml+"<div class='guidePersonal'><span class='guidePersonalLabel'>Your rating</span>"+guideStarButtons(name,Number(review.rating||0))+"</div><div class='guideReviewActions'><button type='button' class='guideReviewToggle "+(review.favorite?"active":"")+"' data-favorite>Favorite</button><button type='button' class='guideReviewToggle "+(review.recommend?"active":"")+"' data-recommend>Would recommend</button><label class='guideVisited'><input type='checkbox' data-visited "+(review.visited?"checked":"")+"> Visited</label></div><textarea class='guideReviewNote' data-note placeholder='Add your private Roamwell note...'>"+esc(review.note||"")+"</textarea><button type='button' class='guideReviewSave' data-save-review>Save your experience</button></div><p class='guideNote'>Check current hours, menus and reservations before visiting.</p><div class='guideActions'><a class='guideButton primary' target='_blank' rel='noopener' href='"+maps(q)+"'>Open in Maps</a><a class='guideButton' target='_blank' rel='noopener' href='"+search(q+" official website")+"' >Website / hours</a><a class='guideButton' target='_blank' rel='noopener' href='"+search(q+" reviews")+"' >Reviews</a></div>";
 card.querySelectorAll("[data-guide-star]").forEach(function(btn){btn.onclick=function(){saveGuideReview(name,{rating:Number(btn.dataset.guideStar)});renderGuide()}});card.querySelector("[data-favorite]").onclick=function(){saveGuideReview(name,{favorite:!review.favorite});renderGuide()};card.querySelector("[data-recommend]").onclick=function(){saveGuideReview(name,{recommend:!review.recommend});renderGuide()};card.querySelector("[data-visited]").onchange=function(){saveGuideReview(name,{visited:this.checked});renderGuide()};card.querySelector("[data-save-review]").onclick=function(){saveGuideReview(name,{note:card.querySelector("[data-note]").value.trim()});this.textContent="Saved";setTimeout(function(){if(card.isConnected)card.querySelector("[data-save-review]").textContent="Save your experience"},900)};
 grid.appendChild(card)
