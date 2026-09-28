@@ -1223,9 +1223,14 @@ document.getElementById("magazineTitle").textContent=d.title;
 document.getElementById("magazineDeck").textContent=d.deck;
 document.getElementById("magazineStoryText").textContent=d.story;
 var gallery=magazineGalleryImages(name);
+var galleryPhotos=gallery.photos||[];
+var magazineFallback=(galleryPhotos[0]&&galleryPhotos[0][0])||"https://images.unsplash.com/photo-1579282240050-352db0a14c21?auto=format&fit=crop&fm=jpg&q=88&w=2200";
 for(var i=0;i<3;i++){
-document.getElementById("magazineImage"+(i+1)).src=gallery[i];
-document.getElementById("magazineImage"+(i+1)).alt=d.place+" editorial photography";
+var photo=(galleryPhotos[i]&&galleryPhotos[i][0])||magazineFallback;
+var imageEl=document.getElementById("magazineImage"+(i+1));
+imageEl.src=photo;
+imageEl.alt=d.place+" editorial photography";
+imageEl.onerror=function(){if(this.src!==magazineFallback)this.src=magazineFallback;};
 document.getElementById("magMoment"+(i+1)+"Title").textContent=d.mom[i][0]+" · "+d.mom[i][1];
 document.getElementById("magMoment"+(i+1)+"Text").textContent=d.mom[i][2];
 }
