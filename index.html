@@ -207,7 +207,8 @@ box.innerHTML=selected.map(function(name){
 var x=catalog[name],v=base[x[4]],href="trip.html?inspiration="+encodeURIComponent(x[4])+"&adventure="+encodeURIComponent(name)+"&magazine=1&v="+Date.now();
 return "<a class='suggestCard' href='"+href+"' aria-label='Explore "+esc(name)+" as a 7-day inspiration trip' style=\"--suggest-image:url('"+v.image+"')\"><div class='suggestContent'><div class='suggestTag'>"+esc(x[1])+"</div><h3>"+esc(name)+"</h3><p>"+esc(x[0])+" · "+esc(x[2])+"</p><span class='suggestAction'>"+esc(x[3])+" · Explore this trip</span></div></a>";
 }).join("");
-}\nfunction renderNextJourney(saved,current,upcoming,attention){
+}
+function renderNextJourney(saved,current,upcoming,attention){
 var box=document.getElementById("nextJourney");if(!box)return;
 var lead=upcoming.slice().sort(function(a,b){return (daysUntil((a.t||a).start)||999999)-(daysUntil((b.t||b).start)||999999)})[0]||current;
 var t=lead.t||lead,d=daysUntil(t.start),r=lead.r||{missing:[]};
