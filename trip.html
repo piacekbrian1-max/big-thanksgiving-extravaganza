@@ -818,16 +818,14 @@ var inspiration=params.get("inspiration"),adventure=params.get("adventure")||"";
 function makeInspirationTrip(name){
   var key=slug(name), profiles={
     "new orleans":{
-      title:"New Orleans · 7-Day Inspiration",
-      intro:"A food, music, history and neighborhood journey built to be customized.",
+      title:"New Orleans · Jan 16–20, 2027",
+      intro:"A five-day New Orleans trip built around Carnival season, local food, music, history and neighborhood exploration.",
       days:[
-        ["French Quarter arrival","Jackson Square, St. Louis Cathedral and the historic Quarter","Architecture walk + French Market + photo stops","Beignets and coffee; Creole dinner"],
-        ["Tremé & the roots of New Orleans","Louis Armstrong Park and Congo Square","Backstreet Cultural Museum + Tremé history walk","Dooky Chase's or a neighborhood Creole favorite"],
-        ["Garden District & Magazine Street","St. Charles Avenue and Garden District mansions","Streetcar ride + Magazine Street shops + Audubon Park","Local café lunch + Uptown dinner"],
-        ["City Park & culture","New Orleans Museum of Art and Besthoff Sculpture Garden","City Park + Bayou St. John + relaxed neighborhood time","Parkway Bakery & Tavern + local dinner"],
-        ["Marigny & Bywater","Colorful Marigny/Bywater streets and Crescent Park","Neighborhood art + Frenchmen Street live music","Ayu Bakehouse + N7 or another neighborhood dinner"],
-        ["Louisiana beyond the city","Bayou country and Louisiana landscapes","Swamp/bayou excursion or plantation/history day trip","Cajun/Creole dinner back in New Orleans"],
-        ["Choose your favorites","Return to the place you liked most","Last shopping, photos, café time and flexible exploring","Celebration dinner + final live music"]
+        ["Carnival kickoff + French Quarter","French Quarter + Jackson Square","French Market + Mississippi Riverfront","Local Creole/Cajun dinner + live music"],
+        ["Garden District + Magazine Street","St. Charles Avenue + Garden District","Magazine Street + neighborhood cafés","Local dinner + music"],
+        ["Culture + City Park","National WWII Museum","City Park + sculpture garden","Neighborhood restaurant"],
+        ["Neighborhoods + local food","Tremé + historic New Orleans","Mid-City + Bayou St. John","Local favorite restaurant + music"],
+        ["Favorites + flexible day","Return to a favorite area or must-see","King cake / café / shopping stop","Farewell dinner"]
       ]},
     "charleston":{
       title:"Charleston · 7-Day Inspiration",intro:"Historic streets, Lowcountry food, beaches and relaxed Southern evenings.",
@@ -951,32 +949,25 @@ function makeInspirationTrip(name){
       ["Beyond the center","Best nearby day trip or excursion","Scenic experience","Regional meal"],
       ["Choose your favorites","Return to your favorite area","Flexible shopping, photos and cafés","Farewell dinner"]
     ]};
-  var start=new Date();start.setDate(start.getDate()+14);var end=new Date(start);end.setDate(end.getDate()+6);
+  var start=new Date();var end;
+  if(key==="new orleans"){start=new Date("2027-01-16T12:00:00");end=new Date("2027-01-20T12:00:00")}
+  else {start.setDate(start.getDate()+14);end=new Date(start);end.setDate(end.getDate()+6)}
   function iso(d){return d.toISOString().slice(0,10)}
   var plan=p.days.map(function(x,i){var d=new Date(start);d.setDate(start.getDate()+i);return {day:i+1,date:iso(d),area:x[0],title:x[0],morning:x[1],afternoon:x[2],evening:x[3],note:"Inspiration day · edit any block, swap restaurants, change the pace, or remove the day entirely.",event:null,refreshCount:0}});
   if(key==="new orleans"){
-    var nolaPlan=[
-      ["French Quarter · Arrival","Jackson Square + St. Louis Cathedral","French Market + Mississippi Riverfront + historic architecture","Beignets and coffee · Creole dinner · French Quarter evening"],
-      ["Tremé · Roots & Culture","Louis Armstrong Park + Congo Square","Backstreet Cultural Museum + Tremé history walk","Dooky Chase's or another neighborhood Creole favorite"],
-      ["Garden District · Magazine Street","St. Charles Avenue + Garden District mansions","Streetcar ride + Magazine Street shops + Audubon Park","Local café + Uptown dinner · optional live music"],
-      ["City Park · Culture & Outdoors","New Orleans Museum of Art + Besthoff Sculpture Garden","City Park + Bayou St. John","Parkway Bakery & Tavern + relaxed neighborhood dinner"],
-      ["Marigny & Bywater · Local Life","Ayu Bakehouse + Washington Square Park","Crescent Park + St. Claude arts district","Frenchmen Street live music + N7 or neighborhood dinner"],
-      ["Louisiana Beyond New Orleans","Bayou/swamp excursion or Louisiana history day trip","Scenic Louisiana landscape + local culture","Cajun/Creole dinner back in New Orleans"],
-      ["New Orleans Favorites · Flexible","Return to the favorite neighborhood or must-see","King cake / café / shopping / photography time","Celebration dinner + final live music"]
-    ];
-    plan=nolaPlan.map(function(x,i){var d=new Date(start);d.setDate(start.getDate()+i);return {day:i+1,date:iso(d),area:x[0].split(" · ")[0],title:x[0],morning:x[1],afternoon:x[2],evening:x[3],note:"Roamwell New Orleans template day · keep this editable and cluster nearby stops to reduce backtracking.",event:null,refreshCount:0}});
+    plan=p.days.map(function(x,i){var d=new Date(start);d.setDate(start.getDate()+i);return {day:i+1,date:iso(d),area:x[0].split(" · ")[0],title:x[0],morning:x[1],afternoon:x[2],evening:x[3],note:"Roamwell New Orleans saved trip · keep this editable, cluster nearby stops, and leave room for Carnival events.",event:null,refreshCount:0}});
   }
   var rich=(key==="new orleans")?{
-    homeBase:"French Quarter / Central New Orleans",
+    homeBase:"Downtown / city center",
     groupType:"Couples / friends",
     preferences:["Local food","History & culture","Music & shows","Neighborhoods","Museums","Photography","Seasonal events"],
-    mustSee:["French Quarter & Jackson Square","Garden District & St. Charles Avenue","National WWII Museum","City Park & Besthoff Sculpture Garden","Tremé & Congo Square","Frenchmen Street live music","French Market"],
-    localFood:["Ayu Bakehouse","Parkway Bakery & Tavern","Domilise's Po-Boy & Bar","Dooky Chase's Restaurant","Neyow's Creole Café","N7","Restaurant August","Brennan's","Peche Seafood Grill","Preservation Hall"],
-    food:["Ayu Bakehouse","Parkway Bakery & Tavern","Domilise's Po-Boy & Bar","Dooky Chase's Restaurant","Neyow's Creole Café","N7","Restaurant August","Brennan's","Peche Seafood Grill","Preservation Hall"],
-    sights:["French Quarter & Jackson Square","St. Louis Cathedral","French Market","Tremé & Congo Square","Garden District & St. Charles Avenue","Magazine Street","National WWII Museum","New Orleans Museum of Art","Besthoff Sculpture Garden","Bayou St. John","Crescent Park","Frenchmen Street"],
+    mustSee:["French Quarter + Jackson Square","Garden District + St. Charles Avenue","National WWII Museum","City Park + sculpture garden","Tremé + Mid-City","Bayou St. John","French Market"],
+    localFood:["Dooky Chase’s Restaurant","Parkway Bakery & Tavern","Lilly’s Cafe","Neyow’s Creole Café","Domilise’s Po-Boy & Bar","Turkey and the Wolf"],
+    food:["Dooky Chase’s Restaurant","Parkway Bakery & Tavern","Lilly’s Cafe","Neyow’s Creole Café","Domilise’s Po-Boy & Bar","Turkey and the Wolf"],
+    sights:["French Quarter + Jackson Square","Garden District + St. Charles Avenue","National WWII Museum","City Park + sculpture garden","Tremé + Mid-City","Bayou St. John","French Market"],
     areas:["French Quarter","Tremé","Marigny / Bywater","Garden District / Uptown","Mid-City / City Park","Warehouse / CBD"],
     resources:["https://www.neworleans.com/plan/january-in-new-orleans/","https://www.neworleans.com/plan/neighborhoods/","https://www.neworleans.com/events/","https://nola.eater.com/maps/neighborhood-restaurant-bars-bakeries-new-orleans-locals-guide"],
-    weatherQuery:"New Orleans January weather",
+    weatherQuery:"New Orleans January 2027 weather",
     eventQuery:"New Orleans January 2027 events",
     camsQuery:"New Orleans French Quarter webcam",
     foodBudget:"Mixed — casual local food + one or two special dinners",
@@ -987,7 +978,7 @@ function makeInspirationTrip(name){
   if(rich){Object.keys(rich).forEach(function(k){if(rich[k]!==undefined){} });}
   // MASTER TEMPLATE: New Orleans is the reference build for every inspiration trip.
   // New destinations change the content, never the structure, intelligence, navigation or editable workflow.
-  var base={id:"inspiration-"+slug(name).replace(/ /g,"-")+"-"+Date.now(),name:p.title,travelers:2,start:iso(start),end:iso(end),destinations:[name],groupType:"Couples / friends",pace:"Balanced — see a lot without rushing",transport:"Walk + transit",preferences:["Local food","History & culture","Neighborhoods","Seasonal events","Photography"],mustSee:[],plan:plan,originalPlan:JSON.parse(JSON.stringify(plan)),smartVersion:2,status:"Inspiration · ready to edit",days:7,homeBase:"Downtown / city center",intro:p.intro,occasion:"Inspiration trip",foodBudget:"Mixed — casual + special dinners",mobility:"Normal walking",energy:"Balanced days",evening:"Mix of dinner and occasional nightlife",localFood:[],food:[],sights:[],areas:[],resources:[],weatherQuery:name+" weather",eventQuery:name+" events",camsQuery:name+" live webcam",created:new Date().toISOString(),isInspiration:true,templateVersion:"new-orleans-master-v1",masterTemplate:"New Orleans"};
+  var base={id:"inspiration-"+slug(name).replace(/ /g,"-")+"-"+Date.now(),name:p.title,travelers:2,start:iso(start),end:iso(end),destinations:[name],groupType:"Couples / friends",pace:"Balanced — see a lot without rushing",transport:"Walk + transit",preferences:["Local food","History & culture","Neighborhoods","Seasonal events","Photography"],mustSee:[],plan:plan,originalPlan:JSON.parse(JSON.stringify(plan)),smartVersion:2,status:key==="new orleans"?"Built — January trip updated":"Inspiration · ready to edit",days:p.days.length,homeBase:"Downtown / city center",intro:p.intro,occasion:"Inspiration trip",foodBudget:"Mixed — casual + special dinners",mobility:"Normal walking",energy:"Balanced days",evening:"Mix of dinner and occasional nightlife",localFood:[],food:[],sights:[],areas:[],resources:[],weatherQuery:name+" weather",eventQuery:name+" events",camsQuery:name+" live webcam",created:new Date().toISOString(),isInspiration:true,templateVersion:"new-orleans-master-v1",masterTemplate:"New Orleans"};
   if(rich)Object.keys(rich).forEach(function(k){base[k]=rich[k]});
   var dayRows=p.days||[];
   base.mustSee=dayRows.slice(0,Math.min(7,dayRows.length)).map(function(x){return x[1]});
@@ -995,12 +986,18 @@ function makeInspirationTrip(name){
   base.localFood=dayRows.map(function(x){return x[3]}).filter(Boolean).slice(0,10);
   base.food=base.localFood.slice();
   base.areas=dayRows.map(function(x){return x[0]}).slice(0,7);
-  base.resources=[
+  base.resources=key==="new orleans"?[
+    "https://www.neworleans.com/plan/january-in-new-orleans/",
+    "https://www.neworleans.com/events/year-at-a-glance/",
+    "https://www.neworleans.com/events/holidays-seasonal/mardi-gras/mardi-gras-parade-schedule/",
+    "https://nola.eater.com/maps/best-restaurants-new-orleans-38-map-nola"
+  ]:[
     "https://www.google.com/search?q="+encodeURIComponent(name+" official tourism"),
     "https://www.google.com/search?q="+encodeURIComponent(name+" events"),
     "https://www.google.com/search?q="+encodeURIComponent(name+" restaurants local guide"),
     "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(name)
   ];
+  base.eventHighlights=key==="new orleans"?["Jan 16 · Intergalactic Krewe of Chewbacchus","Carnival season · Jan 6–Feb 9, 2027"]:[];
   base.guideCategory="Dinner";
   base.guideCuisine="All cuisines";
   base.guideData={
