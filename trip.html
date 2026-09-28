@@ -975,17 +975,26 @@ function makeInspirationTrip(name){
     energy:"Balanced days",
     evening:"Mix of live music, neighborhood dinners and relaxed evenings"
   }:null;
-  if(rich){Object.keys(rich).forEach(function(k){if(rich[k]!==undefined){} });}
   // MASTER TEMPLATE: New Orleans is the reference build for every inspiration trip.
   // New destinations change the content, never the structure, intelligence, navigation or editable workflow.
   var base={id:"inspiration-"+slug(name).replace(/ /g,"-")+"-"+Date.now(),name:p.title,travelers:2,start:iso(start),end:iso(end),destinations:[name],groupType:"Couples / friends",pace:"Balanced — see a lot without rushing",transport:"Walk + transit",preferences:["Local food","History & culture","Neighborhoods","Seasonal events","Photography"],mustSee:[],plan:plan,originalPlan:JSON.parse(JSON.stringify(plan)),smartVersion:2,status:key==="new orleans"?"Built — January trip updated":"Inspiration · ready to edit",days:p.days.length,homeBase:"Downtown / city center",intro:p.intro,occasion:"Inspiration trip",foodBudget:"Mixed — casual + special dinners",mobility:"Normal walking",energy:"Balanced days",evening:"Mix of dinner and occasional nightlife",localFood:[],food:[],sights:[],areas:[],resources:[],weatherQuery:name+" weather",eventQuery:name+" events",camsQuery:name+" live webcam",created:new Date().toISOString(),isInspiration:true,templateVersion:"new-orleans-master-v1",masterTemplate:"New Orleans"};
   if(rich)Object.keys(rich).forEach(function(k){base[k]=rich[k]});
   var dayRows=p.days||[];
-  base.mustSee=dayRows.slice(0,Math.min(7,dayRows.length)).map(function(x){return x[1]});
-  base.sights=dayRows.map(function(x){return x[1]}).concat(dayRows.map(function(x){return x[2]})).slice(0,12);
-  base.localFood=dayRows.map(function(x){return x[3]}).filter(Boolean).slice(0,10);
-  base.food=base.localFood.slice();
-  base.areas=dayRows.map(function(x){return x[0]}).slice(0,7);
+  // IMPORTANT: never let the generic destination fallback overwrite the saved New Orleans master data.
+  if(key==="new orleans"){
+    base.mustSee=rich.mustSee.slice();
+    base.sights=rich.sights.slice();
+    base.localFood=rich.localFood.slice();
+    base.food=rich.food.slice();
+    base.areas=rich.areas.slice();
+    base.nolaTemplateVersion="2026-09-28-v4";
+  }else{
+    base.mustSee=dayRows.slice(0,Math.min(7,dayRows.length)).map(function(x){return x[1]});
+    base.sights=dayRows.map(function(x){return x[1]}).concat(dayRows.map(function(x){return x[2]})).slice(0,12);
+    base.localFood=dayRows.map(function(x){return x[3]}).filter(Boolean).slice(0,10);
+    base.food=base.localFood.slice();
+    base.areas=dayRows.map(function(x){return x[0]}).slice(0,7);
+  }
   base.resources=key==="new orleans"?[
     "https://www.neworleans.com/plan/january-in-new-orleans/",
     "https://www.neworleans.com/events/year-at-a-glance/",
@@ -1020,7 +1029,7 @@ function makeInspirationTrip(name){
 if(inspiration){
   var tempKey="roamwell-inspiration-"+slug(inspiration)+"-"+slug(adventure||"classic");
   try{trip=JSON.parse(sessionStorage.getItem(tempKey)||"null")}catch(e){trip=null}
-  if(!trip||!trip.isInspiration||!trip.destinations||trip.destinations[0]!==inspiration||String(trip.adventure||"")!==String(adventure||"")||(String(inspiration||"").toLowerCase()==="new orleans"&&(!trip.nolaTemplateVersion||trip.nolaTemplateVersion!=="2026-09-28-v3"||trip.templateVersion!=="new-orleans-master-v1"||!Array.isArray(trip.mustSee)||trip.mustSee.length<7||!Array.isArray(trip.sights)||trip.sights.length<10||!Array.isArray(trip.food)||trip.food.length<10||!Array.isArray(trip.plan)||trip.plan.length!==7))){
+  if(!trip||!trip.isInspiration||!trip.destinations||trip.destinations[0]!==inspiration||String(trip.adventure||"")!==String(adventure||"")||(String(inspiration||"").toLowerCase()==="new orleans"&&(!trip.nolaTemplateVersion||trip.nolaTemplateVersion!=="2026-09-28-v4"||trip.templateVersion!=="new-orleans-master-v1"||!Array.isArray(trip.mustSee)||trip.mustSee.length<7||!Array.isArray(trip.sights)||trip.sights.length<10||!Array.isArray(trip.food)||trip.food.length<6||!Array.isArray(trip.plan)||trip.plan.length!==5))){
     trip=makeInspirationTrip(inspiration);
     trip.adventure=adventure||"";
     if(adventure){
