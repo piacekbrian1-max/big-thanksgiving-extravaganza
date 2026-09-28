@@ -990,7 +990,7 @@ function makeInspirationTrip(name){
 if(inspiration){
   var tempKey="roamwell-inspiration-"+slug(inspiration)+"-"+slug(adventure||"classic");
   try{trip=JSON.parse(sessionStorage.getItem(tempKey)||"null")}catch(e){trip=null}
-  if(!trip||!trip.isInspiration||trip.destinations[0]!==inspiration||String(trip.adventure||"")!==String(adventure||"")){
+  if(!trip||!trip.isInspiration||trip.destinations[0]!==inspiration||String(trip.adventure||"")!==String(adventure||"")||(String(inspiration||"").toLowerCase()==="new orleans"&&(!trip.mustSee||trip.mustSee.length<7||!trip.sights||trip.sights.length<10||!trip.plan||!trip.plan[0]||String(trip.plan[0].morning||"").indexOf("Jackson Square")<0))){
     trip=makeInspirationTrip(inspiration);
     trip.adventure=adventure||"";
     if(adventure){
