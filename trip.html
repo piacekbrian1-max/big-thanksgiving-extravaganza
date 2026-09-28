@@ -985,12 +985,13 @@ function makeInspirationTrip(name){
     evening:"Mix of live music, neighborhood dinners and relaxed evenings"
   }:null;
   if(rich){Object.keys(rich).forEach(function(k){if(rich[k]!==undefined){} });}
-  var base={id:"inspiration-"+slug(name).replace(/ /g,"-")+"-"+Date.now(),name:p.title,travelers:2,start:iso(start),end:iso(end),destinations:[name],groupType:"Couples / friends",pace:"Balanced — see a lot without rushing",transport:"Walk + transit",preferences:["Local food","History & culture","Neighborhoods","Seasonal events","Photography"],mustSee:[],plan:plan,originalPlan:JSON.parse(JSON.stringify(plan)),smartVersion:2,status:"Inspiration · ready to edit",days:7,homeBase:"Downtown / city center",intro:p.intro,occasion:"Inspiration trip",foodBudget:"Mixed — casual + special dinners",mobility:"Normal walking",energy:"Balanced days",evening:"Mix of dinner and occasional nightlife",localFood:[],food:[],sights:[],areas:[],resources:[],created:new Date().toISOString(),isInspiration:true};\n  if(rich)Object.keys(rich).forEach(function(k){base[k]=rich[k]});\n  return base;
+  var base={id:"inspiration-"+slug(name).replace(/ /g,"-")+"-"+Date.now(),name:p.title,travelers:2,start:iso(start),end:iso(end),destinations:[name],groupType:"Couples / friends",pace:"Balanced — see a lot without rushing",transport:"Walk + transit",preferences:["Local food","History & culture","Neighborhoods","Seasonal events","Photography"],mustSee:[],plan:plan,originalPlan:JSON.parse(JSON.stringify(plan)),smartVersion:2,status:"Inspiration · ready to edit",days:7,homeBase:"Downtown / city center",intro:p.intro,occasion:"Inspiration trip",foodBudget:"Mixed — casual + special dinners",mobility:"Normal walking",energy:"Balanced days",evening:"Mix of dinner and occasional nightlife",localFood:[],food:[],sights:[],areas:[],resources:[],created:new Date().toISOString(),isInspiration:true};\n  if(rich)Object.keys(rich).forEach(function(k){base[k]=rich[k]});
+  if(key==="new orleans")base.nolaTemplateVersion="2026-09-28-v2";\n  return base;
 }
 if(inspiration){
   var tempKey="roamwell-inspiration-"+slug(inspiration)+"-"+slug(adventure||"classic");
   try{trip=JSON.parse(sessionStorage.getItem(tempKey)||"null")}catch(e){trip=null}
-  if(!trip||!trip.isInspiration||trip.destinations[0]!==inspiration||String(trip.adventure||"")!==String(adventure||"")){
+  if(!trip||!trip.isInspiration||!trip.destinations||trip.destinations[0]!==inspiration||String(trip.adventure||"")!==String(adventure||"")||(String(inspiration||"").toLowerCase()==="new orleans"&&(!trip.nolaTemplateVersion||trip.nolaTemplateVersion!=="2026-09-28-v2"||!Array.isArray(trip.mustSee)||trip.mustSee.length<7||!Array.isArray(trip.sights)||trip.sights.length<10||!Array.isArray(trip.food)||trip.food.length<10||!Array.isArray(trip.plan)||trip.plan.length!==7))){
     trip=makeInspirationTrip(inspiration);
     trip.adventure=adventure||"";
     if(adventure){
