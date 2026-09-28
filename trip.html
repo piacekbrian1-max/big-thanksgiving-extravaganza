@@ -431,7 +431,7 @@ button,a{max-width:100%}
 
 <header class="hero" id="home">
 <div class="coverGrid">
-<div class="coverMain"><img id="heroMain" src="https://images.unsplash.com/photo-1525994886773-080587e161c2?auto=format&fit=crop&fm=jpg&q=88&w=3000" alt=""><div class="heroPhotoCredit" id="heroPhotoCredit">Photo · destination editorial image</div><div class="coverCaption"><div class="eyebrow" id="heroEyebrow">YOUR TRIP · SMARTLY PLANNED</div><h1 id="heroTitle">Trip</h1><p id="heroText">A magazine-style trip workspace that plans around your home base, interests, pace, dates and travel group.</p><div class="heroActions"><a class="btn primary" id="heroPrimaryAction" href="#itinerary">Explore the journey</a><a class="btn" id="routeMap" target="_blank">Open route map</a><a class="btn" href="index.html">Home</a></div></div></div>
+<div class="coverMain"><img id="heroMain" src="https://images.unsplash.com/photo-1525994886773-080587e161c2?auto=format&fit=crop&fm=jpg&q=88&w=3000" alt=""><div class="heroPhotoCredit" id="heroPhotoCredit">Photo · destination editorial image</div><div class="coverCaption"><div class="eyebrow" id="heroEyebrow">YOUR TRIP · SMARTLY PLANNED</div><h1 id="heroTitle">Trip</h1><p id="heroText">A magazine-style trip workspace that plans around your home base, interests, pace, dates and travel group.</p><div class="heroActions"><a class="btn primary" id="heroPrimaryAction" href="#itinerary">Explore the journey</a><button type="button" class="btn inspirationMakeMine" id="makeMineBtn" onclick="makeThisMine()" style="display:none">Make This My Trip</button><a class="btn" id="routeMap" target="_blank">Open route map</a><a class="btn" href="index.html">Home</a></div></div></div>
 <div class="coverSide"><div><img id="heroSide1" src="https://images.unsplash.com/photo-1689568914860-4ecf6e58099c?auto=format&fit=crop&fm=jpg&q=88&w=2400" alt=""><div class="coverMini" id="side1Label">Destination</div></div><div><img id="heroSide2" src="https://images.unsplash.com/photo-1525994886773-080587e161c2?auto=format&fit=crop&fm=jpg&q=88&w=2400" alt=""><div class="coverMini" id="side2Label">Local character</div></div></div>
 </div>
 <div class="weatherLead" id="weatherLead"><div class="weatherLeadIntro"><b>Trip weather</b><span>Current conditions · stay averages</span></div></div>
@@ -748,17 +748,43 @@ function makeInspirationTrip(name){
   return {id:"inspiration-"+slug(name).replace(/ /g,"-")+"-"+Date.now(),name:p.title,travelers:2,start:iso(start),end:iso(end),destinations:[name],groupType:"Couples / friends",pace:"Balanced — see a lot without rushing",transport:"Walk + transit",preferences:["Local food","History & culture","Neighborhoods","Seasonal events","Photography"],mustSee:[],plan:plan,originalPlan:JSON.parse(JSON.stringify(plan)),smartVersion:2,status:"Inspiration · ready to edit",days:7,homeBase:"Downtown / city center",intro:p.intro,occasion:"Inspiration trip",foodBudget:"Mixed — casual + special dinners",mobility:"Normal walking",energy:"Balanced days",evening:"Mix of dinner and occasional nightlife",localFood:[],food:[],sights:[],areas:[],resources:[],created:new Date().toISOString(),isInspiration:true};
 }
 if(inspiration){
-  trip=makeInspirationTrip(inspiration);
-  trips.push(trip);
-  localStorage.setItem(KEY,JSON.stringify(trips));
-  sessionStorage.setItem("openTripId",trip.id);
+  var tempKey="roamwell-inspiration-"+slug(inspiration);
+  try{trip=JSON.parse(sessionStorage.getItem(tempKey)||"null")}catch(e){trip=null}
+  if(!trip||!trip.isInspiration||trip.name!==makeInspirationTrip(inspiration).name){
+    trip=makeInspirationTrip(inspiration);
+    sessionStorage.setItem(tempKey,JSON.stringify(trip));
+  }
   id=trip.id;
 }else{
   trip=trips.find(function(t){return t.id===id})||trips[trips.length-1];
 }
 if(!trip){location.href="my-trips.html";return}
 function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
-function save(){var a=load(),i=a.findIndex(function(t){return t.id===trip.id});if(i>=0)a[i]=trip;else a.push(trip);localStorage.setItem(KEY,JSON.stringify(a));sessionStorage.setItem("openTripId",trip.id)}
+function save(){
+  if(trip.isInspiration&&!trip.isPromoted){
+    sessionStorage.setItem("roamwell-inspiration-"+slug((trip.destinations||[])[0]||trip.name),JSON.stringify(trip));
+    return;
+  }
+  var a=load(),i=a.findIndex(function(t){return t.id===trip.id});if(i>=0)a[i]=trip;else a.push(trip);
+  localStorage.setItem(KEY,JSON.stringify(a));sessionStorage.setItem("openTripId",trip.id)
+}
+window.makeThisMine=function(){
+  if(!trip||!trip.isInspiration)return;
+  var copy=JSON.parse(JSON.stringify(trip));
+  copy.id="trip-"+Date.now();
+  copy.isInspiration=false;
+  copy.isPromoted=true;
+  copy.status="Planning";
+  copy.occasion="";
+  copy.created=new Date().toISOString();
+  var a=load();a.push(copy);localStorage.setItem(KEY,JSON.stringify(a));
+  sessionStorage.setItem("openTripId",copy.id);
+  trip=copy;
+  var tempKey="roamwell-inspiration-"+slug((copy.destinations||[])[0]||copy.name);
+  sessionStorage.removeItem(tempKey);
+  renderHeader();renderRoute();renderDestinations();renderPlan();renderGuide();renderMyRoamwell();renderEvents();renderWeather();renderCams();renderTravel();renderBudget();renderMemories();renderResources();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
 function arr(v){return (v||"").split(/[,\n]/).map(function(x){return x.trim()}).filter(Boolean)}
 function slug(s){return String(s||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim()}
 function dates(){var a=new Date(trip.start+"T12:00:00"),b=new Date(trip.end+"T12:00:00");return {a:a,b:b,n:Math.max(1,Math.round((b-a)/86400000)+1)}}
@@ -1056,6 +1082,7 @@ var d0=ds[0]||"";document.getElementById("heroMain").src=destinationImage(d0,0);
 document.getElementById("heroSide1").src=destinationImage(d0,1);document.getElementById("heroSide2").src=destinationImage(d0,2);document.getElementById("side1Label").textContent=d0+" · local character";document.getElementById("side2Label").textContent=d0+" · seasonal atmosphere";
  document.getElementById("heroPhotoCredit").textContent=slug(d0).indexOf("new orleans")>=0?"Curated destination photography":"Destination editorial image";
 document.getElementById("routeMap").href="https://www.google.com/maps/dir/"+encodeURIComponent((trip.homeBase||"Downtown "+d0))+"/"+encodeURIComponent(d0);
+var mine=document.getElementById("makeMineBtn");if(mine){mine.style.display=trip.isInspiration?"inline-flex":"none";mine.textContent=trip.isInspiration?"MAKE THIS MY TRIP":"MAKE THIS MY TRIP";}
 }
 function renderRoute(){
 var ds=trip.destinations||[],e=document.getElementById("routeLine");e.innerHTML="";for(var i=0;i<ds.length;i++){var x=document.createElement("div");x.className="stop";x.innerHTML="<div class='dot'></div><b>"+esc(ds[i])+"</b><small>"+(i===0?"Home base":i===ds.length-1?"Final stop":"Stop "+(i+1))+"</small>";e.appendChild(x)}
