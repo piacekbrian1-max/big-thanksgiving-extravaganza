@@ -486,7 +486,58 @@ button,a{max-width:100%}
 .magazineMoment p{font-size:10px;line-height:1.55;color:var(--muted);margin:7px 0 0}
 @media(max-width:900px){.magazineLayout{grid-template-columns:1fr}.magazineVisuals{min-height:420px}}
 @media(max-width:600px){.magazineGalleryHead{display:block}.magazineGalleryHead>span{display:block;text-align:left;margin-top:8px}.magazineGallery{grid-template-columns:1fr 1fr;grid-auto-rows:150px}.magazineGallery a:first-child{grid-column:span 2}.magazineGallery a:nth-child(6){grid-column:span 1}.magazineLightbox{padding:20px}.magazineIntro{padding:52px 0 0}.magazineStory{padding:28px 24px}.magazineVisuals{grid-template-columns:1fr 1fr;min-height:330px}.magazineVisual.large{grid-column:1 / span 2;grid-row:auto;min-height:250px}.magazineMoments{grid-template-columns:1fr}}
-</style></head>
+/* Roamwell magazine editorial order: story first, feature photography second, gallery third */
+.magazineLayout{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:24px!important;
+}
+.magazineStory{
+  width:100%!important;
+  max-width:none!important;
+  order:1!important;
+}
+.magazineVisuals{
+  order:2!important;
+  width:100%!important;
+  display:grid!important;
+  grid-template-columns:2fr 1fr 1fr!important;
+  min-height:420px!important;
+}
+.magazineVisual.large{
+  grid-column:auto!important;
+  grid-row:auto!important;
+}
+.magazineGalleryHead{
+  order:3!important;
+  width:100%!important;
+  margin-top:10px!important;
+}
+.magazineGallery{
+  order:4!important;
+  width:100%!important;
+}
+@media(max-width:900px){
+  .magazineVisuals{
+    grid-template-columns:1fr 1fr!important;
+    min-height:420px!important;
+  }
+  .magazineVisual.large{
+    grid-column:1 / span 2!important;
+    min-height:260px!important;
+  }
+}
+@media(max-width:600px){
+  .magazineLayout{gap:18px!important}
+  .magazineVisuals{
+    grid-template-columns:1fr 1fr!important;
+    min-height:330px!important;
+  }
+  .magazineVisual.large{
+    grid-column:1 / span 2!important;
+    min-height:220px!important;
+  }
+}</style></head>
 <body>
 <header class="top"><div class="nav">
 <a class="logo" href="index.html"><span class="logoMark">TRIP</span><span><strong id="brand" class="logoRoam">ROAMWELL</strong><small class="logoTag">TRAVEL BETTER · REMEMBER MORE</small></span></a>
