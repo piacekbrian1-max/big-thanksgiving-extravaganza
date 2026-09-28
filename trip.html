@@ -954,7 +954,38 @@ function makeInspirationTrip(name){
   var start=new Date();start.setDate(start.getDate()+14);var end=new Date(start);end.setDate(end.getDate()+6);
   function iso(d){return d.toISOString().slice(0,10)}
   var plan=p.days.map(function(x,i){var d=new Date(start);d.setDate(start.getDate()+i);return {day:i+1,date:iso(d),area:x[0],title:x[0],morning:x[1],afternoon:x[2],evening:x[3],note:"Inspiration day · edit any block, swap restaurants, change the pace, or remove the day entirely.",event:null,refreshCount:0}});
-  return {id:"inspiration-"+slug(name).replace(/ /g,"-")+"-"+Date.now(),name:p.title,travelers:2,start:iso(start),end:iso(end),destinations:[name],groupType:"Couples / friends",pace:"Balanced — see a lot without rushing",transport:"Walk + transit",preferences:["Local food","History & culture","Neighborhoods","Seasonal events","Photography"],mustSee:[],plan:plan,originalPlan:JSON.parse(JSON.stringify(plan)),smartVersion:2,status:"Inspiration · ready to edit",days:7,homeBase:"Downtown / city center",intro:p.intro,occasion:"Inspiration trip",foodBudget:"Mixed — casual + special dinners",mobility:"Normal walking",energy:"Balanced days",evening:"Mix of dinner and occasional nightlife",localFood:[],food:[],sights:[],areas:[],resources:[],created:new Date().toISOString(),isInspiration:true};
+  if(key==="new orleans"){
+    var nolaPlan=[
+      ["French Quarter · Arrival","Jackson Square + St. Louis Cathedral","French Market + Mississippi Riverfront + historic architecture","Beignets and coffee · Creole dinner · French Quarter evening"],
+      ["Tremé · Roots & Culture","Louis Armstrong Park + Congo Square","Backstreet Cultural Museum + Tremé history walk","Dooky Chase's or another neighborhood Creole favorite"],
+      ["Garden District · Magazine Street","St. Charles Avenue + Garden District mansions","Streetcar ride + Magazine Street shops + Audubon Park","Local café + Uptown dinner · optional live music"],
+      ["City Park · Culture & Outdoors","New Orleans Museum of Art + Besthoff Sculpture Garden","City Park + Bayou St. John","Parkway Bakery & Tavern + relaxed neighborhood dinner"],
+      ["Marigny & Bywater · Local Life","Ayu Bakehouse + Washington Square Park","Crescent Park + St. Claude arts district","Frenchmen Street live music + N7 or neighborhood dinner"],
+      ["Louisiana Beyond New Orleans","Bayou/swamp excursion or Louisiana history day trip","Scenic Louisiana landscape + local culture","Cajun/Creole dinner back in New Orleans"],
+      ["New Orleans Favorites · Flexible","Return to the favorite neighborhood or must-see","King cake / café / shopping / photography time","Celebration dinner + final live music"]
+    ];
+    plan=nolaPlan.map(function(x,i){var d=new Date(start);d.setDate(start.getDate()+i);return {day:i+1,date:iso(d),area:x[0].split(" · ")[0],title:x[0],morning:x[1],afternoon:x[2],evening:x[3],note:"Roamwell New Orleans template day · keep this editable and cluster nearby stops to reduce backtracking.",event:null,refreshCount:0}});
+  }
+  var rich=(key==="new orleans")?{
+    homeBase:"French Quarter / Central New Orleans",
+    groupType:"Couples / friends",
+    preferences:["Local food","History & culture","Music & shows","Neighborhoods","Museums","Photography","Seasonal events"],
+    mustSee:["French Quarter & Jackson Square","Garden District & St. Charles Avenue","National WWII Museum","City Park & Besthoff Sculpture Garden","Tremé & Congo Square","Frenchmen Street live music","French Market"],
+    localFood:["Ayu Bakehouse","Parkway Bakery & Tavern","Domilise's Po-Boy & Bar","Dooky Chase's Restaurant","Neyow's Creole Café","N7","Restaurant August","Brennan's","Peche Seafood Grill","Preservation Hall"],
+    food:["Ayu Bakehouse","Parkway Bakery & Tavern","Domilise's Po-Boy & Bar","Dooky Chase's Restaurant","Neyow's Creole Café","N7","Restaurant August","Brennan's","Peche Seafood Grill","Preservation Hall"],
+    sights:["French Quarter & Jackson Square","St. Louis Cathedral","French Market","Tremé & Congo Square","Garden District & St. Charles Avenue","Magazine Street","National WWII Museum","New Orleans Museum of Art","Besthoff Sculpture Garden","Bayou St. John","Crescent Park","Frenchmen Street"],
+    areas:["French Quarter","Tremé","Marigny / Bywater","Garden District / Uptown","Mid-City / City Park","Warehouse / CBD"],
+    resources:["https://www.neworleans.com/plan/january-in-new-orleans/","https://www.neworleans.com/plan/neighborhoods/","https://www.neworleans.com/events/","https://nola.eater.com/maps/neighborhood-restaurant-bars-bakeries-new-orleans-locals-guide"],
+    weatherQuery:"New Orleans January weather",
+    eventQuery:"New Orleans January 2027 events",
+    camsQuery:"New Orleans French Quarter webcam",
+    foodBudget:"Mixed — casual local food + one or two special dinners",
+    mobility:"Normal walking",
+    energy:"Balanced days",
+    evening:"Mix of live music, neighborhood dinners and relaxed evenings"
+  }:null;
+  if(rich){Object.keys(rich).forEach(function(k){if(rich[k]!==undefined){} });}
+  var base={id:"inspiration-"+slug(name).replace(/ /g,"-")+"-"+Date.now(),name:p.title,travelers:2,start:iso(start),end:iso(end),destinations:[name],groupType:"Couples / friends",pace:"Balanced — see a lot without rushing",transport:"Walk + transit",preferences:["Local food","History & culture","Neighborhoods","Seasonal events","Photography"],mustSee:[],plan:plan,originalPlan:JSON.parse(JSON.stringify(plan)),smartVersion:2,status:"Inspiration · ready to edit",days:7,homeBase:"Downtown / city center",intro:p.intro,occasion:"Inspiration trip",foodBudget:"Mixed — casual + special dinners",mobility:"Normal walking",energy:"Balanced days",evening:"Mix of dinner and occasional nightlife",localFood:[],food:[],sights:[],areas:[],resources:[],created:new Date().toISOString(),isInspiration:true};\n  if(rich)Object.keys(rich).forEach(function(k){base[k]=rich[k]});\n  return base;
 }
 if(inspiration){
   var tempKey="roamwell-inspiration-"+slug(inspiration)+"-"+slug(adventure||"classic");
