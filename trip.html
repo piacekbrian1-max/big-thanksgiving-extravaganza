@@ -537,6 +537,34 @@ button,a{max-width:100%}
     grid-column:1 / span 2!important;
     min-height:220px!important;
   }
+}
+/* Tight editorial spacing: keep the feature-photo row at its content height */
+.magazineVisuals{
+  height:340px!important;
+  min-height:0!important;
+  grid-auto-rows:1fr!important;
+  align-items:stretch!important;
+}
+.magazineVisual{
+  min-height:0!important;
+}
+.magazineGalleryHead{
+  margin-top:0!important;
+  padding-top:22px!important;
+}
+@media(max-width:900px){
+  .magazineVisuals{
+    height:420px!important;
+    min-height:0!important;
+  }
+}
+@media(max-width:600px){
+  .magazineVisuals{
+    height:330px!important;
+  }
+  .magazineGalleryHead{
+    padding-top:18px!important;
+  }
 }</style></head>
 <body>
 <header class="top"><div class="nav">
