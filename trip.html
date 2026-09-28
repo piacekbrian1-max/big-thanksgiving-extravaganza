@@ -603,7 +603,7 @@ document.addEventListener("click",function(e){if(tripNav&&tripNav.classList.cont
 document.addEventListener("keydown",function(e){if(e.key==="Escape")closeTripMenu()});
 var KEY="big-thanksgiving-trips-v1";
 var params=new URLSearchParams(location.search),id=params.get("id")||sessionStorage.getItem("openTripId");
-function load(){try{return JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){return[]}}
+function isInspirationRecord(t){var suggestionNames=["Charleston","Santa Fe","New York City","Lisbon","Vienna","Kyoto","Savannah","Montreal","Barcelona","Munich"];return !!(t&&(t.isInspiration||/^Inspiration/.test(String(t.status||""))||suggestionNames.indexOf(String(t.name||""))>=0))}\nfunction load(){try{var a=JSON.parse(localStorage.getItem(KEY)||"[]");var clean=a.filter(function(t){return !isInspirationRecord(t)});if(clean.length!==a.length)localStorage.setItem(KEY,JSON.stringify(clean));return clean}catch(e){return[]}}
 var trips=load(),trip=null;
 // Inspiration previews must never live in My Trips. Clean up any older preview records created by the previous behavior.
 if(trips.some(function(t){return t&&t.isInspiration&&!t.isPromoted})){
