@@ -1034,7 +1034,7 @@ if(inspiration){
   if(!trip||!trip.isInspiration||!trip.destinations||trip.destinations[0]!==inspiration||String(trip.adventure||"")!==String(adventure||"")||!Array.isArray(trip.plan)||trip.plan.length!==5||(String(inspiration||"").toLowerCase()==="new orleans"&&(!trip.nolaTemplateVersion||trip.nolaTemplateVersion!=="2026-09-28-v5"||trip.templateVersion!=="new-orleans-master-v1"||trip.masterTemplate!=="new-orleans-master-v2"||!Array.isArray(trip.mustSee)||trip.mustSee.length<7||!Array.isArray(trip.sights)||trip.sights.length<10||!Array.isArray(trip.food)||trip.food.length<10))){
     trip=makeInspirationTrip(inspiration);
     trip.adventure=adventure||"";
-    if(adventure){
+    if(adventure && String(inspiration||"").toLowerCase()!=="new orleans"){
       trip.name=adventure+" · 5-Day Inspiration";
       trip.intro="A seasonal Roamwell adventure combining the destination's signature character with "+adventure.split(" · ").slice(-1)[0].toLowerCase()+".";
       trip.occasion="Adventure inspiration";
