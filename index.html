@@ -79,7 +79,7 @@ hluboka:"images/hluboka-winter.jpg",
 vienna:"images/prague-christmas.jpg",
 neworleans:"https://res.cloudinary.com/simpleview/image/upload/v1503612209/clients/neworleans/NOTMC_46619_dfd8fba4-531f-4e0b-81dc-40d770236b88.jpg"
 };
-function load(){try{return JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){return[]}}
+function load(){try{var a=JSON.parse(localStorage.getItem(KEY)||"[]");var clean=a.filter(function(t){return !(t&&t.isInspiration&&!t.isPromoted)});if(clean.length!==a.length)localStorage.setItem(KEY,JSON.stringify(clean));return clean}catch(e){return[]}}
 function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
 function photo(t){
 var ds=(t.destinations||[]);for(var i=0;i<ds.length;i++){var k=ds[i].toLowerCase();if(k.indexOf("trnava")>=0)return images.trnava;if(k.indexOf("prague")>=0)return images.prague;if(k.indexOf("pilsen")>=0)return images.pilsen;if(k.indexOf("hlub")>=0)return images.hluboka;if(k.indexOf("vienna")>=0)return images.vienna;if(k.indexOf("new orleans")>=0||k.indexOf("nola")>=0)return images.neworleans}return images.prague
