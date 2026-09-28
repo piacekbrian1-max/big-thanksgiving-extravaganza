@@ -9,7 +9,7 @@ body{margin:0;background:#f5f2ea;color:#172222;font-family:Arial,sans-serif}.wra
 <script>
 (function(){
 var KEY="big-thanksgiving-trips-v1";
-function load(){try{var a=JSON.parse(localStorage.getItem(KEY)||"[]");var clean=a.filter(function(t){return !(t&&t.isInspiration&&!t.isPromoted)});if(clean.length!==a.length)localStorage.setItem(KEY,JSON.stringify(clean));return clean}catch(e){return[]}}
+function isInspirationRecord(t){var suggestionNames=["Charleston","Santa Fe","New York City","Lisbon","Vienna","Kyoto","Savannah","Montreal","Barcelona","Munich"];return !!(t&&(t.isInspiration||/^Inspiration/.test(String(t.status||""))||suggestionNames.indexOf(String(t.name||""))>=0))}\nfunction load(){try{var a=JSON.parse(localStorage.getItem(KEY)||"[]");var clean=a.filter(function(t){return !isInspirationRecord(t)});if(clean.length!==a.length)localStorage.setItem(KEY,JSON.stringify(clean));return clean}catch(e){return[]}}
 function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
 function render(){var el=document.getElementById("tripList"),a=load();el.innerHTML="";if(!a.length){el.innerHTML='<div class="empty">No saved trips yet. Build your first new trip.</div>';return}
 for(var i=a.length-1;i>=0;i--){var t=a[i],d=document.createElement("div");d.className="trip";d.innerHTML="<div><b>"+esc(t.name)+"</b><small>"+esc((t.destinations||[]).join(" · "))+" · "+(t.days||"")+" days · "+esc(t.status||"Planning")+"</small></div><div><button onclick='openTrip("+JSON.stringify(t.id)+")'>Open trip</button> <button onclick='deleteTrip("+JSON.stringify(t.id)+")'>Delete</button></div>";el.appendChild(d)}}
