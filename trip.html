@@ -437,7 +437,31 @@ button,a{max-width:100%}
   border-color:#d8bb6c!important;
   transform:translateY(-1px);
 }
-</style></head>
+<style id="roamwell-magazine-style">
+.magazineIntro{display:none;padding:70px 0 10px}
+.magazineIntro.isVisible{display:block}
+.magazineKicker{font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:#967b35;font-weight:700}
+.magazineLayout{display:grid;grid-template-columns:1.08fr .92fr;gap:34px;align-items:stretch}
+.magazineStory{background:#17372d;color:#f4f0e5;border-radius:16px;padding:38px 42px;display:flex;flex-direction:column;justify-content:center}
+.magazineStory h2{font:600 clamp(38px,4.5vw,68px)/.98 "Playfair Display",serif;margin:12px 0 18px;letter-spacing:-.02em}
+.magazineStory p{font-size:13px;line-height:1.8;color:#d5dfda;max-width:680px;margin:0 0 18px}
+.magazineStory .magazineDeck{font-size:15px;line-height:1.65;color:#f0e6c5;margin-bottom:18px}
+.magazineByline{font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:#dec476;margin-top:8px}
+.magazineVisuals{display:grid;grid-template-columns:1.35fr .65fr;grid-template-rows:1fr 1fr;gap:10px;min-height:430px}
+.magazineVisual{position:relative;overflow:hidden;border-radius:12px;background:#d8d1c1;min-height:190px}
+.magazineVisual.large{grid-row:1 / span 2}
+.magazineVisual img{width:100%;height:100%;display:block;object-fit:cover;transition:transform .6s ease}
+.magazineVisual:hover img{transform:scale(1.035)}
+.magazineVisual:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#07161375,transparent 55%)}
+.magazineCaption{position:absolute;z-index:2;left:16px;bottom:14px;color:#fff;font-size:8px;letter-spacing:.12em;text-transform:uppercase}
+.magazineMoments{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.magazineMoment{padding:18px 18px 20px;background:#fffdf9;border:1px solid var(--line);border-radius:12px}
+.magazineMoment span{font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:#967b35;font-weight:700}
+.magazineMoment b{display:block;font:600 21px/1.1 "Playfair Display",serif;margin-top:8px;color:var(--ink)}
+.magazineMoment p{font-size:10px;line-height:1.55;color:var(--muted);margin:7px 0 0}
+@media(max-width:900px){.magazineLayout{grid-template-columns:1fr}.magazineVisuals{min-height:420px}}
+@media(max-width:600px){.magazineIntro{padding:52px 0 0}.magazineStory{padding:28px 24px}.magazineVisuals{grid-template-columns:1fr 1fr;min-height:330px}.magazineVisual.large{grid-column:1 / span 2;grid-row:auto;min-height:250px}.magazineMoments{grid-template-columns:1fr}}
+</style></style></head>
 <body>
 <header class="top"><div class="nav">
 <a class="logo" href="index.html"><span class="logoMark">TRIP</span><span><strong id="brand" class="logoRoam">ROAMWELL</strong><small class="logoTag">TRAVEL BETTER · REMEMBER MORE</small></span></a>
@@ -1082,6 +1106,37 @@ trip.plan=clonePlan(plan);trip.originalPlan=clonePlan(plan);trip.homeBase=baseLa
 }
 window.buildSmartPlan=buildSmartPlan;
 window.saveSmartSettings=function(){trip.homeBase=document.getElementById("homeBase").value.trim()||"Downtown / city center";trip.transport=document.getElementById("smartTransport").value;trip.walkingRadius=document.getElementById("smartRadius").value;save();buildSmartPlan()};
+function renderInspirationMagazine(){
+var box=document.getElementById("magazineIntro");
+if(!box)return;
+if(!trip.isInspiration){box.classList.remove("isVisible");return}
+var name=(trip.destinations||[])[0]||trip.name||"Your destination";
+var key=slug(name);
+var stories={
+"barcelona":{place:"Barcelona · Spain",title:"A city built for wandering.",deck:"Gaudí curves, market mornings, old-city lanes and Mediterranean light — Barcelona rewards travelers who leave room to wander.",story:"This is the kind of week that moves naturally between grand architecture and small discoveries. Start with the city’s unmistakable landmarks, then slow down in the neighborhoods where balconies, bakeries and plazas become part of the experience. The rhythm is intentionally generous: a little culture, a little coast, a long lunch, and evenings that invite you back outside.",mom:[["See","Gaudí, Gothic streets & sea views","Let the architecture set the pace, from iconic curves to the texture of the old city."],["Do","Wander beyond the postcard","Give the neighborhoods time. Markets, plazas and side streets are where the city starts to feel personal."],["Eat","Make lunch an event","Tapas, Catalan specialties and Mediterranean flavors belong in the middle of the day, not just at the end."]]},
+"lisbon":{place:"Lisbon · Portugal",title:"Seven days in the city of light.",deck:"Tile-covered streets, hilltop viewpoints, Atlantic air and long dinners give Lisbon an easy, cinematic rhythm.",story:"Lisbon works beautifully as an inspiration trip because the city feels layered rather than scheduled. One morning can begin with a tram ride and end at a miradouro; an afternoon can drift through tiled façades, small shops and a neighborhood café. The plan leaves space for the city’s hills, food and changing light to become part of the story.",mom:[["See","Belém to the old quarters","Pair major sights with the streets and viewpoints between them."],["Do","Follow the hills slowly","Ride, walk and pause often — Lisbon is better experienced in chapters than checklists."],["Eat","Stay for the evening","Seafood, petiscos and neighborhood restaurants turn dinner into part of the adventure."]]},
+"kyoto":{place:"Kyoto · Japan",title:"A slower way to travel.",deck:"Temple gardens, quiet lanes, traditional neighborhoods and seasonal beauty create a week that feels completely different from home.",story:"Kyoto invites a different travel tempo. The most memorable moments are often the quiet ones: a garden before the crowds, a narrow lane after rain, a small meal chosen because it looks interesting. This seven-day idea balances the essential sights with room to notice details, making the destination feel less like a checklist and more like a place you have briefly learned to inhabit.",mom:[["See","Temples, gardens & old streets","Mix iconic landmarks with quieter corners where the visual details take over."],["Do","Build in stillness","Leave breathing room between major sights so the atmosphere becomes part of the trip."],["Eat","Follow local specialties","Make room for ramen, seasonal dishes, tea and small neighborhood discoveries."]]},
+"new york city":{place:"New York City · USA",title:"The city that keeps changing.",deck:"Museums, neighborhoods, skyline views, great meals and late-night energy make seven days feel like several trips at once.",story:"New York is best approached as a collection of neighborhoods rather than one enormous attraction list. A morning might belong to a museum, the afternoon to a street, market or park, and the evening to a show or a table you would never find at home. The itinerary is designed to give each day a distinct personality while leaving room for the unexpected.",mom:[["See","Museums & skyline moments","Choose a few signature sights, then let the streets between them become part of the story."],["Do","Cross the city by neighborhood","Each district changes the mood, food and architecture of the day."],["Eat","Make every meal local","From classic institutions to new neighborhood spots, food is one of the city's best guides."]]},
+"charleston":{place:"Charleston · South Carolina",title:"Southern charm, without rushing.",deck:"Historic streets, waterfront walks, beautiful homes and a food scene that makes lingering feel like the plan.",story:"Charleston is made for a magazine-style escape: visually rich, compact and easy to explore on foot. The best days move from historic architecture to the waterfront, then into a long lunch and an unhurried evening. This inspiration trip keeps the schedule light enough to notice the details — ironwork, gardens, porches, markets and the changing light along the peninsula.",mom:[["See","Historic streets & waterfront","Let the architecture and harbor views provide the visual backbone of the trip."],["Do","Walk, browse and linger","Charleston rewards curiosity more than speed."],["Eat","Lean into Lowcountry flavor","Seafood, Southern cooking and polished neighborhood restaurants are part of the destination."]]},
+"santa fe":{place:"Santa Fe · New Mexico",title:"Art, adobe & high-desert light.",deck:"Adobe architecture, galleries, regional food and wide-open landscapes create a destination with a distinct visual identity.",story:"Santa Fe feels immediately different. The architecture, colors and high-desert light give even an ordinary walk a sense of place. A good week alternates between art and history in town and short escapes into the surrounding landscape, with plenty of time for New Mexican food and gallery browsing along the way.",mom:[["See","Adobe streets & galleries","Start with the historic core and let the visual details guide the day."],["Do","Step into the landscape","Balance town time with a scenic half-day beyond the center."],["Eat","Taste New Mexico","Green chile, local specialties and memorable breakfasts belong on the itinerary."]]},
+"vienna":{place:"Vienna · Austria",title:"Elegant days, golden evenings.",deck:"Grand architecture, coffeehouse culture, museums and seasonal atmosphere make Vienna feel effortlessly cinematic.",story:"Vienna has a natural magazine rhythm: a grand morning, a coffeehouse pause, an afternoon museum or palace, and an evening that belongs to music, food and beautifully lit streets. The inspiration is less about rushing between sights and more about experiencing the city at its own elegant pace.",mom:[["See","Palaces, squares & museums","Build the week around Vienna's architectural scale and extraordinary collections."],["Do","Take the café pause","Coffeehouse time is not a break from the itinerary — it is part of it."],["Eat","Dine into the evening","Classic Viennese dishes, pastries and seasonal markets give each day a strong finish."]]},
+"savannah":{place:"Savannah · Georgia",title:"A slower Southern escape.",deck:"Live oaks, historic squares, riverfront walks and a food scene that makes wandering feel effortless.",story:"Savannah is compact enough to explore slowly and beautiful enough that the walk itself becomes an attraction. The inspiration week moves through historic squares, neighborhood restaurants, riverfront views and nearby escapes, with generous gaps for coffee, photography and simply enjoying the city.",mom:[["See","Squares beneath the oaks","Follow the historic core one square at a time and let the architecture reveal itself."],["Do","Wander without a stopwatch","Savannah's best moments often happen between the named attractions."],["Eat","Stay for Southern cooking","Use the city's restaurants as part of the cultural itinerary."]]},
+"montreal":{place:"Montréal · Québec",title:"A city with two rhythms.",deck:"Old-world streets, contemporary design, excellent food and distinct neighborhoods make Montréal feel familiar and foreign at once.",story:"Montréal is a destination for travelers who like contrast. Old Montréal can lead into a contemporary gallery, a market into a great dinner, and a quiet neighborhood walk into an energetic evening. The seven-day concept keeps those contrasts intact instead of flattening the city into a list of attractions.",mom:[["See","Old Montréal & modern design","Pair historic streets with the city's contemporary side."],["Do","Explore by neighborhood","Each district brings its own architecture, cafés and personality."],["Eat","Follow the food culture","Bakeries, markets and serious restaurants make meals a destination in themselves."]]},
+"munich":{place:"Munich · Germany",title:"Bavarian city life, with room to roam.",deck:"Elegant squares, museums, beer gardens and easy escapes into Bavaria give Munich a naturally balanced week.",story:"Munich works because the city and the surrounding landscape complement each other. Spend a morning among museums and grand buildings, slow down over lunch, then use another day for a Bavarian escape. The inspiration is cultural without being formal, scenic without requiring every hour to be planned.",mom:[["See","Old town & grand museums","Use the historic center as the visual opening chapter."],["Do","Add a Bavarian escape","Give one day to scenery beyond the city."],["Eat","Eat the local way","Markets, bakeries and traditional Bavarian tables make food part of the journey."]]}
+};
+var d=stories[key]||stories["barcelona"];
+document.getElementById("magazinePlace").textContent=d.place;
+document.getElementById("magazineTitle").textContent=d.title;
+document.getElementById("magazineDeck").textContent=d.deck;
+document.getElementById("magazineStoryText").textContent=d.story;
+for(var i=0;i<3;i++){
+document.getElementById("magazineImage"+(i+1)).src=destinationImage(name,i);
+document.getElementById("magazineImage"+(i+1)).alt=d.place+" editorial photography";
+document.getElementById("magMoment"+(i+1)+"Title").textContent=d.mom[i][0]+" · "+d.mom[i][1];
+document.getElementById("magMoment"+(i+1)+"Text").textContent=d.mom[i][2];
+}
+box.classList.add("isVisible");
+}
 function renderHeader(){
 var ds=(trip.destinations||[]),n=dates().n;
 document.title=(trip.name||"Trip")+" · Smart Travel Workspace";
@@ -1678,7 +1733,7 @@ function renderResources(){var e=document.getElementById("resourceGrid"),d=(trip
 if(slug(d).indexOf("new orleans")>=0){rs[0]=["New Orleans & Company","https://www.neworleans.com/"];rs[2]=["January / event guide","https://www.neworleans.com/plan/january-in-new-orleans/"];rs[3]=["Eater New Orleans","https://nola.eater.com/"];rs.push(["Mardi Gras parade schedule","https://www.neworleans.com/events/holidays-seasonal/mardi-gras/mardi-gras-parade-schedule/"])}
 e.innerHTML="";for(var i=0;i<rs.length;i++){var a=document.createElement("a");a.className="link";a.target="_blank";a.href=rs[i][1];a.innerHTML="<b>"+esc(rs[i][0])+"</b><small>Open resource</small>";e.appendChild(a)}}
 
-ensureOriginalPlan();renderHeader();renderRoute();renderDestinations();renderPlan();renderGuide();renderMyRoamwell();renderEvents();renderWeather();renderCams();renderTravel();renderBudget();renderMemories();renderResources();
+ensureOriginalPlan();renderInspirationMagazine();renderHeader();renderRoute();renderDestinations();renderPlan();renderGuide();renderMyRoamwell();renderEvents();renderWeather();renderCams();renderTravel();renderBudget();renderMemories();renderResources();
 })();
 </script>
 </body></html>
