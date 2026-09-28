@@ -457,19 +457,21 @@ button,a{max-width:100%}
 .magazineGalleryHead{display:flex;align-items:end;justify-content:space-between;gap:20px;margin:38px 0 14px;border-top:1px solid var(--line);padding-top:28px}
 .magazineGalleryHead h3{font:600 clamp(28px,3vw,44px)/1.05 "Playfair Display",serif;margin:7px 0 0;color:var(--ink)}
 .magazineGalleryHead>span{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);max-width:240px;text-align:right}
-.magazineGallery{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:180px;gap:10px}
-.magazineGallery a{position:relative;display:block;overflow:hidden;border-radius:10px;background:#d8d1c1}
-.magazineGallery a:first-child{grid-column:span 2;grid-row:span 2}
-.magazineGallery a:nth-child(6){grid-column:span 2}
-.magazineGallery img{width:100%;height:100%;display:block;object-fit:cover;transition:transform .55s ease}
-.magazineGallery a:hover img{transform:scale(1.045)}
-.magazineGallery a:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#07161372,transparent 55%);pointer-events:none}
-.magazineGalleryLabel{position:absolute;z-index:2;left:12px;bottom:10px;color:#fff;font-size:8px;letter-spacing:.13em;text-transform:uppercase}
-.magazineLightbox{position:fixed;inset:0;z-index:9999;background:#071613f2;display:none;align-items:center;justify-content:center;padding:42px}
+.magazineGallery{display:grid;grid-template-columns:2fr 1fr 1fr;grid-auto-rows:220px;gap:12px;margin-top:22px}
+.magazineGallery a{position:relative;display:block;overflow:hidden;background:#e8e2d7;min-height:0}
+.magazineGallery a:first-child{grid-column:1;grid-row:span 2}
+.magazineGallery a:nth-child(4){grid-column:2 / span 2}
+.magazineGallery a:nth-child(7){grid-column:2 / span 2}
+.magazineGallery img{width:100%;height:100%;display:block;object-fit:cover;transition:transform .7s cubic-bezier(.2,.7,.2,1),filter .5s ease}
+.magazineGallery a:hover img{transform:scale(1.035);filter:saturate(1.04)}
+.magazineGallery a:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#0716138c,transparent 48%);pointer-events:none}
+.magazineGalleryLabel{position:absolute;z-index:2;left:16px;bottom:14px;color:#fff;font-size:9px;letter-spacing:.15em;text-transform:uppercase;text-shadow:0 1px 8px #0008}
+.magazineLightbox{position:fixed;inset:0;z-index:9999;background:#071613f4;display:none;align-items:center;justify-content:center;padding:36px}
 .magazineLightbox.isOpen{display:flex}
-.magazineLightbox img{max-width:min(92vw,1500px);max-height:86vh;object-fit:contain;border-radius:8px;box-shadow:0 24px 80px #0008}
-.magazineLightbox button{position:absolute;top:18px;right:24px;border:0;background:transparent;color:#fff;font-size:42px;line-height:1;cursor:pointer}
-.magazineLightbox div{position:absolute;left:28px;bottom:20px;color:#fff;font-size:9px;letter-spacing:.14em;text-transform:uppercase}
+.magazineLightbox img{max-width:min(94vw,1500px);max-height:84vh;object-fit:contain;border-radius:2px;box-shadow:0 24px 80px #0009}
+.magazineLightbox button{position:absolute;top:18px;right:24px;width:44px;height:44px;border:1px solid #ffffff55;border-radius:50%;background:#ffffff12;color:#fff;font-size:30px;line-height:1;cursor:pointer}
+.magazineLightbox div{position:absolute;left:36px;bottom:22px;color:#fff;font-size:9px;letter-spacing:.14em;text-transform:uppercase}
+@media(max-width:900px){.magazineGallery{grid-template-columns:1fr 1fr;grid-auto-rows:190px}.magazineGallery a:first-child{grid-column:1 / span 2;grid-row:span 2}.magazineGallery a:nth-child(4),.magazineGallery a:nth-child(7){grid-column:1 / span 2}}
 .magazineMoments{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
 .magazineMoment{padding:18px 18px 20px;background:#fffdf9;border:1px solid var(--line);border-radius:12px}
 .magazineMoment span{font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:#967b35;font-weight:700}
@@ -1148,41 +1150,49 @@ trip.plan=clonePlan(plan);trip.originalPlan=clonePlan(plan);trip.homeBase=baseLa
 window.buildSmartPlan=buildSmartPlan;
 window.saveSmartSettings=function(){trip.homeBase=document.getElementById("homeBase").value.trim()||"Downtown / city center";trip.transport=document.getElementById("smartTransport").value;trip.walkingRadius=document.getElementById("smartRadius").value;save();buildSmartPlan()};
 function magazineGalleryImages(name){
-var key=slug(name),ids={
-"barcelona":["hVhfqhDYciU","LSscVPEyQpI","VbLTNceBTFE","d0xjEv-WJQk","uoBCga1fNwU","qiH16d5SRxg","T0aBQz7U_eA","BG8TvW6NYYw","s3kdLmeYxXs","f-DvU93UhTs"],
-"charleston":["126F-Xh3sOo","A56yu_pmNKQ","EQa7tqNbZx8","q86md0sqdBA","ajxP9gEhu30","lE9OV-qDoBc","Hzbq4de24kQ","ei6rRkX80s0","QHFmLbh3PYg","WBJwz44Wy_0"],
-"santa fe":["YJI-WI4dJEU","qSaaZnlSnu8","2Aor5Cf_6kE","kwNWq3FtETs","8yf6gQd-4gw","_GuQ3Ie-8pY","jSo7S1kC-bw","JClN4owv7pc","b2je3R3hMQ8","DVze54aeK9k"],
-"new york city":["_QdFx92MO2U","fT6-YkB0nfg","rfj_wOYQkus","WTPp4wgourk","A2CChTZvzTE","5omwAMDxmkU","IA8FR0RyJDE","TaCk3NspYe0","kheTI8pIywU","SVVTZtTGyaU"],
-"lisbon":["ljhCEaHYWJ8","gOLCAOuc7iA","hgFX7SydvFk","K3XGEoZgA0s","oiVvB-A7XDM","VHWyqXsWHg0","X87yB-jvYHw","8Nd3GY8z-iU","ci19YINguoc","TB1qqIvTsEc"],
-"vienna":["IiQXLbTTQCw","Th2MisvdKr0","w2c6pTwc8so","Hn-eNVOOlmk","u0ZTEWtdRtY","WCR4QwAJFZY","OtyW9jxnSsI","eyOfcxLxi-w","Z9xPTZfRvNw","LwpbdujgUGI"],
-"kyoto":["ND_ywqX2oGA","oV7RiDbcauM","3jLPsnEuqmM","qtSKCnQ7Vck","pGCqT2BQgeA","kGkTqsYDxik","0V_mu4oZ2s4","pVbVt0KnxmU","xuoFxCZn5dA","qStTtSA2W6o"],
-"savannah":["xP1ySp_Nnjo","Mixc1lK9Ycw","ZTGebIiwK5U","PSZUu9zjbQw","2x6qazBP_r0","hAJbEI5qtew","OcPeGNDSPuM","NCFYP8ywijg","Q5y2d24n4jM","0mRl34VJFjM"],
-"montreal":["AbhdkaNGnRM","DYwx0KV9D80","JJYzJXbwB20","kwXby58kRSo","sgY1DaqB8AU","J6VmHgtFM4k","36B-WO8yCMs","Wpsb9YglbR0","MEUvVqkU3QI","UzV2VrbEOC8"],
-"munich":["C6l894Q7wpI","euJvKWK3y7s","WJsGUDk-x74","80YWShYXrNc","5MC-ltl4LZg","O3OIWMYbGQU","EoTaEMulwCg","CekjvdECbXI","1FYxFwSiKkk","K3sDoaUkEDY"],
-"new orleans":["Rv7Oi-XBOcQ","cyZuN_AViJQ","tUoA7sCrRto","uO5kcqrM08U","h2MyZnizX_I","nUkxLPE5Fto","2k13CRyFvN8","jGHJftj_p5M","Ix7OnZAtyIs","G2M5YBsZaE4"]
+var queries={
+"barcelona":"Barcelona Spain architecture streets landmark",
+"charleston":"Charleston South Carolina historic district waterfront",
+"santa fe":"Santa Fe New Mexico adobe architecture landscape",
+"new york city":"New York City skyline streets architecture",
+"lisbon":"Lisbon Portugal Alfama architecture viewpoint",
+"vienna":"Vienna Austria historic center architecture",
+"kyoto":"Kyoto Japan temples streets gardens",
+"savannah":"Savannah Georgia historic district squares",
+"montreal":"Montreal Quebec old montreal architecture city",
+"munich":"Munich Germany historic center architecture",
+"new orleans":"New Orleans Louisiana French Quarter architecture"
 };
-var a=ids[key]||ids["barcelona"];
-return a.map(function(id){return "https://unsplash.com/photos/"+id+"/download?force=true"});
+return queries[slug(name)]||name;
 }
-function renderMagazineGallery(name,place){
+async function renderMagazineGallery(name,place){
 var g=document.getElementById("magazineGallery"),lb=document.getElementById("magazineLightbox"),li=document.getElementById("magazineLightboxImage"),lc=document.getElementById("magazineLightboxCaption");
 if(!g)return;
-var imgs=magazineGalleryImages(name),labels=["The city at a glance","Architecture & character","A street worth wandering","A signature landmark","Local texture","A view that sets the mood","Neighborhood life","A memorable detail","The wider region","A moment to remember"];
+var labels=["The city at a glance","Architecture & character","A street worth wandering","A signature landmark","Local texture","A view that sets the mood","Neighborhood life","A memorable detail","The wider region","A moment to remember"];
+g.innerHTML='<div class="magazineGalleryLoading">Curating the visual story…</div>';
+try{
+var api="https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch="+encodeURIComponent(magazineGalleryImages(name))+"&gsrnamespace=6&gsrlimit=10&prop=imageinfo&iiprop=url&iiurlwidth=1600&format=json&origin=*";
+var res=await fetch(api);
+if(!res.ok)throw new Error("image search failed");
+var data=await res.json(),pages=data.query&&data.query.pages?Object.values(data.query.pages):[];
+var imgs=pages.map(function(p){return p.imageinfo&&p.imageinfo[0]&&p.imageinfo[0].thumburl?p.imageinfo[0].thumburl:(p.imageinfo&&p.imageinfo[0]?p.imageinfo[0].url:null)}).filter(Boolean).slice(0,10);
+if(imgs.length<6)throw new Error("not enough images");
 g.innerHTML="";
-for(var i=0;i<imgs.length;i++){
-var a=document.createElement("a");a.href=imgs[i];a.target="_blank";a.rel="noopener";a.setAttribute("aria-label","View "+place+" editorial photograph "+(i+1));
-var im=document.createElement("img");im.src=imgs[i];im.alt=place+" — "+labels[i];im.loading=i<4?"eager":"lazy";
+imgs.forEach(function(src,i){
+var a=document.createElement("a");a.href=src;a.setAttribute("aria-label","View "+place+" editorial photograph "+(i+1));
+var im=document.createElement("img");im.src=src;im.alt=place+" — "+labels[i];im.loading=i<4?"eager":"lazy";
 var sp=document.createElement("span");sp.className="magazineGalleryLabel";sp.textContent=labels[i];
 a.appendChild(im);a.appendChild(sp);
-a.addEventListener("click",function(e){e.preventDefault();li.src=this.querySelector("img").src;li.alt=this.querySelector("img").alt;lc.textContent=this.querySelector("img").alt;lb.classList.add("isOpen");lb.setAttribute("aria-hidden","false")});
+a.addEventListener("click",function(e){e.preventDefault();li.src=src;li.alt=im.alt;lc.textContent=im.alt;lb.classList.add("isOpen");lb.setAttribute("aria-hidden","false")});
 g.appendChild(a);
+});
+}catch(err){
+g.innerHTML='<div class="magazineGalleryLoading">The photo gallery could not be loaded right now.</div>';
 }
 function closeMagazineLightbox(){lb.classList.remove("isOpen");lb.setAttribute("aria-hidden","true");li.removeAttribute("src")}
-document.getElementById("magazineLightboxClose").onclick=closeMagazineLightbox;
+var close=document.getElementById("magazineLightboxClose");if(close)close.onclick=closeMagazineLightbox;
 lb.onclick=function(e){if(e.target===lb)closeMagazineLightbox()};
-document.addEventListener("keydown",function(e){if(e.key==="Escape")closeMagazineLightbox()},{once:true});
-}
-function renderInspirationMagazine(){
+}function renderInspirationMagazine(){
 var box=document.getElementById("magazineIntro");
 if(!box)return;
 if(!trip.isInspiration){box.classList.remove("isVisible");box.style.display="none";return} box.classList.add("isVisible");box.style.display="block";box.removeAttribute("hidden");
