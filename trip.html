@@ -814,7 +814,7 @@ var KEY="big-thanksgiving-trips-v1";
 var params=new URLSearchParams(location.search),id=params.get("id")||sessionStorage.getItem("openTripId");
 function load(){try{return JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){return[]}}
 var trips=load(),trip=null;
-var inspiration=params.get("inspiration");
+var inspiration=params.get("inspiration"),adventure=params.get("adventure")||"";
 function makeInspirationTrip(name){
   var key=slug(name), profiles={
     "new orleans":{
@@ -957,10 +957,16 @@ function makeInspirationTrip(name){
   return {id:"inspiration-"+slug(name).replace(/ /g,"-")+"-"+Date.now(),name:p.title,travelers:2,start:iso(start),end:iso(end),destinations:[name],groupType:"Couples / friends",pace:"Balanced — see a lot without rushing",transport:"Walk + transit",preferences:["Local food","History & culture","Neighborhoods","Seasonal events","Photography"],mustSee:[],plan:plan,originalPlan:JSON.parse(JSON.stringify(plan)),smartVersion:2,status:"Inspiration · ready to edit",days:7,homeBase:"Downtown / city center",intro:p.intro,occasion:"Inspiration trip",foodBudget:"Mixed — casual + special dinners",mobility:"Normal walking",energy:"Balanced days",evening:"Mix of dinner and occasional nightlife",localFood:[],food:[],sights:[],areas:[],resources:[],created:new Date().toISOString(),isInspiration:true};
 }
 if(inspiration){
-  var tempKey="roamwell-inspiration-"+slug(inspiration);
+  var tempKey="roamwell-inspiration-"+slug(inspiration)+"-"+slug(adventure||"classic");
   try{trip=JSON.parse(sessionStorage.getItem(tempKey)||"null")}catch(e){trip=null}
-  if(!trip||!trip.isInspiration||trip.name!==makeInspirationTrip(inspiration).name){
+  if(!trip||!trip.isInspiration||trip.destinations[0]!==inspiration||String(trip.adventure||"")!==String(adventure||"")){
     trip=makeInspirationTrip(inspiration);
+    trip.adventure=adventure||"";
+    if(adventure){
+      trip.name=adventure+" · 7-Day Inspiration";
+      trip.intro="A seasonal Roamwell adventure combining the destination's signature character with "+adventure.split(" · ").slice(-1)[0].toLowerCase()+".";
+      trip.occasion="Adventure inspiration";
+    }
     sessionStorage.setItem(tempKey,JSON.stringify(trip));
   }
   id=trip.id;
