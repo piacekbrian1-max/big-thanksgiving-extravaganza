@@ -1109,7 +1109,7 @@ window.saveSmartSettings=function(){trip.homeBase=document.getElementById("homeB
 function renderInspirationMagazine(){
 var box=document.getElementById("magazineIntro");
 if(!box)return;
-if(!trip.isInspiration){box.classList.remove("isVisible");return}
+if(!trip.isInspiration){box.classList.remove("isVisible");box.style.display="none";return} box.classList.add("isVisible");box.style.display="block";box.removeAttribute("hidden");
 var name=(trip.destinations||[])[0]||trip.name||"Your destination";
 var key=slug(name);
 var stories={
