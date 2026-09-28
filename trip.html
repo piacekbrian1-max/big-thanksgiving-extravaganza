@@ -602,62 +602,6 @@ if(tripNav){tripNav.querySelectorAll("a").forEach(function(a){a.addEventListener
 document.addEventListener("click",function(e){if(tripNav&&tripNav.classList.contains("open")&&!tripNav.contains(e.target)&&e.target!==menuToggle)closeTripMenu()});
 document.addEventListener("keydown",function(e){if(e.key==="Escape")closeTripMenu()});
 var KEY="big-thanksgiving-trips-v1";
-function recoveryTrips(){
-var marker="roamwell-recovery-v1";
-try{
-  var existing=JSON.parse(localStorage.getItem(KEY)||"[]");
-  if(existing.length||localStorage.getItem(marker))return existing;
-  function plan(start,days){var a=new Date(start+"T12:00:00");return days.map(function(x,i){var d=new Date(a);d.setDate(a.getDate()+i);return {day:i+1,date:d.toISOString().slice(0,10),area:x[0],title:x[0],morning:x[1],afternoon:x[2],evening:x[3],note:x[4]||"",event:null,refreshCount:0}})}
-  var euroPlan=plan("2026-11-26",[
-    ["Vienna Airport → Trnava","Arrive Vienna at 8:00 AM and collect the rental car","Drive to Trnava, settle in and spend the afternoon with family","Family dinner and an easy first evening"],
-    ["Trnava · family day","Slow morning with parents and family time","Explore Trnava old town, historic center and seasonal market","Christmas-market evening and family dinner"],
-    ["Trnava · Saturday","Family breakfast and relaxed morning","Local exploring and Christmas-market time","Late-afternoon Saturday dinner with the kids' uncle"],
-    ["Trnava · family day","Unhurried morning with parents","More family time and favorite local stops","Final Trnava dinner before leaving for Prague"],
-    ["Trnava → Prague","Check out and drive toward Prague","Arrive, walk the historic center and see the Christmas markets","Old Town dinner and evening market"],
-    ["Prague · full day","Old Town Square, Charles Bridge and Prague Castle area","Neighborhood exploring, cafés and Christmas markets","Czech dinner and evening in the center"],
-    ["Prague → Pilsen","Final Prague morning and Christmas-market time","Drive to Pilsen and check in at Spa Beerland - At The Golden Lamb","Pilsner Urquell brewery experience with overnight stay in Pilsen"],
-    ["Pilsen → Hluboká → Vienna Airport","Pilsen morning and departure","Drive toward Vienna with a lunch stop at Hluboká Castle","Continue to Vienna Airport and check in at Moxy Vienna Airport"],
-    ["Vienna Airport · departure","Early airport morning for the 10:00 AM flight","Return flight home","Trip complete"]
-  ]);
-  var nolaPlan=plan("2027-01-16",[
-    ["French Quarter","Jackson Square, St. Louis Cathedral and the historic Quarter","French Market, architecture walk and photo stops","Beignets and coffee; Creole dinner"],
-    ["Tremé & roots","Louis Armstrong Park and Congo Square","Tremé history walk and local culture","Dooky Chase's or another neighborhood Creole dinner"],
-    ["Marigny & Bywater","Colorful streets, architecture and Crescent Park","Local art, neighborhood exploring and Frenchmen Street","Ayu Bakehouse plus neighborhood dinner or live music"],
-    ["Garden District & Uptown","St. Charles Avenue and Garden District mansions","Streetcar, Magazine Street and Audubon Park","Uptown dinner and relaxed evening"],
-    ["City Park & favorites","New Orleans Museum of Art and Besthoff Sculpture Garden","City Park, Bayou St. John and favorite revisits","Farewell dinner and final live music"]
-  ]);
-  var euro={
-    id:"trip-european-thanksgiving-2026",name:"European Thanksgiving Adventure 2026",travelers:3,start:"2026-11-26",end:"2026-12-04",
-    destinations:["Trnava","Prague","Pilsen","Hluboká Castle","Vienna"],groupType:"Family",pace:"Balanced — see a lot without rushing",transport:"Rental car + walking",walkingRadius:"Moderate — combine nearby areas",
-    preferences:["Family time","Christmas markets","History & culture","Local food","Photography"],mustSee:["Trnava family visit","Prague Christmas markets","Pilsner Urquell brewery","Hluboká Castle"],plan:euroPlan,originalPlan:JSON.parse(JSON.stringify(euroPlan)),smartVersion:2,status:"Ready",days:9,
-    homeBase:"Trnava / Prague / Pilsen / Vienna Airport",intro:"A family European Thanksgiving adventure combining a visit with parents, Christmas markets, Czech history, Pilsner Urquell and a final Vienna Airport overnight.",occasion:"Thanksgiving",foodBudget:"Mixed — casual + special dinners",mobility:"Normal walking",energy:"Balanced days",evening:"Family dinners, Christmas markets and relaxed evenings",
-    budgetTargetUsd:5000,budgetItems:[
-      {id:"flight",description:"Flights — 3 travelers",amount:2764.65,currency:"USD",category:"Flights",status:"Confirmed"},
-      {id:"car",description:"Rental car",amount:488,currency:"EUR",category:"Transportation",status:"Confirmed"},
-      {id:"trnava-stay",description:"Trnava Airbnb",amount:431.50,currency:"USD",category:"Stay",status:"Confirmed"},
-      {id:"prague-stay",description:"Ruterra Red Roofs View with garage",amount:283.10,currency:"USD",category:"Stay",status:"Confirmed"},
-      {id:"pilsen-stay",description:"Spa Beerland - At The Golden Lamb · 2 rooms",amount:162,currency:"USD",category:"Stay",status:"Confirmed"},
-      {id:"vienna-stay",description:"Moxy Vienna Airport",amount:257.04,currency:"USD",category:"Stay",status:"Confirmed"}
-    ],
-    stayRecords:[
-      {id:"trnava",groupId:"shared",travelers:"Everyone",property:"Trnava Airbnb",dates:"Nov 26 → Nov 30, 2026",destination:"Trnava",status:"Confirmed"},
-      {id:"prague",groupId:"shared",travelers:"Everyone",property:"Ruterra Red Roofs View with garage",dates:"Nov 30 → Dec 2, 2026",destination:"Prague",status:"Confirmed"},
-      {id:"pilsen",groupId:"shared",travelers:"Everyone",property:"Spa Beerland - At The Golden Lamb",dates:"Dec 2 → Dec 3, 2026",destination:"Pilsen",status:"Confirmed"},
-      {id:"vienna-airport",groupId:"shared",travelers:"Everyone",property:"Moxy Vienna Airport",dates:"Dec 3 → Dec 4, 2026",destination:"Vienna Airport",status:"Confirmed"}
-    ],
-    flightRecords:[{id:"euro-flight",destination:"Vienna",dates:"Nov 26 → Dec 4, 2026",status:"Confirmed",amount:2764.65,currency:"USD",travelers:3}],
-    carRecords:[{id:"euro-car",destination:"Europe",dates:"Nov 26 → Dec 4, 2026",status:"Confirmed",amount:488,currency:"EUR"}],
-    trainRecords:[],localFood:[],food:[],sights:[],areas:[],resources:[],journal:[],created:"2026-09-01T00:00:00.000Z",isInspiration:false,isPromoted:true
-  };
-  var nola={
-    id:"trip-new-orleans-2027",name:"New Orleans · January 2027",travelers:2,start:"2027-01-16",end:"2027-01-20",
-    destinations:["New Orleans"],groupType:"Couples / friends",pace:"Balanced — see a lot without rushing",transport:"Walk + transit",walkingRadius:"Moderate — combine nearby areas",
-    preferences:["Local food","History & culture","Neighborhoods","Live music","Photography"],mustSee:["French Quarter","Tremé","Marigny / Bywater","Garden District","City Park"],plan:nolaPlan,originalPlan:JSON.parse(JSON.stringify(nolaPlan)),smartVersion:2,status:"Planning",days:5,
-    homeBase:"New Orleans",intro:"A working New Orleans trip built around neighborhood clusters, food, music, history and a flexible pace.",occasion:"",foodBudget:"Mixed — casual + special dinners",mobility:"Normal walking",energy:"Balanced days",evening:"Dinner and live music",localFood:[],food:[],sights:[],areas:["French Quarter","Tremé","Marigny / Bywater","Garden District / Uptown","Mid-City / City Park","Warehouse / CBD"],resources:[],journal:[],budgetItems:[],budgetTargetUsd:0,stayRecords:[],flightRecords:[],carRecords:[],trainRecords:[],created:"2026-09-27T00:00:00.000Z",isInspiration:false,isPromoted:true
-  };
-  var recovered=[euro,nola];localStorage.setItem(KEY,JSON.stringify(recovered));localStorage.setItem(marker,new Date().toISOString());return recovered;
-}catch(e){return []}
-}
 var params=new URLSearchParams(location.search),id=params.get("id")||sessionStorage.getItem("openTripId");
 function load(){try{return JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){return[]}}
 var trips=load(),trip=null;
