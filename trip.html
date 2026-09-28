@@ -565,7 +565,47 @@ button,a{max-width:100%}
   .magazineGalleryHead{
     padding-top:18px!important;
   }
-}</style></head>
+}<style id="magazine-short-gallery">
+.magazineGallery.shortGallery{
+  grid-template-columns:2fr 1fr 1fr!important;
+  grid-template-rows:360px!important;
+}
+.magazineGallery.shortGallery .magazinePhoto1{
+  grid-column:1 / span 2!important;
+  grid-row:1!important;
+}
+.magazineGallery.shortGallery .magazinePhoto2{
+  grid-column:3!important;
+  grid-row:1!important;
+}
+.magazineGallery.shortGallery .magazinePhoto3{
+  grid-column:4!important;
+  grid-row:1!important;
+}
+@media(max-width:900px){
+  .magazineGallery.shortGallery{
+    grid-template-columns:1fr 1fr!important;
+    grid-template-rows:300px 220px!important;
+  }
+  .magazineGallery.shortGallery .magazinePhoto1{
+    grid-column:1 / span 2!important;
+    grid-row:1!important;
+  }
+  .magazineGallery.shortGallery .magazinePhoto2{
+    grid-column:1!important;
+    grid-row:2!important;
+  }
+  .magazineGallery.shortGallery .magazinePhoto3{
+    grid-column:2!important;
+    grid-row:2!important;
+  }
+}
+@media(max-width:600px){
+  .magazineGallery.shortGallery{
+    grid-template-rows:240px 180px!important;
+  }
+}
+</style></head>
 <body>
 <header class="top"><div class="nav">
 <a class="logo" href="index.html"><span class="logoMark">TRIP</span><span><strong id="brand" class="logoRoam">ROAMWELL</strong><small class="logoTag">TRAVEL BETTER · REMEMBER MORE</small></span></a>
@@ -1317,6 +1357,8 @@ g.innerHTML='<div class="magazineGalleryLoading">Editorial photography is being 
 return;
 }
 g.innerHTML="";
+g.classList.toggle("shortGallery",set.length===3);
+var galleryNote=document.querySelector(".magazineGalleryHead>span");if(galleryNote)galleryNote.textContent=set.length+" editorial photographs · tap any image to enlarge";
 var fallback="https://images.unsplash.com/photo-1579282240050-352db0a14c21?auto=format&fit=crop&fm=jpg&q=88&w=2200";
 set.forEach(function(item,i){
 var src=item[0],caption=item[1];
