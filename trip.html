@@ -605,6 +605,11 @@ var KEY="big-thanksgiving-trips-v1";
 var params=new URLSearchParams(location.search),id=params.get("id")||sessionStorage.getItem("openTripId");
 function load(){try{return JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){return[]}}
 var trips=load(),trip=null;
+// Inspiration previews must never live in My Trips. Clean up any older preview records created by the previous behavior.
+if(trips.some(function(t){return t&&t.isInspiration&&!t.isPromoted})){
+  trips=trips.filter(function(t){return !(t&&t.isInspiration&&!t.isPromoted)});
+  localStorage.setItem(KEY,JSON.stringify(trips));
+}
 var inspiration=params.get("inspiration");
 function makeInspirationTrip(name){
   var key=slug(name), profiles={
