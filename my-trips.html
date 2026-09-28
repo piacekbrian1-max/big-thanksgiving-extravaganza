@@ -65,7 +65,7 @@ try{
   var recovered=[euro,nola];localStorage.setItem(KEY,JSON.stringify(recovered));localStorage.setItem(marker,new Date().toISOString());return recovered;
 }catch(e){return []}
 }
-function load(){return recoveryTrips()});if(clean.length!==a.length)localStorage.setItem(KEY,JSON.stringify(clean));return clean}catch(e){return[]}}
+function load(){return recoveryTrips()}
 function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
 function render(){var el=document.getElementById("tripList"),a=load();el.innerHTML="";if(!a.length){el.innerHTML='<div class="empty">No saved trips yet. Build your first new trip.</div>';return}
 for(var i=a.length-1;i>=0;i--){var t=a[i],d=document.createElement("div");d.className="trip";d.innerHTML="<div><b>"+esc(t.name)+"</b><small>"+esc((t.destinations||[]).join(" · "))+" · "+(t.days||"")+" days · "+esc(t.status||"Planning")+"</small></div><div><button onclick='openTrip("+JSON.stringify(t.id)+")'>Open trip</button> <button onclick='deleteTrip("+JSON.stringify(t.id)+")'>Delete</button></div>";el.appendChild(d)}}
