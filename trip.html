@@ -457,21 +457,22 @@ button,a{max-width:100%}
 .magazineGalleryHead{display:flex;align-items:end;justify-content:space-between;gap:20px;margin:38px 0 14px;border-top:1px solid var(--line);padding-top:28px}
 .magazineGalleryHead h3{font:600 clamp(28px,3vw,44px)/1.05 "Playfair Display",serif;margin:7px 0 0;color:var(--ink)}
 .magazineGalleryHead>span{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);max-width:240px;text-align:right}
-.magazineGallery{display:grid;grid-template-columns:2fr 1fr 1fr;grid-auto-rows:220px;gap:12px;margin-top:22px}
-.magazineGallery a{position:relative;display:block;overflow:hidden;background:#e8e2d7;min-height:0}
-.magazineGallery a:first-child{grid-column:1;grid-row:span 2}
-.magazineGallery a:nth-child(4){grid-column:2 / span 2}
-.magazineGallery a:nth-child(7){grid-column:2 / span 2}
-.magazineGallery img{width:100%;height:100%;display:block;object-fit:cover;transition:transform .7s cubic-bezier(.2,.7,.2,1),filter .5s ease}
-.magazineGallery a:hover img{transform:scale(1.035);filter:saturate(1.04)}
-.magazineGallery a:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#0716138c,transparent 48%);pointer-events:none}
-.magazineGalleryLabel{position:absolute;z-index:2;left:16px;bottom:14px;color:#fff;font-size:9px;letter-spacing:.15em;text-transform:uppercase;text-shadow:0 1px 8px #0008}
+.magazineGallery{display:grid;grid-template-columns:1.35fr .82fr .82fr;grid-template-rows:260px 180px 220px;gap:10px;margin-top:22px}
+.magazinePhoto{position:relative;display:block;overflow:hidden;background:#e8e2d7;min-height:0}
+.magazinePhoto1{grid-row:1 / span 2}
+.magazinePhoto4{grid-column:2 / span 2}
+.magazinePhoto7{grid-column:1 / span 2}
+.magazinePhoto9{grid-column:2 / span 2}
+.magazinePhoto img{width:100%;height:100%;display:block;object-fit:cover;transition:transform .75s cubic-bezier(.2,.7,.2,1),filter .5s ease}
+.magazinePhoto:hover img{transform:scale(1.035);filter:saturate(1.04)}
+.magazinePhoto:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#071613b5 0%,transparent 55%);pointer-events:none}
+.magazineGalleryLabel{position:absolute;z-index:2;left:17px;bottom:15px;color:#fff;font:600 10px/1.2 "DM Sans",sans-serif;letter-spacing:.13em;text-transform:uppercase;text-shadow:0 1px 10px #000a}
 .magazineLightbox{position:fixed;inset:0;z-index:9999;background:#071613f4;display:none;align-items:center;justify-content:center;padding:36px}
 .magazineLightbox.isOpen{display:flex}
 .magazineLightbox img{max-width:min(94vw,1500px);max-height:84vh;object-fit:contain;border-radius:2px;box-shadow:0 24px 80px #0009}
 .magazineLightbox button{position:absolute;top:18px;right:24px;width:44px;height:44px;border:1px solid #ffffff55;border-radius:50%;background:#ffffff12;color:#fff;font-size:30px;line-height:1;cursor:pointer}
 .magazineLightbox div{position:absolute;left:36px;bottom:22px;color:#fff;font-size:9px;letter-spacing:.14em;text-transform:uppercase}
-@media(max-width:900px){.magazineGallery{grid-template-columns:1fr 1fr;grid-auto-rows:190px}.magazineGallery a:first-child{grid-column:1 / span 2;grid-row:span 2}.magazineGallery a:nth-child(4),.magazineGallery a:nth-child(7){grid-column:1 / span 2}}
+@media(max-width:900px){.magazineGallery{grid-template-columns:1fr 1fr;grid-template-rows:220px 170px 170px 190px 190px}.magazinePhoto1{grid-column:1 / span 2;grid-row:auto}.magazinePhoto4,.magazinePhoto7,.magazinePhoto9{grid-column:1 / span 2}}
 .magazineMoments{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
 .magazineMoment{padding:18px 18px 20px;background:#fffdf9;border:1px solid var(--line);border-radius:12px}
 .magazineMoment span{font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:#967b35;font-weight:700}
@@ -1150,49 +1151,47 @@ trip.plan=clonePlan(plan);trip.originalPlan=clonePlan(plan);trip.homeBase=baseLa
 window.buildSmartPlan=buildSmartPlan;
 window.saveSmartSettings=function(){trip.homeBase=document.getElementById("homeBase").value.trim()||"Downtown / city center";trip.transport=document.getElementById("smartTransport").value;trip.walkingRadius=document.getElementById("smartRadius").value;save();buildSmartPlan()};
 function magazineGalleryImages(name){
-var queries={
-"barcelona":"Barcelona Spain architecture streets landmark",
-"charleston":"Charleston South Carolina historic district waterfront",
-"santa fe":"Santa Fe New Mexico adobe architecture landscape",
-"new york city":"New York City skyline streets architecture",
-"lisbon":"Lisbon Portugal Alfama architecture viewpoint",
-"vienna":"Vienna Austria historic center architecture",
-"kyoto":"Kyoto Japan temples streets gardens",
-"savannah":"Savannah Georgia historic district squares",
-"montreal":"Montreal Quebec old montreal architecture city",
-"munich":"Munich Germany historic center architecture",
-"new orleans":"New Orleans Louisiana French Quarter architecture"
+var galleries={
+"barcelona":{
+photos:[
+["https://images.unsplash.com/photo-1579282240050-352db0a14c21?auto=format&fit=crop&fm=jpg&q=88&w=2200","Casa Batlló · Modernisme"],
+["https://images.unsplash.com/photo-1745091723338-cbe6561908ea?auto=format&fit=crop&fm=jpg&q=88&w=2200","Sagrada Família · Gaudí"],
+["https://images.unsplash.com/photo-1722350551646-55ba8397d46c?auto=format&fit=crop&fm=jpg&q=88&w=2200","Park Güell · City views"],
+["https://images.unsplash.com/photo-1782156985541-6fa8545f4493?auto=format&fit=crop&fm=jpg&q=88&w=2200","Gothic Quarter · Old Barcelona"],
+["https://images.unsplash.com/photo-1780305807326-5724054ae6c6?auto=format&fit=crop&fm=jpg&q=88&w=2200","Barcelona · A neighborhood street"],
+["https://images.unsplash.com/photo-1764693365258-7a374a3c3da4?auto=format&fit=crop&fm=jpg&q=88&w=2200","Barcelona Cathedral · Detail"],
+["https://images.unsplash.com/photo-1729286292710-32af923b5b65?auto=format&fit=crop&fm=jpg&q=88&w=2200","Palau Güell · Interior"],
+["https://images.unsplash.com/photo-1641331766603-ef0f5f4d81e2?auto=format&fit=crop&fm=jpg&q=88&w=2200","Casa Batlló · After dark"],
+["https://images.unsplash.com/photo-1781278986238-ce660d7724e0?auto=format&fit=crop&fm=jpg&q=88&w=2200","Barcelona · Waterfront"],
+["https://images.unsplash.com/photo-1786222955501-db19711b060c?auto=format&fit=crop&fm=jpg&q=88&w=2200","La Boqueria · Local life"]
+]},
+"generic":{photos:[]}
 };
-return queries[slug(name)]||name;
+return galleries[slug(name)]||galleries.generic;
 }
-async function renderMagazineGallery(name,place){
+function renderMagazineGallery(name,place){
 var g=document.getElementById("magazineGallery"),lb=document.getElementById("magazineLightbox"),li=document.getElementById("magazineLightboxImage"),lc=document.getElementById("magazineLightboxCaption");
 if(!g)return;
-var labels=["The city at a glance","Architecture & character","A street worth wandering","A signature landmark","Local texture","A view that sets the mood","Neighborhood life","A memorable detail","The wider region","A moment to remember"];
-g.innerHTML='<div class="magazineGalleryLoading">Curating the visual story…</div>';
-try{
-var api="https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch="+encodeURIComponent(magazineGalleryImages(name))+"&gsrnamespace=6&gsrlimit=10&prop=imageinfo&iiprop=url&iiurlwidth=1600&format=json&origin=*";
-var res=await fetch(api);
-if(!res.ok)throw new Error("image search failed");
-var data=await res.json(),pages=data.query&&data.query.pages?Object.values(data.query.pages):[];
-var imgs=pages.map(function(p){return p.imageinfo&&p.imageinfo[0]&&p.imageinfo[0].thumburl?p.imageinfo[0].thumburl:(p.imageinfo&&p.imageinfo[0]?p.imageinfo[0].url:null)}).filter(Boolean).slice(0,10);
-if(imgs.length<6)throw new Error("not enough images");
+var set=magazineGalleryImages(name).photos||[];
+if(!set.length){
+g.innerHTML='<div class="magazineGalleryLoading">Editorial photography is being prepared for this destination.</div>';
+return;
+}
 g.innerHTML="";
-imgs.forEach(function(src,i){
-var a=document.createElement("a");a.href=src;a.setAttribute("aria-label","View "+place+" editorial photograph "+(i+1));
-var im=document.createElement("img");im.src=src;im.alt=place+" — "+labels[i];im.loading=i<4?"eager":"lazy";
-var sp=document.createElement("span");sp.className="magazineGalleryLabel";sp.textContent=labels[i];
+set.forEach(function(item,i){
+var src=item[0],caption=item[1];
+var a=document.createElement("a");a.href=src; a.className="magazinePhoto magazinePhoto"+(i+1); a.setAttribute("aria-label","View "+place+" photograph "+(i+1));
+var im=document.createElement("img");im.src=src;im.alt=place+" — "+caption;im.loading=i<5?"eager":"lazy";
+var sp=document.createElement("span");sp.className="magazineGalleryLabel";sp.textContent=caption;
 a.appendChild(im);a.appendChild(sp);
-a.addEventListener("click",function(e){e.preventDefault();li.src=src;li.alt=im.alt;lc.textContent=im.alt;lb.classList.add("isOpen");lb.setAttribute("aria-hidden","false")});
+a.addEventListener("click",function(e){e.preventDefault();li.src=src;li.alt=im.alt;lc.textContent=caption;lb.classList.add("isOpen");lb.setAttribute("aria-hidden","false")});
 g.appendChild(a);
 });
-}catch(err){
-g.innerHTML='<div class="magazineGalleryLoading">The photo gallery could not be loaded right now.</div>';
-}
 function closeMagazineLightbox(){lb.classList.remove("isOpen");lb.setAttribute("aria-hidden","true");li.removeAttribute("src")}
 var close=document.getElementById("magazineLightboxClose");if(close)close.onclick=closeMagazineLightbox;
 lb.onclick=function(e){if(e.target===lb)closeMagazineLightbox()};
-}function renderInspirationMagazine(){
+}
+function renderInspirationMagazine(){
 var box=document.getElementById("magazineIntro");
 if(!box)return;
 if(!trip.isInspiration){box.classList.remove("isVisible");box.style.display="none";return} box.classList.add("isVisible");box.style.display="block";box.removeAttribute("hidden");
