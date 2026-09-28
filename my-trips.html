@@ -11,7 +11,7 @@ body{margin:0;background:#f5f2ea;color:#172222;font-family:Arial,sans-serif}.wra
 var KEY="big-thanksgiving-trips-v1";
 function ensureSavedTrips(){
 try{
-var a=JSON.parse(localStorage.getItem(KEY)||"[]");if(a.length)return a;
+var a=JSON.parse(localStorage.getItem(KEY)||"[]");if(a.length){var clean=a.filter(function(t){return !(t&&t.isInspiration&&!t.isPromoted)&&!(t&&!t.isPromoted&&String(t.status||"").indexOf("Inspiration")===0)&&!(t&&!t.isPromoted&&String(t.id||"").indexOf("inspiration-")===0)});if(clean.length!==a.length)localStorage.setItem(KEY,JSON.stringify(clean));return clean;}
 function days(start,rows){var base=new Date(start+"T12:00:00");return rows.map(function(r,i){var d=new Date(base);d.setDate(base.getDate()+i);return {day:i+1,date:d.toISOString().slice(0,10),area:r[0],title:r[0],morning:r[1],afternoon:r[2],evening:r[3],note:"",event:null,refreshCount:0}})}
 var euro=days("2026-11-26",[
 ["Vienna Airport → Trnava","Arrive Vienna at 8:00 AM","Collect the rental car and drive to Trnava; settle in with family","Family dinner and an easy first evening"],
