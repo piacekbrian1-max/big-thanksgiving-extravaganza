@@ -3,50 +3,18 @@
 <title>Roamwell · My Trips</title>
 <style>
 body{margin:0;background:#f5f2ea;color:#172222;font-family:Arial,sans-serif}.wrap{max-width:1200px;width:92%;margin:auto;padding:70px 0}.ey{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#967b35;font-weight:700}.serif{font-family:Georgia,serif}.hero{background:#101b1b;color:white;padding:55px 6%;margin-bottom:35px}.hero h1{font:600 58px Georgia,serif;margin:10px 0}.hero p{max-width:650px;color:#d4dfda;line-height:1.7}.actions{display:flex;gap:10px;flex-wrap:wrap}.btn{display:inline-block;padding:12px 16px;border-radius:4px;border:1px solid #ffffff44;color:white;text-decoration:none;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}.primary{background:#d2b25e;color:#18231f;border-color:#d2b25e}.panel{background:#fffdf9;border:1px solid #dedbd2;border-radius:16px;padding:25px;margin-bottom:16px}.tripList{display:grid;gap:10px}.trip{display:flex;justify-content:space-between;gap:15px;align-items:center;background:#efebe2;border-radius:11px;padding:16px}.trip b{font:600 22px Georgia,serif}.trip small{display:block;color:#71807c;margin-top:5px}.trip button{border:1px solid #cfc9bb;background:#fffdf9;border-radius:7px;padding:9px 12px;cursor:pointer;font-size:9px;text-transform:uppercase}.empty{padding:30px;border:1px dashed #cfc9bb;text-align:center;color:#71807c}
- .buildStamp{font-size:10px;letter-spacing:.16em;color:#967b35;margin:0 0 12px;font-weight:700} </style></head><body>
+</style></head><body>
 <header class="hero"><div class="ey">ROAMWELL · YOUR TRAVEL LIBRARY</div><h1>My Trips</h1><p>Your saved journeys are kept separate from the current trip. Open a trip to work with its own plans, memories and journal, or start something completely new.</p><div class="actions"><a class="btn" href="index.html">Home</a><a class="btn primary" href="build-trip.html">Build a new trip</a><a class="btn" href="current-trip.html">Current trip</a></div></header>
-<main class="wrap"><section class="panel"><div class="ey">Saved journeys</div><h2 class="serif">Your trips</h2><p>Trips saved in this browser appear here. Opening one takes you to that trip's workspace instead of changing the current trip page.</p><div class="buildStamp">ROAMWELL · MY TRIPS · BUILD 206</div><div id="tripList" class="tripList"><div class="trip"><div><b>European Thanksgiving Adventure 2026</b><small>Trnava · Prague · Pilsen · Hluboká Castle · Vienna · 9 days · Ready</small></div><div><button onclick="location.href='trip.html?id=trip-european-thanksgiving-2026'">Open trip</button></div></div><div class="trip"><div><b>New Orleans · Working Trip</b><small>New Orleans · 7 days · Planning</small></div><div><button onclick="location.href='trip.html?id=trip-new-orleans-working'">Open trip</button></div></div></div></section></main>
+<main class="wrap"><section class="panel"><div class="ey">Saved journeys</div><h2 class="serif">Your trips</h2><p>Trips saved in this browser appear here. Opening one takes you to that trip's workspace instead of changing the current trip page.</p><div id="tripList" class="tripList"></div></section></main>
 <script>
 (function(){
 var KEY="big-thanksgiving-trips-v1";
-function ensureSavedTrips(){
-try{
-var a=[];try{a=JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){a=[]}if(a.length)return a;try{var backup=JSON.parse(localStorage.getItem("roamwell-trips-backup-v1")||"[]");if(Array.isArray(backup)&&backup.length){localStorage.setItem(KEY,JSON.stringify(backup));return backup}}catch(e){}
-function days(start,rows){var base=new Date(start+"T12:00:00");return rows.map(function(r,i){var d=new Date(base);d.setDate(base.getDate()+i);return {day:i+1,date:d.toISOString().slice(0,10),area:r[0],title:r[0],morning:r[1],afternoon:r[2],evening:r[3],note:"",event:null,refreshCount:0}})}
-var euro=days("2026-11-26",[
-["Vienna Airport → Trnava","Arrive Vienna at 8:00 AM","Collect the rental car and drive to Trnava; settle in with family","Family dinner and an easy first evening"],
-["Trnava · Family","Morning with parents and family","Trnava old town, historic center and seasonal market","Christmas-market evening and family dinner"],
-["Trnava · Saturday","Family breakfast","Local exploring and family time","Late-afternoon Saturday dinner with the kids' uncle"],
-["Trnava · Family","Unhurried morning","More family time and favorite local stops","Final Trnava dinner"],
-["Trnava → Prague","Check out and drive to Prague","Old Town, Christmas markets and neighborhood walk","Dinner in the historic center"],
-["Prague · Full Day","Old Town Square and Charles Bridge","Prague Castle area, cafés and Christmas markets","Czech dinner and evening market"],
-["Prague → Pilsen","Final Prague morning","Drive to Pilsen and check in at Spa Beerland - At The Golden Lamb","Pilsner Urquell brewery experience and overnight stay"],
-["Pilsen → Hluboká → Vienna","Pilsen morning","Drive toward Vienna with Hluboká Castle as the lunch stop","Continue to Vienna Airport and check in at Moxy Vienna Airport"],
-["Vienna Airport · Departure","Early airport morning","Return flight at 10:00 AM","Trip complete"]
-]);
-var nola=days("2027-01-01",[
-["French Quarter","Jackson Square, St. Louis Cathedral and the historic Quarter","French Market, architecture walk and photo stops","Beignets and coffee; Creole dinner"],
-["Tremé & Roots","Louis Armstrong Park and Congo Square","Tremé history walk and local culture","Dooky Chase's or another neighborhood Creole dinner"],
-["Garden District & Magazine Street","St. Charles Avenue and Garden District mansions","Streetcar, Magazine Street and Audubon Park","Uptown dinner"],
-["City Park & Culture","New Orleans Museum of Art and Besthoff Sculpture Garden","City Park and Bayou St. John","Parkway Bakery and local dinner"],
-["Marigny & Bywater","Colorful architecture and Crescent Park","Local art and Frenchmen Street","Ayu Bakehouse and neighborhood dinner or live music"],
-["Louisiana Beyond the City","Bayou country and Louisiana landscapes","Swamp/bayou or plantation/history day trip","Cajun/Creole dinner"],
-["New Orleans Favorites","Revisit the favorite neighborhood or attraction","Shopping, photos and café time","Celebration dinner and final live music"]
-]);
-var now=new Date().toISOString();
-var recovered=[
-{id:"trip-european-thanksgiving-2026",name:"European Thanksgiving Adventure 2026",travelers:3,start:"2026-11-26",end:"2026-12-04",destinations:["Trnava","Prague","Pilsen","Hluboká Castle","Vienna"],groupType:"Family",pace:"Balanced — see a lot without rushing",transport:"Rental car + walking",preferences:["Family time","Christmas markets","History & culture","Local food","Photography"],mustSee:["Trnava family visit","Prague Christmas markets","Pilsner Urquell brewery","Hluboká Castle"],plan:euro,originalPlan:JSON.parse(JSON.stringify(euro)),smartVersion:2,status:"Ready",days:9,homeBase:"Trnava / Prague / Pilsen / Vienna Airport",intro:"Family European Thanksgiving adventure with parents, Christmas markets, Czech history, Pilsner Urquell and a final Vienna Airport overnight.",occasion:"Thanksgiving",foodBudget:"Mixed — casual + special dinners",mobility:"Normal walking",energy:"Balanced days",evening:"Family dinners, Christmas markets and relaxed evenings",localFood:[],food:[],sights:[],areas:[],resources:[],budgetItems:[{id:"flight",description:"Flights — 3 travelers",amount:2764.65,currency:"USD",category:"Flights",status:"Confirmed"},{id:"car",description:"Rental car",amount:488,currency:"EUR",category:"Transportation",status:"Confirmed"},{id:"trnava",description:"Trnava Airbnb",amount:431.5,currency:"USD",category:"Stay",status:"Confirmed"},{id:"prague",description:"Ruterra Red Roofs View with garage",amount:283.1,currency:"USD",category:"Stay",status:"Confirmed"},{id:"pilsen",description:"Spa Beerland - At The Golden Lamb · 2 rooms",amount:162,currency:"USD",category:"Stay",status:"Confirmed"},{id:"moxy",description:"Moxy Vienna Airport",amount:257.04,currency:"USD",category:"Stay",status:"Confirmed"}],budgetTargetUsd:0,stayRecords:[],flightRecords:[],carRecords:[],trainRecords:[],journal:[],created:now,isInspiration:false,isPromoted:true},
-{id:"trip-new-orleans-working",name:"New Orleans · Working Trip",travelers:2,start:"2027-01-01",end:"2027-01-07",destinations:["New Orleans"],groupType:"Couples / friends",pace:"Balanced — see a lot without rushing",transport:"Walk + transit",preferences:["Local food","History & culture","Neighborhoods","Live music","Photography"],mustSee:["French Quarter","Tremé","Garden District","City Park","Marigny & Bywater"],plan:nola,originalPlan:JSON.parse(JSON.stringify(nola)),smartVersion:2,status:"Planning",days:7,homeBase:"New Orleans",intro:"Working New Orleans trip organized around neighborhoods, food, music and history.",occasion:"",foodBudget:"Mixed — casual + special dinners",mobility:"Normal walking",energy:"Balanced days",evening:"Dinner and live music",localFood:[],food:[],sights:[],areas:["French Quarter","Tremé","Garden District","City Park","Marigny & Bywater"],resources:[],budgetItems:[],budgetTargetUsd:0,stayRecords:[],flightRecords:[],carRecords:[],trainRecords:[],journal:[],created:now,isInspiration:false,isPromoted:true}
-];
-try{localStorage.setItem(KEY,JSON.stringify(recovered));localStorage.setItem("roamwell-trips-backup-v1",JSON.stringify(recovered))}catch(e){}return recovered;
-}catch(e){return []}
-}
-function load(){return ensureSavedTrips()}
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){return[]}}
 function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
-function render(){var el=document.getElementById("tripList"),a=load();if(!a.length)return;el.innerHTML="";
+function render(){var el=document.getElementById("tripList"),a=load();el.innerHTML="";if(!a.length){el.innerHTML='<div class="empty">No saved trips yet. Build your first new trip.</div>';return}
 for(var i=a.length-1;i>=0;i--){var t=a[i],d=document.createElement("div");d.className="trip";d.innerHTML="<div><b>"+esc(t.name)+"</b><small>"+esc((t.destinations||[]).join(" · "))+" · "+(t.days||"")+" days · "+esc(t.status||"Planning")+"</small></div><div><button onclick='openTrip("+JSON.stringify(t.id)+")'>Open trip</button> <button onclick='deleteTrip("+JSON.stringify(t.id)+")'>Delete</button></div>";el.appendChild(d)}}
 window.openTrip=function(id){sessionStorage.setItem("openTripId",id);location.href="trip.html?id="+encodeURIComponent(id)};
-window.deleteTrip=function(id){if(!confirm("Delete this saved trip?"))return;var a=load().filter(function(t){return t.id!==id});localStorage.setItem(KEY,JSON.stringify(a));localStorage.setItem("roamwell-trips-backup-v1",JSON.stringify(a));render()};
+window.deleteTrip=function(id){if(!confirm("Delete this saved trip?"))return;var a=load().filter(function(t){return t.id!==id});localStorage.setItem(KEY,JSON.stringify(a));render()};
 render();
 })();
 </script></body></html>
