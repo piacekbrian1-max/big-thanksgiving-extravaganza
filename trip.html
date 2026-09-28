@@ -987,7 +987,8 @@ function makeInspirationTrip(name){
     base.localFood=rich.localFood.slice();
     base.food=rich.food.slice();
     base.areas=rich.areas.slice();
-    base.nolaTemplateVersion="2026-09-28-v4";
+    base.nolaTemplateVersion="2026-09-28-v5";
+    base.masterTemplate="new-orleans-master-v2";
   }else{
     base.mustSee=dayRows.slice(0,Math.min(7,dayRows.length)).map(function(x){return x[1]});
     base.sights=dayRows.map(function(x){return x[1]}).concat(dayRows.map(function(x){return x[2]})).slice(0,12);
@@ -1024,12 +1025,12 @@ function makeInspirationTrip(name){
     "Museums":dayRows.slice(0,7).map(function(x,i){return [x[1],base.areas[i]||"City center","Museum / culture lead","Destination-specific"]}),
     "Markets":dayRows.slice(0,7).map(function(x,i){return [x[2],base.areas[i]||"City center","Market / local-life lead","Destination-specific"]})
   };
-  if(key==="new orleans")base.nolaTemplateVersion="2026-09-28-v4";
+  if(key==="new orleans"){base.nolaTemplateVersion="2026-09-28-v5";base.masterTemplate="new-orleans-master-v2";}
 
 if(inspiration){
   var tempKey="roamwell-inspiration-"+slug(inspiration)+"-"+slug(adventure||"classic");
   try{trip=JSON.parse(sessionStorage.getItem(tempKey)||"null")}catch(e){trip=null}
-  if(!trip||!trip.isInspiration||!trip.destinations||trip.destinations[0]!==inspiration||String(trip.adventure||"")!==String(adventure||"")||(String(inspiration||"").toLowerCase()==="new orleans"&&(!trip.nolaTemplateVersion||trip.nolaTemplateVersion!=="2026-09-28-v4"||trip.templateVersion!=="new-orleans-master-v1"||!Array.isArray(trip.mustSee)||trip.mustSee.length<7||!Array.isArray(trip.sights)||trip.sights.length<10||!Array.isArray(trip.food)||trip.food.length<6||!Array.isArray(trip.plan)||trip.plan.length!==5))){
+  if(!trip||!trip.isInspiration||!trip.destinations||trip.destinations[0]!==inspiration||String(trip.adventure||"")!==String(adventure||"")||(String(inspiration||"").toLowerCase()==="new orleans"&&(!trip.nolaTemplateVersion||trip.nolaTemplateVersion!=="2026-09-28-v5"||trip.templateVersion!=="new-orleans-master-v1"||trip.masterTemplate!=="new-orleans-master-v2"||!Array.isArray(trip.mustSee)||trip.mustSee.length<7||!Array.isArray(trip.sights)||trip.sights.length<10||!Array.isArray(trip.food)||trip.food.length<10||!Array.isArray(trip.plan)||trip.plan.length!==5))){
     trip=makeInspirationTrip(inspiration);
     trip.adventure=adventure||"";
     if(adventure){
@@ -1040,6 +1041,10 @@ if(inspiration){
     sessionStorage.setItem(tempKey,JSON.stringify(trip));
   }
   id=trip.id;
+  if(String(inspiration||"").toLowerCase()==="new orleans"){
+    sessionStorage.removeItem("roamwell-inspiration-new orleans");
+    sessionStorage.removeItem("roamwell-inspiration-new orleans-classic");
+  }
 }else{
   trip=trips.find(function(t){return t.id===id})||trips[trips.length-1];
 }
@@ -1047,7 +1052,9 @@ if(!trip){location.href="my-trips.html";return}
 function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
 function save(){
   if(trip.isInspiration&&!trip.isPromoted){
-    sessionStorage.setItem("roamwell-inspiration-"+slug((trip.destinations||[])[0]||trip.name),JSON.stringify(trip));
+    var saveKey="roamwell-inspiration-"+slug((trip.destinations||[])[0]||trip.name)+"-"+slug(trip.adventure||"classic");
+    sessionStorage.setItem(saveKey,JSON.stringify(trip));
+    sessionStorage.removeItem("roamwell-inspiration-"+slug((trip.destinations||[])[0]||trip.name));
     return;
   }
   var a=load(),i=a.findIndex(function(t){return t.id===trip.id});if(i>=0)a[i]=trip;else a.push(trip);
