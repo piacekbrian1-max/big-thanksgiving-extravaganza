@@ -939,7 +939,7 @@ function makeInspirationTrip(name){
       ]}
   };
   var p=profiles[key]||{
-    title:name+" · 7-Day Inspiration",intro:"A ready-to-edit week designed to showcase the destination before you customize it.",
+    title:name+" · 5-Day Inspiration",intro:"A ready-to-edit week designed to showcase the destination before you customize it.",
     days:[
       ["Arrival & orientation","Historic center and signature landmark","Neighborhood walk + local market","Local specialty dinner"],
       ["Signature sights","Top cultural attraction","Historic district + scenic viewpoint","Neighborhood restaurant"],
@@ -953,7 +953,8 @@ function makeInspirationTrip(name){
   if(key==="new orleans"){start=new Date("2027-01-16T12:00:00");end=new Date("2027-01-20T12:00:00")}
   else {start.setDate(start.getDate()+14);end=new Date(start);end.setDate(end.getDate()+6)}
   function iso(d){return d.toISOString().slice(0,10)}
-  var plan=p.days.map(function(x,i){var d=new Date(start);d.setDate(start.getDate()+i);return {day:i+1,date:iso(d),area:x[0],title:x[0],morning:x[1],afternoon:x[2],evening:x[3],note:"Inspiration day · edit any block, swap restaurants, change the pace, or remove the day entirely.",event:null,refreshCount:0}});
+  var masterDays=(p.days||[]).slice(0,5);
+  var plan=masterDays.map(function(x,i){var d=new Date(start);d.setDate(start.getDate()+i);return {day:i+1,date:iso(d),area:x[0],title:x[0],morning:x[1],afternoon:x[2],evening:x[3],note:"Roamwell master-template day · edit any block, swap restaurants, change the pace, or remove the day entirely.",event:null,refreshCount:0}});
   if(key==="new orleans"){
     plan=p.days.map(function(x,i){var d=new Date(start);d.setDate(start.getDate()+i);return {day:i+1,date:iso(d),area:x[0].split(" · ")[0],title:x[0],morning:x[1],afternoon:x[2],evening:x[3],note:"Roamwell New Orleans saved trip · keep this editable, cluster nearby stops, and leave room for Carnival events.",event:null,refreshCount:0}});
   }
@@ -977,7 +978,7 @@ function makeInspirationTrip(name){
   }:null;
   // MASTER TEMPLATE: New Orleans is the reference build for every inspiration trip.
   // New destinations change the content, never the structure, intelligence, navigation or editable workflow.
-  var base={id:"inspiration-"+slug(name).replace(/ /g,"-")+"-"+Date.now(),name:p.title,travelers:2,start:iso(start),end:iso(end),destinations:[name],groupType:"Couples / friends",pace:"Balanced — see a lot without rushing",transport:"Walk + transit",preferences:["Local food","History & culture","Neighborhoods","Seasonal events","Photography"],mustSee:[],plan:plan,originalPlan:JSON.parse(JSON.stringify(plan)),smartVersion:2,status:key==="new orleans"?"Built — January trip updated":"Inspiration · ready to edit",days:p.days.length,homeBase:"Downtown / city center",intro:p.intro,occasion:"Inspiration trip",foodBudget:"Mixed — casual + special dinners",mobility:"Normal walking",energy:"Balanced days",evening:"Mix of dinner and occasional nightlife",localFood:[],food:[],sights:[],areas:[],resources:[],weatherQuery:name+" weather",eventQuery:name+" events",camsQuery:name+" live webcam",created:new Date().toISOString(),isInspiration:true,templateVersion:"new-orleans-master-v1",masterTemplate:"New Orleans"};
+  var base={id:"inspiration-"+slug(name).replace(/ /g,"-")+"-"+Date.now(),name:p.title,travelers:2,start:iso(start),end:iso(end),destinations:[name],groupType:"Couples / friends",pace:"Balanced — see a lot without rushing",transport:"Walk + transit",preferences:["Local food","History & culture","Neighborhoods","Seasonal events","Photography"],mustSee:[],plan:plan,originalPlan:JSON.parse(JSON.stringify(plan)),smartVersion:2,status:key==="new orleans"?"Built — January trip updated":"Inspiration · ready to edit",days:plan.length,homeBase:"Downtown / city center",intro:p.intro,occasion:"Inspiration trip",foodBudget:"Mixed — casual + special dinners",mobility:"Normal walking",energy:"Balanced days",evening:"Mix of dinner and occasional nightlife",localFood:[],food:[],sights:[],areas:[],resources:[],weatherQuery:name+" weather",eventQuery:name+" events",camsQuery:name+" live webcam",created:new Date().toISOString(),isInspiration:true,templateVersion:"new-orleans-master-v1",masterTemplate:"New Orleans"};
   if(rich)Object.keys(rich).forEach(function(k){base[k]=rich[k]});
   var dayRows=p.days||[];
   // IMPORTANT: never let the generic destination fallback overwrite the saved New Orleans master data.
@@ -1030,11 +1031,11 @@ function makeInspirationTrip(name){
 if(inspiration){
   var tempKey="roamwell-inspiration-"+slug(inspiration)+"-"+slug(adventure||"classic");
   try{trip=JSON.parse(sessionStorage.getItem(tempKey)||"null")}catch(e){trip=null}
-  if(!trip||!trip.isInspiration||!trip.destinations||trip.destinations[0]!==inspiration||String(trip.adventure||"")!==String(adventure||"")||(String(inspiration||"").toLowerCase()==="new orleans"&&(!trip.nolaTemplateVersion||trip.nolaTemplateVersion!=="2026-09-28-v5"||trip.templateVersion!=="new-orleans-master-v1"||trip.masterTemplate!=="new-orleans-master-v2"||!Array.isArray(trip.mustSee)||trip.mustSee.length<7||!Array.isArray(trip.sights)||trip.sights.length<10||!Array.isArray(trip.food)||trip.food.length<10||!Array.isArray(trip.plan)||trip.plan.length!==5))){
+  if(!trip||!trip.isInspiration||!trip.destinations||trip.destinations[0]!==inspiration||String(trip.adventure||"")!==String(adventure||"")||!Array.isArray(trip.plan)||trip.plan.length!==5||(String(inspiration||"").toLowerCase()==="new orleans"&&(!trip.nolaTemplateVersion||trip.nolaTemplateVersion!=="2026-09-28-v5"||trip.templateVersion!=="new-orleans-master-v1"||trip.masterTemplate!=="new-orleans-master-v2"||!Array.isArray(trip.mustSee)||trip.mustSee.length<7||!Array.isArray(trip.sights)||trip.sights.length<10||!Array.isArray(trip.food)||trip.food.length<10))){
     trip=makeInspirationTrip(inspiration);
     trip.adventure=adventure||"";
     if(adventure){
-      trip.name=adventure+" · 7-Day Inspiration";
+      trip.name=adventure+" · 5-Day Inspiration";
       trip.intro="A seasonal Roamwell adventure combining the destination's signature character with "+adventure.split(" · ").slice(-1)[0].toLowerCase()+".";
       trip.occasion="Adventure inspiration";
     }
