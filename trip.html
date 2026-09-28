@@ -985,13 +985,45 @@ function makeInspirationTrip(name){
     evening:"Mix of live music, neighborhood dinners and relaxed evenings"
   }:null;
   if(rich){Object.keys(rich).forEach(function(k){if(rich[k]!==undefined){} });}
-  var base={id:"inspiration-"+slug(name).replace(/ /g,"-")+"-"+Date.now(),name:p.title,travelers:2,start:iso(start),end:iso(end),destinations:[name],groupType:"Couples / friends",pace:"Balanced — see a lot without rushing",transport:"Walk + transit",preferences:["Local food","History & culture","Neighborhoods","Seasonal events","Photography"],mustSee:[],plan:plan,originalPlan:JSON.parse(JSON.stringify(plan)),smartVersion:2,status:"Inspiration · ready to edit",days:7,homeBase:"Downtown / city center",intro:p.intro,occasion:"Inspiration trip",foodBudget:"Mixed — casual + special dinners",mobility:"Normal walking",energy:"Balanced days",evening:"Mix of dinner and occasional nightlife",localFood:[],food:[],sights:[],areas:[],resources:[],created:new Date().toISOString(),isInspiration:true};\n  if(rich)Object.keys(rich).forEach(function(k){base[k]=rich[k]});
-  if(key==="new orleans")base.nolaTemplateVersion="2026-09-28-v2";\n  return base;
-}
+  // MASTER TEMPLATE: New Orleans is the reference build for every inspiration trip.
+  // New destinations change the content, never the structure, intelligence, navigation or editable workflow.
+  var base={id:"inspiration-"+slug(name).replace(/ /g,"-")+"-"+Date.now(),name:p.title,travelers:2,start:iso(start),end:iso(end),destinations:[name],groupType:"Couples / friends",pace:"Balanced — see a lot without rushing",transport:"Walk + transit",preferences:["Local food","History & culture","Neighborhoods","Seasonal events","Photography"],mustSee:[],plan:plan,originalPlan:JSON.parse(JSON.stringify(plan)),smartVersion:2,status:"Inspiration · ready to edit",days:7,homeBase:"Downtown / city center",intro:p.intro,occasion:"Inspiration trip",foodBudget:"Mixed — casual + special dinners",mobility:"Normal walking",energy:"Balanced days",evening:"Mix of dinner and occasional nightlife",localFood:[],food:[],sights:[],areas:[],resources:[],weatherQuery:name+" weather",eventQuery:name+" events",camsQuery:name+" live webcam",created:new Date().toISOString(),isInspiration:true,templateVersion:"new-orleans-master-v1",masterTemplate:"New Orleans"};
+  if(rich)Object.keys(rich).forEach(function(k){base[k]=rich[k]});
+  var dayRows=p.days||[];
+  base.mustSee=dayRows.slice(0,Math.min(7,dayRows.length)).map(function(x){return x[1]});
+  base.sights=dayRows.map(function(x){return x[1]}).concat(dayRows.map(function(x){return x[2]})).slice(0,12);
+  base.localFood=dayRows.map(function(x){return x[3]}).filter(Boolean).slice(0,10);
+  base.food=base.localFood.slice();
+  base.areas=dayRows.map(function(x){return x[0]}).slice(0,7);
+  base.resources=[
+    "https://www.google.com/search?q="+encodeURIComponent(name+" official tourism"),
+    "https://www.google.com/search?q="+encodeURIComponent(name+" events"),
+    "https://www.google.com/search?q="+encodeURIComponent(name+" restaurants local guide"),
+    "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(name)
+  ];
+  base.guideCategory="Dinner";
+  base.guideCuisine="All cuisines";
+  base.guideData={
+    "Breakfast":dayRows.slice(0,7).map(function(x,i){return [x[1],base.areas[i]||"City center","Breakfast / café lead","Destination-specific"]}),
+    "Lunch":dayRows.slice(0,7).map(function(x,i){return [x[2],base.areas[i]||"City center","Lunch / local food lead","Destination-specific"]}),
+    "Dinner":dayRows.slice(0,7).map(function(x,i){return [x[3],base.areas[i]||"City center","Dinner / local food lead","Destination-specific"]}),
+    "Special Occasions":dayRows.slice(0,5).map(function(x,i){return [x[3],base.areas[i]||"City center","Special-occasion lead","Destination-specific"]}),
+    "Bars":dayRows.slice(0,5).map(function(x,i){return [x[0],base.areas[i]||"City center","Evening / nightlife lead","Destination-specific"]}),
+    "Breweries":dayRows.slice(0,5).map(function(x,i){return [x[0],base.areas[i]||"City center","Local drink / culture lead","Destination-specific"]}),
+    "Coffee & Bakeries":dayRows.slice(0,5).map(function(x,i){return [x[1],base.areas[i]||"City center","Coffee / bakery lead","Destination-specific"]}),
+    "Music":dayRows.slice(0,5).map(function(x,i){return [x[3],base.areas[i]||"City center","Music / evening lead","Destination-specific"]}),
+    "Theater & Shows":dayRows.slice(0,5).map(function(x,i){return [x[1],base.areas[i]||"City center","Culture / show lead","Destination-specific"]}),
+    "Family":dayRows.slice(0,5).map(function(x,i){return [x[1],base.areas[i]||"City center","Family / culture lead","Destination-specific"]}),
+    "Neighborhoods":base.areas.map(function(x){return [x,x,"Explore this destination area","Destination-specific"]}),
+    "Museums":dayRows.slice(0,7).map(function(x,i){return [x[1],base.areas[i]||"City center","Museum / culture lead","Destination-specific"]}),
+    "Markets":dayRows.slice(0,7).map(function(x,i){return [x[2],base.areas[i]||"City center","Market / local-life lead","Destination-specific"]})
+  };
+  if(key==="new orleans")base.nolaTemplateVersion="2026-09-28-v3";
+
 if(inspiration){
   var tempKey="roamwell-inspiration-"+slug(inspiration)+"-"+slug(adventure||"classic");
   try{trip=JSON.parse(sessionStorage.getItem(tempKey)||"null")}catch(e){trip=null}
-  if(!trip||!trip.isInspiration||!trip.destinations||trip.destinations[0]!==inspiration||String(trip.adventure||"")!==String(adventure||"")||(String(inspiration||"").toLowerCase()==="new orleans"&&(!trip.nolaTemplateVersion||trip.nolaTemplateVersion!=="2026-09-28-v2"||!Array.isArray(trip.mustSee)||trip.mustSee.length<7||!Array.isArray(trip.sights)||trip.sights.length<10||!Array.isArray(trip.food)||trip.food.length<10||!Array.isArray(trip.plan)||trip.plan.length!==7))){
+  if(!trip||!trip.isInspiration||!trip.destinations||trip.destinations[0]!==inspiration||String(trip.adventure||"")!==String(adventure||"")||(String(inspiration||"").toLowerCase()==="new orleans"&&(!trip.nolaTemplateVersion||trip.nolaTemplateVersion!=="2026-09-28-v3"||trip.templateVersion!=="new-orleans-master-v1"||!Array.isArray(trip.mustSee)||trip.mustSee.length<7||!Array.isArray(trip.sights)||trip.sights.length<10||!Array.isArray(trip.food)||trip.food.length<10||!Array.isArray(trip.plan)||trip.plan.length!==7))){
     trip=makeInspirationTrip(inspiration);
     trip.adventure=adventure||"";
     if(adventure){
@@ -1651,11 +1683,11 @@ return ["All cuisines"];
 }
 function renderGuide(){
 var isN=!!cityProfile(),filter=document.getElementById("guideFilter"),sel=document.getElementById("guideSelect"),cuisineRow=document.getElementById("guideCuisineRow"),cuisineSel=document.getElementById("guideCuisine"),grid=document.getElementById("guideGrid"),count=document.getElementById("guideCount");filter.innerHTML="";sel.innerHTML="";
-var cats=isN?categories:["Breakfast","Lunch","Dinner","Special Occasions","Bars","Breweries","Coffee & Bakeries","Music","Theater & Shows","Family","Neighborhoods","Museums","Markets"];var active=trip.guideCategory||"Dinner";
+var cats=isN?categories:Object.keys(trip.guideData||{"Breakfast":[],"Lunch":[],"Dinner":[],"Special Occasions":[],"Bars":[],"Breweries":[],"Coffee & Bakeries":[],"Music":[],"Theater & Shows":[],"Family":[],"Neighborhoods":[],"Museums":[],"Markets":[]});var active=trip.guideCategory||"Dinner";
 var cuisine=trip.guideCuisine||"All cuisines";
 function draw(){
 grid.innerHTML="";
-var items=isN?(nolaGuide[active]||[]):[[active+" near "+baseLabel(),"Around your home base","Search current local options","Destination-specific"]];
+var source=isN?(nolaGuide[active]||[]):((trip.guideData&&trip.guideData[active])||[]);var items=source.length?source:[[active+" near "+baseLabel(),"Around your home base","Search current local options","Destination-specific"]];
 if(["Breakfast","Lunch","Dinner","Special Occasions"].indexOf(active)>=0&&isN&&cuisine!=="All cuisines")items=items.filter(function(it){return guideCuisine(it[0],it[2],active)===cuisine});
 count.textContent=(items.length||0)+" suggestions · "+active+(cuisine!=="All cuisines"?" · "+cuisine:"");
 for(var i=0;i<items.length;i++){
@@ -1668,7 +1700,7 @@ card.innerHTML="<div class='ey guideEyebrow'><span>"+esc(active)+"</span>"+price
 bindGuideReviewControls(card,name,review);
 grid.appendChild(card);hydrateGuideLiveRating(name,(trip.destinations||[])[0]||"",card)
 }}
-for(var i=0;i<cats.length;i++){(function(cat){var b=document.createElement("button");b.textContent=cat;b.className=cat===active?"active":"";b.onclick=function(){active=cat;trip.guideCategory=cat;trip.guideCuisine="All cuisines";save();renderGuide()};filter.appendChild(b);var o=document.createElement("option");o.value=cat;o.textContent=cat+" · "+(isN?(nolaGuide[cat]||[]).length+" places":"local options");o.selected=cat===active;sel.appendChild(o)})(cats[i])}
+for(var i=0;i<cats.length;i++){(function(cat){var b=document.createElement("button");b.textContent=cat;b.className=cat===active?"active":"";b.onclick=function(){active=cat;trip.guideCategory=cat;trip.guideCuisine="All cuisines";save();renderGuide()};filter.appendChild(b);var o=document.createElement("option");o.value=cat;o.textContent=cat+" · "+(isN?(nolaGuide[cat]||[]).length:((trip.guideData&&trip.guideData[cat])||[]).length)+" places";o.selected=cat===active;sel.appendChild(o)})(cats[i])}
 var cuisineCats=["Breakfast","Lunch","Dinner","Special Occasions"];
 if(isN&&cuisineCats.indexOf(active)>=0){
 cuisineRow.style.display="flex";cuisineSel.innerHTML="";
