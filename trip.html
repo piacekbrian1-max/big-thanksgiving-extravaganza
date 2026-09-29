@@ -1252,6 +1252,45 @@ areas:{
 "Mid-City / City Park":{photo:imgs.neworleans,desc:"Parks, sculpture, neighborhood food and a slower local day.",morning:["City Park","Besthoff Sculpture Garden","Cafe Degas"],afternoon:["New Orleans Museum of Art","Parkway Bakery & Tavern","Bayou St. John"],evening:["Katie's Restaurant & Bar","Local bar","Early night"]},
 "Warehouse / CBD":{photo:imgs.neworleans,desc:"Museums, theaters, riverfront and central dining.",morning:["National WWII Museum","Warehouse District walk","Coffee stop"],afternoon:["Ogden Museum","Arts District","Mississippi Riverfront"],evening:["Saenger Theatre","Orpheum Theater","Peche Seafood Grill"]}
 }}};
+ /*
+  * FINAL CANONICAL NEW ORLEANS MASTER HYDRATION
+  * The saved master ID must receive the complete New Orleans build after
+  * nolaGuide/profile exist. This intentionally replaces any stale/generic
+  * browser record instead of trying to merge partial data into it.
+  */
+ if(id==="trip-1790519550831-6393"){
+   var canonicalNola=makeInspirationTrip("New Orleans");
+   canonicalNola.id=id;
+   canonicalNola.isInspiration=false;
+   canonicalNola.isPromoted=true;
+   canonicalNola.status="Planning";
+   canonicalNola.occasion="";
+   canonicalNola.name="New Orleans · Jan 16–20, 2027";
+   canonicalNola.title="New Orleans · Jan 16–20, 2027";
+   canonicalNola.start="2027-01-16";
+   canonicalNola.end="2027-01-20";
+   canonicalNola.travelers=2;
+   canonicalNola.destinations=["New Orleans"];
+   canonicalNola.groupType="Couples / friends";
+   canonicalNola.pace="Balanced — see a lot without rushing";
+   canonicalNola.transport="Walk + transit";
+   canonicalNola.preferences=["Local food","History & culture","Music & shows","Neighborhoods","Museums","Photography","Seasonal events"];
+   canonicalNola.homeBase="Downtown / city center";
+   canonicalNola.nolaTemplateVersion="2026-09-28-v9";
+   canonicalNola.masterTemplate="new-orleans-master-v6";
+   canonicalNola.templateVersion="new-orleans-master-v1";
+   canonicalNola.guideData=JSON.parse(JSON.stringify(nolaGuide));
+   canonicalNola.guideCategory="Dinner";
+   canonicalNola.guideCuisine="All cuisines";
+   canonicalNola.eventHighlights=["Jan 16 · Intergalactic Krewe of Chewbacchus","Carnival season · Jan 6–Feb 9, 2027"];
+   canonicalNola.smartVersion=2;
+   canonicalNola.originalPlan=JSON.parse(JSON.stringify(canonicalNola.plan));
+   trip=canonicalNola;
+   var canonicalTrips=load(),canonicalIndex=canonicalTrips.findIndex(function(t){return t.id===id});
+   if(canonicalIndex>=0)canonicalTrips[canonicalIndex]=trip;else canonicalTrips.push(trip);
+   localStorage.setItem(KEY,JSON.stringify(canonicalTrips));
+   sessionStorage.setItem("openTripId",id);
+ }
 function cityProfile(){
 var d=slug((trip.destinations||[])[0]||"");
 if(d.indexOf("new orleans")>=0||d.indexOf("nola")>=0)return profile.neworleans;
