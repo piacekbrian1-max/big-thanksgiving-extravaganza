@@ -1049,7 +1049,31 @@ if(inspiration){
     sessionStorage.removeItem("roamwell-inspiration-v9-new orleans-classic");
   }
 }else{
-  trip=trips.find(function(t){return t.id===id})||trips[trips.length-1];
+  trip=trips.find(function(t){return t.id===id})||null;
+  /*
+   * Saved-trip recovery: browser-created trip records live in localStorage and
+   * therefore cannot be reconstructed from GitHub after a browser/session reset.
+   * The approved New Orleans master is the canonical recovery source for the
+   * original saved template ID, so opening that ID must never fall back to an
+   * unrelated/last trip or a generic destination shell.
+   */
+  if(!trip && id==="trip-1790519550831-6393"){
+    trip=makeInspirationTrip("New Orleans");
+    trip.id=id;
+    trip.isInspiration=false;
+    trip.isPromoted=true;
+    trip.status="Planning";
+    trip.occasion="";
+    trip.created=trip.created||new Date().toISOString();
+    trip.name=trip.title||"New Orleans · Jan 16–20, 2027";
+    trip.masterTemplate="new-orleans-master-v6";
+    trip.nolaTemplateVersion="2026-09-28-v9";
+    trip.templateVersion="new-orleans-master-v1";
+    var recovered=load(),ri=recovered.findIndex(function(t){return t.id===id});
+    if(ri>=0)recovered[ri]=trip;else recovered.push(trip);
+    localStorage.setItem(KEY,JSON.stringify(recovered));
+    sessionStorage.setItem("openTripId",id);
+  }
 }
 if(!trip){location.href="my-trips.html";return}
 function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
