@@ -605,6 +605,7 @@ var trips=load(),trip=trips.find(function(t){return t.id===id})||trips[trips.len
  * from the restored feature build.
  */
 if(id==="trip-1790519550831-6393"){
+  var nolaExisting=load().find(function(t){return t.id===id})||null;
   var nolaDates=["2027-01-16","2027-01-17","2027-01-18","2027-01-19","2027-01-20"];
   var nolaDays=[
     ["Carnival kickoff + French Quarter","French Quarter + Jackson Square","French Market + Mississippi Riverfront","Local Creole/Cajun dinner + live music"],
@@ -642,6 +643,13 @@ if(id==="trip-1790519550831-6393"){
     plan:nolaPlan,originalPlan:JSON.parse(JSON.stringify(nolaPlan)),
     smartVersion:2,masterTemplate:"new-orleans-master-v1"
   };
+  if(nolaExisting){
+    ["homeBase","transport","walkingRadius","preferences","mustSee","foodBudget","mobility","energy","evening",
+     "guideReviews","roamwellExperiences","travelFlights","travelTrains","travelStays","travelCars","travelGroups",
+     "budget","expenses","memories","journal","resources","weatherData","webcamData","notes"].forEach(function(k){
+      if(nolaExisting[k]!==undefined)trip[k]=nolaExisting[k];
+    });
+  }
   var nolaSaved=load(),nolaIndex=nolaSaved.findIndex(function(t){return t.id===id});
   if(nolaIndex>=0)nolaSaved[nolaIndex]=trip;else nolaSaved.push(trip);
   localStorage.setItem(KEY,JSON.stringify(nolaSaved));
