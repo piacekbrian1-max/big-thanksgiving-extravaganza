@@ -42,7 +42,7 @@ const statusBox=document.getElementById("status");
 function status(msg){statusBox.textContent=msg;statusBox.classList.add("show")}
 document.getElementById("signupBtn").onclick=()=>location.href="signup.html";
 document.getElementById("resetBtn").onclick=(e)=>{e.preventDefault();location.href="reset-password.html";};
-document.getElementById("loginForm").onsubmit=async(e)=>{e.preventDefault();status("Signing you in…");const email=document.getElementById("email").value.trim(),password=document.getElementById("password").value;const {error}=await client.auth.signInWithPassword({email,password});if(error){status(error.message);return}location.href="account.html";};
+document.getElementById("loginForm").onsubmit=async(e)=>{e.preventDefault();status("Signing you in…");const email=document.getElementById("email").value.trim(),password=document.getElementById("password").value;const {error}=await client.auth.signInWithPassword({email,password});if(error){status(error.message);return}location.href=new URLSearchParams(location.search).get("return")||"account.html";};
 </script>
 </body>
 </html>
