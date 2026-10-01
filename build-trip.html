@@ -98,7 +98,7 @@ document.getElementById("status").textContent="Trip saved to your RoamSonio acco
 setTimeout(function(){location.href="trip.html?id="+encodeURIComponent(t.id)},250);
 }catch(e){document.getElementById("status").textContent="Your trip was saved on this device, but account saving is temporarily unavailable.";return}
 })();
-document.getElementById("status").textContent="Trip built. Opening your editable trip workspace…";setTimeout(function(){location.href="trip.html?id="+encodeURIComponent(t.id)},250)
+document.getElementById("status").textContent="Saving your RoamSonio trip…";
 }
 })();
 </script></body></html>
