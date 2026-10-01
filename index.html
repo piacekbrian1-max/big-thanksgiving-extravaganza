@@ -82,10 +82,28 @@ hluboka:"images/hluboka-winter.jpg",
 vienna:"images/prague-christmas.jpg",
 neworleans:"https://res.cloudinary.com/simpleview/image/upload/v1503612209/clients/neworleans/NOTMC_46619_dfd8fba4-531f-4e0b-81dc-40d770236b88.jpg"
 };
+function cleanSavedTrips(a){
+  if(!Array.isArray(a))return [];
+  var seen={},out=[];
+  for(var i=0;i<a.length;i++){
+    var t=a[i]||{},name=String(t.name||"").trim().toLowerCase();
+    if(name==="atlanta test"||name==="account 2 test trip")continue;
+    var dest=(t.destinations||[]).map(function(x){return String(x||"").trim().toLowerCase()}).join("|");
+    var key=name+"||"+dest+"||"+String(t.start||"")+"||"+String(t.end||"");
+    if(seen[key])continue;
+    seen[key]=true;
+    out.push(t);
+  }
+  return out;
+}
 function loadPersistentTrips(){
   try{
     var raw=JSON.parse(localStorage.getItem(KEY)||"null");
-    if(Array.isArray(raw)&&raw.length)return raw;
+    if(Array.isArray(raw)&&raw.length){
+      var cleaned=cleanSavedTrips(raw);
+      if(JSON.stringify(cleaned)!==JSON.stringify(raw))localStorage.setItem(KEY,JSON.stringify(cleaned));
+      return cleaned;
+    }
     var restored=[{
       id:"european-thanksgiving-adventure-2026",
       name:"European Thanksgiving Adventure 2026",
