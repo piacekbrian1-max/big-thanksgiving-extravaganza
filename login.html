@@ -36,12 +36,13 @@ a{text-decoration:none;color:inherit}.top{height:74px;background:#0B2D4A;color:#
 <button class="secondary" type="button" id="signupBtn">Create a RoamSonio account</button>
 <div class="foot"><a href="#" id="resetBtn">Forgot your password?</a></div>
 </section></main>
-<script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
+const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","sb_publishable_DyiQBLmIyGMBXCeJ9KKgSg_TFWO5vsy");
 const statusBox=document.getElementById("status");
 function status(msg){statusBox.textContent=msg;statusBox.classList.add("show")}
 document.getElementById("signupBtn").onclick=()=>location.href="signup.html";
-document.getElementById("resetBtn").onclick=(e)=>{e.preventDefault();status("Password recovery will be available when secure authentication is enabled.");};
-document.getElementById("loginForm").onsubmit=(e)=>{e.preventDefault();status("Authentication is not connected yet. Your information is not being stored here. We are finishing the secure account connection before enabling sign-in.");};
+document.getElementById("resetBtn").onclick=(e)=>{e.preventDefault();location.href="reset-password.html";};
+document.getElementById("loginForm").onsubmit=async(e)=>{e.preventDefault();status("Signing you in…");const email=document.getElementById("email").value.trim(),password=document.getElementById("password").value;const {error}=await client.auth.signInWithPassword({email,password});if(error){status(error.message);return}location.href="account.html";};
 </script>
 </body>
 </html>
