@@ -674,7 +674,10 @@ hluboka:"images/hluboka-winter.jpg",
 neworleans:"https://images.unsplash.com/photo-1617893620448-3b4e44fd57dc?auto=format&fit=crop&fm=jpg&q=88&w=3000",
 neworleans2:"https://images.unsplash.com/photo-1689568914860-4ecf6e58099c?auto=format&fit=crop&fm=jpg&q=88&w=3000",
 neworleans3:"https://images.unsplash.com/photo-1678839041538-f5b45013e377?auto=format&fit=crop&fm=jpg&q=88&w=3000",
-vienna:"images/prague-christmas.jpg"};
+vienna:"images/prague-christmas.jpg",
+atlanta:"https://commons.wikimedia.org/wiki/Special:FilePath/Atlanta%20Skyline%20from%20Piedmont%20Park%20-%20October%202024.png?width=1800",
+atlanta2:"https://commons.wikimedia.org/wiki/Special:FilePath/Ponce%20City%20Market%20from%20Historic%20Fourth%20Ward%20Park.jpg?width=1600",
+atlanta3:"https://commons.wikimedia.org/wiki/Special:FilePath/To%20the%20Beltline.jpg?width=1600"};
 
 var nolaGuide={
 Breakfast:[
@@ -819,15 +822,24 @@ areas:{
 "Garden District / Uptown":{photo:imgs.neworleans2,desc:"Mansions, gardens, Magazine Street and neighborhood restaurants.",morning:["St. Charles Avenue","Garden District architecture","Magazine Street coffee"],afternoon:["Magazine Street shops","La Petite Grocery","Audubon Park"],evening:["Tipitina's","Uptown dinner","Cure"]},
 "Mid-City / City Park":{photo:imgs.neworleans,desc:"Parks, sculpture, neighborhood food and a slower local day.",morning:["City Park","Besthoff Sculpture Garden","Cafe Degas"],afternoon:["New Orleans Museum of Art","Parkway Bakery & Tavern","Bayou St. John"],evening:["Katie's Restaurant & Bar","Local bar","Early night"]},
 "Warehouse / CBD":{photo:imgs.neworleans,desc:"Museums, theaters, riverfront and central dining.",morning:["National WWII Museum","Warehouse District walk","Coffee stop"],afternoon:["Ogden Museum","Arts District","Mississippi Riverfront"],evening:["Saenger Theatre","Orpheum Theater","Peche Seafood Grill"]}
-}}};
+},
+atlanta:{
+areas:{
+"Downtown & Centennial Park":{photo:imgs.atlanta,desc:"Atlanta's central core with Centennial Olympic Park, the Georgia Aquarium and World of Coca-Cola.",morning:["Centennial Olympic Park","Georgia Aquarium","World of Coca-Cola"],afternoon:["College Football Hall of Fame","CNN Center area","Downtown food stop"],evening:["Centennial Park lights","Downtown dinner","Mercedes-Benz Stadium area"]},
+"Midtown & Piedmont Park":{photo:imgs.atlanta,desc:"Atlanta's cultural heart with Piedmont Park, the High Museum and the BeltLine nearby.",morning:["Piedmont Park","Atlanta Botanical Garden","Atlanta BeltLine"],afternoon:["High Museum of Art","Midtown neighborhood walk","Local café"],evening:["Fox Theatre","South City Kitchen Midtown","Midtown skyline"]},
+"Old Fourth Ward & Ponce City Market":{photo:imgs.atlanta2,desc:"The Eastside BeltLine, Ponce City Market and Historic Fourth Ward Park.",morning:["Ponce City Market","Historic Fourth Ward Park","BeltLine Eastside Trail"],afternoon:["Krog Street Market","Inman Park","Little Five Points"],evening:["BeltLine sunset walk","Ponce City Market dinner","Inman Park"]},
+"Sweet Auburn & MLK":{photo:imgs.atlanta3,desc:"Atlanta's civil-rights history and the Martin Luther King Jr. National Historical Park.",morning:["Martin Luther King Jr. Birth Home area","Ebenezer Baptist Church","King Center"],afternoon:["National Center for Civil and Human Rights","Sweet Auburn Curb Market","Historic district walk"],evening:["Sweet Auburn dinner","Downtown return","Flexible evening"]},
+"West Midtown":{photo:imgs.atlanta2,desc:"Industrial architecture, design, restaurants and Westside Provisions.",morning:["Westside Provisions District","Atlanta contemporary architecture","Local coffee"],afternoon:["Antico Pizza Napoletana","West Midtown galleries","Design District"],evening:["West Midtown dinner","The Works","Local cocktail or music option"]}
+}};
 function cityProfile(){
 var d=slug((trip.destinations||[])[0]||"");
 if(d.indexOf("new orleans")>=0||d.indexOf("nola")>=0)return profile.neworleans;
+if(d.indexOf("atlanta")>=0||d==="atl")return profile.atlanta;
 return null;
 }
 function destinationImage(name,i){
 var k=slug(name);if(k.indexOf("new orleans")>=0||k.indexOf("nola")>=0)return i%3===0?imgs.neworleans:i%3===1?imgs.neworleans2:imgs.neworleans3;
-if(k.indexOf("prague")>=0)return imgs.prague;if(k.indexOf("trnava")>=0)return imgs.trnava;if(k.indexOf("pilsen")>=0)return imgs.pilsen;if(k.indexOf("hlub")>=0)return imgs.hluboka;if(k.indexOf("vienna")>=0)return imgs.vienna;return imgs.prague}
+if(k.indexOf("prague")>=0)return imgs.prague;if(k.indexOf("trnava")>=0)return imgs.trnava;if(k.indexOf("pilsen")>=0)return imgs.pilsen;if(k.indexOf("hlub")>=0)return imgs.hluboka;if(k.indexOf("vienna")>=0)return imgs.vienna;if(k.indexOf("atlanta")>=0||k==="atl")return i%3===0?imgs.atlanta:i%3===1?imgs.atlanta2:imgs.atlanta3;return imgs.prague}
 function baseLabel(){return (trip.homeBase||document.getElementById("homeBase").value||trip.stay||"").trim()||"Downtown / city center"}
 function interestScore(area,slot){
 var prefs=(trip.preferences||[]).map(slug).join(" "),s=slug(area)+ " "+slug(slot),score=0;
@@ -844,7 +856,7 @@ if((trip.groupType||"").indexOf("Family")>=0&&s.match(/park|museum|aquarium|zoo|
 return score;
 }
 function eventFor(date){
-var ds=slug((trip.destinations||[])[0]||"");if(ds.indexOf("new orleans")<0)return null;
+var ds=slug((trip.destinations||[])[0]||"");if(ds.indexOf("atlanta")>=0||ds==="atl"){return null}if(ds.indexOf("new orleans")<0)return null;
 var d=date;
 if(d==="2027-01-16")return {name:"Teaser Fest + Intergalactic Krewe of Chewbacchus",when:"Jan 16, 2027",note:"Two date-specific events overlap this day. Check the official schedules and parade route before locking the evening."};
 if(d==="2027-01-14"||d==="2027-01-15"||d==="2027-01-17")return {name:"Teaser Fest",when:"Jan 14–17, 2027",note:"Date-specific festival; verify the day's lineup and ticketing before locking the evening."};
@@ -860,7 +872,7 @@ function homeBaseArea(){
 var h=slug(trip.homeBase||"");
 var names=Object.keys((cityProfile()||{}).areas||{});
 for(var i=0;i<names.length;i++){var n=slug(names[i]);if(h.indexOf(n)>=0||n.indexOf(h)>=0&&h.length>3)return names[i]}
-if(h.indexOf("bourbon")>=0||h.indexOf("jackson square")>=0||h.indexOf("quarter")>=0)return "French Quarter";
+if(h.indexOf("centennial")>=0||h.indexOf("downtown")>=0||h.indexOf("midtown")>=0&&h.indexOf("midtown")>=0)return h.indexOf("midtown")>=0?"Midtown & Piedmont Park":"Downtown & Centennial Park";if(h.indexOf("ponce")>=0||h.indexOf("old fourth")>=0||h.indexOf("beltline")>=0||h.indexOf("inman")>=0)return "Old Fourth Ward & Ponce City Market";if(h.indexOf("king")>=0||h.indexOf("sweet auburn")>=0||h.indexOf("mlk")>=0)return "Sweet Auburn & MLK";if(h.indexOf("west midtown")>=0||h.indexOf("westside")>=0)return "West Midtown";if(h.indexOf("bourbon")>=0||h.indexOf("jackson square")>=0||h.indexOf("quarter")>=0)return "French Quarter";
 if(h.indexOf("frenchmen")>=0||h.indexOf("marigny")>=0||h.indexOf("bywater")>=0)return "Marigny";
 if(h.indexOf("garden district")>=0||h.indexOf("uptown")>=0||h.indexOf("st charles")>=0)return "Garden District";
 if(h.indexOf("trem")>=0||h.indexOf("tremé")>=0)return "Tremé";
@@ -870,7 +882,7 @@ return null;
 function discoveryFor(area,idx){
 var p=cityProfile(),s=slug(area||"")+" "+(trip.preferences||[]).join(" ");
 if(!p)return "Leave one flexible block for a neighborhood discovery near your home base.";
-if(/french quarter/.test(s))return "Consider a quieter French Quarter history walk beyond the busiest Bourbon Street blocks, then use Jackson Square as your photo stop.";
+if(/centennial|downtown/.test(s))return "Consider pairing Centennial Olympic Park with the Georgia Aquarium and World of Coca-Cola so the day stays clustered downtown.";if(/midtown|piedmont/.test(s))return "Consider Piedmont Park, the Atlanta Botanical Garden and the High Museum as one walkable cultural cluster.";if(/ponce|old fourth|beltline|inman/.test(s))return "Consider following the Eastside BeltLine Trail through Ponce City Market, Historic Fourth Ward Park and Inman Park.";if(/sweet auburn|mlk/.test(s))return "Consider giving the civil-rights sites enough time for interpretation rather than stacking too many stops.";if(/west midtown|westside/.test(s))return "Consider a slower West Midtown food-and-design afternoon.";if(/french quarter/.test(s))return "Consider a quieter French Quarter history walk beyond the busiest Bourbon Street blocks, then use Jackson Square as your photo stop.";
 if(/marigny/.test(s))return "Consider pairing Frenchmen Street with a short Marigny/Bywater architecture walk before dinner.";
 if(/garden/.test(s))return "Consider the Garden District streetcar + cemetery/architecture route for a slower photographic half-day.";
 if(/trem/.test(s))return "Consider a Tremé history-and-music afternoon followed by a neighborhood Creole dinner.";
@@ -882,7 +894,7 @@ var base=baseLabel(),s=slug(area||"");
 var n="Confirm timed-entry, restaurant and evening reservations before locking the day.";
 if(idx===0)n="Confirm arrival timing, luggage drop and the first reservation before adding extra stops.";
 if(idx===dates().n-1)n="Keep the final day flexible around checkout, luggage and departure timing.";
-if(/french quarter/.test(s))n="Wear comfortable shoes and account for pedestrian-only/slow-traffic streets around the Quarter.";
+if(/downtown|centennial/.test(s))n="Downtown attractions are close together, but allow time for security lines and event traffic.";if(/midtown|piedmont/.test(s))n="Combine Piedmont Park and nearby cultural stops, and check outdoor conditions before committing to long walks.";if(/beltline|ponce|inman/.test(s))n="The BeltLine is best treated as a walking route; allow extra time for stops, food and neighborhood exploration.";if(/sweet auburn|mlk/.test(s))n="Allow time for the historic sites and check National Park Service hours before arrival.";if(/french quarter/.test(s))n="Wear comfortable shoes and account for pedestrian-only/slow-traffic streets around the Quarter.";
 if(/garden|uptown/.test(s))n="Streetcar travel is part of the experience; allow extra time rather than stacking tight reservations.";
 if(/mid city|city park/.test(s))n="Check opening hours and weather before committing to the outdoor portion.";
 return "Don't overlook: "+n+" Home base: "+base+".";
