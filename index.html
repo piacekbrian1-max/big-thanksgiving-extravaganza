@@ -33,7 +33,7 @@ footer{background:#0B2D4A;color:#4F6B8A;padding:38px 0}.foot{max-width:1440px;wi
 <body>
 <header class="top"><div class="nav">
 <a class="brand" href="index.html"><span class="mark" aria-label="RoamSonio"><svg class="brandIcon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="32" r="29" fill="#F8F5ED"/><circle cx="45" cy="18" r="8" fill="#D4A85A"/><path d="M10 46 25 29l8 9 8-12 13 20H10Z" fill="#0B2D4A"/><path d="M19 43 32 28l7 8" fill="none" stroke="#F8F5ED" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 20c8-7 18-8 27-4 5 2 8 5 10 9" fill="none" stroke="#D4A85A" stroke-width="3" stroke-linecap="round"/><path d="M51 24l4 1-2 4" fill="none" stroke="#D4A85A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><strong><span class="wordRoam">Roam</span><span class="wordSonio">Sonio</span></strong><small>DREAM IT. PLAN IT. LIVE IT.</small></span></a>
-<div class="navright"><a href="#my-roamwell">My RoamSonio</a><a href="my-trips.html">My Trips</a><a href="build-trip.html">Build Your Trip</a><a href="about.html">About Us</a><a href="login.html">Sign In</a></div>
+<div class="navright"><a href="#my-roamwell">My RoamSonio</a><a href="my-trips.html">My Trips</a><a href="build-workspace.html">Build Your Trip</a><a href="about.html">About Us</a><a href="login.html">Sign In</a></div>
 </div></header>
 
 <main>
@@ -57,7 +57,7 @@ footer{background:#0B2D4A;color:#4F6B8A;padding:38px 0}.foot{max-width:1440px;wi
   <div class="suggestGrid" id="suggestGrid"></div>
   <div class="startTripFlow">
     <div class="startTripCopy"><div class="ey">Ready for another journey?</div><h2>Start a new trip.</h2><p>Choose a destination above or start from scratch. RoamSonio will build the same complete planning workspace around it.</p></div>
-    <a class="startTripButton" href="build-trip.html"><span>＋</span><div><b>Build your next trip</b><small>Dates · destinations · travelers · smart itinerary</small></div></a>
+    <a class="startTripButton" href="build-workspace.html"><span>＋</span><div><b>Build your next trip</b><small>Dates · destinations · travelers · smart itinerary</small></div></a>
   </div>
   <div class="dashLibraryHead"><div><div class="ey">Your travel library</div><h2>Other trips</h2></div><a href="my-trips.html">Open full trip library</a></div>
   <div class="dashGrid" id="dashGrid"></div>
@@ -150,7 +150,7 @@ function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").
 function photo(t){
 var ds=(t.destinations||[]);for(var i=0;i<ds.length;i++){var k=ds[i].toLowerCase();if(k.indexOf("trnava")>=0)return images.trnava;if(k.indexOf("prague")>=0)return images.prague;if(k.indexOf("pilsen")>=0)return images.pilsen;if(k.indexOf("hlub")>=0)return images.hluboka;if(k.indexOf("vienna")>=0)return images.vienna;if(k.indexOf("new orleans")>=0||k.indexOf("nola")>=0)return images.neworleans}return images.prague
 }
-function openTrip(id){sessionStorage.setItem("openTripId",id);location.href="trip.html?id="+encodeURIComponent(id)}
+function openTrip(id){sessionStorage.setItem("openTripId",id);location.href="workspace.html?id="+encodeURIComponent(id)}
 function parseDate(s){return s?new Date(s+"T00:00:00"):null}
 function daysUntil(s){var d=parseDate(s),n=new Date();n.setHours(0,0,0,0);return d?Math.ceil((d-n)/86400000):null}
 function tripState(t){var n=new Date();n.setHours(0,0,0,0),a=parseDate(t.start),b=parseDate(t.end);if(!a||!b)return"Planning";if(n<a)return"Upcoming";if(n<=b)return"Active";return"Past"}
@@ -163,8 +163,8 @@ function readiness(t){var checks=[
   {label:"Itinerary",ok:!!(t.plan&&t.plan.length)}
 ];var missing=checks.filter(function(x){return !x.ok}).map(function(x){return x.label});return{done:checks.length-missing.length,total:checks.length,missing:missing}}
 function countdownLabel(t){var d=daysUntil(t.start);if(d===null)return"Dates not set";if(d>1)return d+" days";if(d===1)return"Tomorrow";if(d===0)return"Today";var left=Math.abs(d);return left+" days ago"}
-function completedTripModel(){return{name:"European Thanksgiving Adventure 2026",start:"2026-11-26",end:"2026-12-04",destinations:["Trnava","Prague","Pilsen","Hluboká nad Vltavou","Vienna"],travelers:3,state:"Completed planning",ready:true,missing:[],image:"images/prague-christmas.jpg",href:"current-trip.html"}}
-function currentTripModel(){return{id:"trip-1790519550831-6393",name:"New Orleans · Jan 16–20, 2027",start:"2027-01-16",end:"2027-01-20",destinations:["New Orleans"],travelers:3,state:"In Progress",ready:false,missing:["Finish trip details"],image:images.neworleans,href:"trip.html?id=trip-1790519550831-6393"}}
+function completedTripModel(){return{name:"European Thanksgiving Adventure 2026",start:"2026-11-26",end:"2026-12-04",destinations:["Trnava","Prague","Pilsen","Hluboká nad Vltavou","Vienna"],travelers:3,state:"Completed planning",ready:true,missing:[],image:"images/prague-christmas.jpg",href:"current-workspace.html"}}
+function currentTripModel(){return{id:"trip-1790519550831-6393",name:"New Orleans · Jan 16–20, 2027",start:"2027-01-16",end:"2027-01-20",destinations:["New Orleans"],travelers:3,state:"In Progress",ready:false,missing:["Finish trip details"],image:images.neworleans,href:"workspace.html?id=trip-1790519550831-6393"}}
 function buildSuggestions(){
 var now=new Date(),month=now.getMonth()+1;
 var season=month<=2||month===12?"Winter":month<=5?"Spring":month<=8?"Summer":"Fall";
@@ -226,7 +226,7 @@ for(var i=0;i<pool.length&&selected.length<6;i++)selected.push(pool[(offset+i)%p
 var box=document.getElementById("suggestGrid");if(!box)return;
 var seasonEl=document.getElementById("suggestSeason");if(seasonEl)seasonEl.textContent=season+" · new adventures every Sunday";
 box.innerHTML=selected.map(function(name){
-var x=catalog[name],v=base[x[4]],href="trip.html?inspiration="+encodeURIComponent(x[4])+"&adventure="+encodeURIComponent(name)+"&magazine=1&v="+Date.now();
+var x=catalog[name],v=base[x[4]],href="workspace.html?inspiration="+encodeURIComponent(x[4])+"&adventure="+encodeURIComponent(name)+"&magazine=1&v="+Date.now();
 return "<a class='suggestCard' href='"+href+"' aria-label='Explore "+esc(name)+" as a 7-day inspiration trip' style=\"--suggest-image:url('"+v.image+"')\"><div class='suggestContent'><div class='suggestTag'>"+esc(x[1])+"</div><h3>"+esc(name)+"</h3><p>"+esc(x[0])+" · "+esc(x[2])+"</p><span class='suggestAction'>"+esc(x[3])+" · Explore this trip</span></div></a>";
 }).join("");
 }
@@ -236,7 +236,7 @@ var lead=upcoming.slice().sort(function(a,b){return (daysUntil((a.t||a).start)||
 var t=lead.t||lead,d=daysUntil(t.start),r=lead.r||{missing:[]};
 var headline=d===null?"Choose your next dates":d>0?d+" days until "+(t.destinations||["your next trip"])[0]:d===0?"Your trip starts today":"Your next trip is underway";
 var sub=r.missing&&r.missing.length?"RoamSonio found "+r.missing.length+" planning item"+(r.missing.length===1?"":"s")+" still to schedule: "+r.missing.join(" · "):"Your next journey is taking shape. Open it to keep building or start another adventure.";
-box.innerHTML="<div class='nextJourneyCopy'><div class='ey'>Next step</div><h3>"+esc(headline)+"</h3><p>"+esc(sub)+"</p></div><a class='nextJourneyAction' href='"+(lead.href||("trip.html?id="+encodeURIComponent(t.id)))+"'>"+(r.missing&&r.missing.length?"Finish planning":"Open next journey")+"</a>";
+box.innerHTML="<div class='nextJourneyCopy'><div class='ey'>Next step</div><h3>"+esc(headline)+"</h3><p>"+esc(sub)+"</p></div><a class='nextJourneyAction' href='"+(lead.href||("workspace.html?id="+encodeURIComponent(t.id)))+"'>"+(r.missing&&r.missing.length?"Finish planning":"Open next journey")+"</a>";
 }
 var dashFilter="all";
 function renderDashboard(){
@@ -251,7 +251,7 @@ var lead=current,ld=daysUntil(lead.start),leadData=lead;
 var leadText="IN PROGRESS";
 var missing=lead.missing||[];
 feature.style.setProperty("--feature-image","url('"+(lead.image||photo(leadData))+ "')");
-var workingHref=lead.href||("trip.html?id="+encodeURIComponent(leadData.id));
+var workingHref=lead.href||("workspace.html?id="+encodeURIComponent(leadData.id));
 var actionLabel="Continue & complete trip";
 feature.innerHTML="<a class='dashFeatureLink' href='"+workingHref+"'><div class='dashFeatureInner'><div class='ey'>"+leadText+" · "+(ld!==null?(ld>0?ld+' days to go':ld===0?'Today':'In progress'):'Dates not set')+"</div><h3>"+esc(leadData.name||"Untitled trip")+"</h3><p>"+esc((leadData.destinations||[]).join(" · "))+"</p><div class='dashFeatureMeta'><span class='dashPill'><strong>"+(leadData.travelers||0)+"</strong> travelers</span><span class='dashPill'>"+esc(leadData.start||"Dates not set")+" → "+esc(leadData.end||"")+"</span><span class='dashPill'>"+(lead.ready?"Core plans scheduled":"Planning in progress")+"</span></div><div class='dashFeatureActions'><span class='dashFeatureButton primary'>"+actionLabel+"</span><span class='dashFeatureButton'>View journey</span></div>"+(missing.length?"<div style='margin-top:13px;font-size:8px;color:#e7b0b0'>Still needed: "+esc(missing.join(" · "))+"</div>":"")+"</div></a>";
 feature.removeAttribute("role");
@@ -265,7 +265,7 @@ if(dashFilter==="planning")return x.state==="Planning";
 if(dashFilter==="attention")return x.r.missing.length>0;
 return true;
 }).slice().sort(function(a,b){var da=daysUntil(a.t.start),db=daysUntil(b.t.start);if(a.state==="Planning"&&b.state!=="Planning")return 1;if(b.state==="Planning"&&a.state!=="Planning")return -1;return (da===null?999999:Math.abs(da))-(db===null?999999:Math.abs(db))});
-grid.innerHTML=cards.map(function(x){var t=x.t,r=x.r,d=daysUntil(t.start),state=x.state;var pct=Math.round(r.done/r.total*100);var missingText=r.missing.length?"Still needed: "+r.missing.join(" · "):"Ready — no core scheduling gaps";return "<article class='dashTrip'><div class='dashTripPhoto' style=\"background-image:url('"+photo(t)+"')\"><span class='dashTripStatus'>"+state+"</span></div><div class='dashTripBody'><h3>"+esc(t.name||"Untitled trip")+"</h3><div class='dashTripDest'>"+esc((t.destinations||[]).join(" · "))+"</div><div class='dashCountdown'><b>"+(d===null?"—":d>0?d:d===0?"Today":"Past")+"</b><span>"+(d===null?"dates needed":d===1?"day to go":d>1?"days to go":"")+"</span></div><div class='dashReadiness'><div class='dashReadinessTop'><span>Trip readiness</span><span>"+r.done+"/"+r.total+"</span></div><div class='dashBar'><i style='width:"+pct+"%'></i></div></div><div class='"+(r.missing.length?"dashMissing":"dashMissing dashReady")+"'>"+esc(missingText)+"</div><div class='dashTripActions'><a class='primary' href='trip.html?id="+encodeURIComponent(t.id)+"'>Open trip</a><a href='trip.html?id="+encodeURIComponent(t.id)+"#travel'>Schedule</a></div></div></article>"}).join("")||"<div class='empty' style='grid-column:1/-1'>"+(dashFilter==="upcoming"?"Your working trip is featured above. No other saved trips are currently upcoming.":dashFilter==="planning"?"No trips are currently in planning status.":dashFilter==="attention"?"Nothing else needs attention right now.":"No saved trips yet. Start your first journey above.")+"</div>";
+grid.innerHTML=cards.map(function(x){var t=x.t,r=x.r,d=daysUntil(t.start),state=x.state;var pct=Math.round(r.done/r.total*100);var missingText=r.missing.length?"Still needed: "+r.missing.join(" · "):"Ready — no core scheduling gaps";return "<article class='dashTrip'><div class='dashTripPhoto' style=\"background-image:url('"+photo(t)+"')\"><span class='dashTripStatus'>"+state+"</span></div><div class='dashTripBody'><h3>"+esc(t.name||"Untitled trip")+"</h3><div class='dashTripDest'>"+esc((t.destinations||[]).join(" · "))+"</div><div class='dashCountdown'><b>"+(d===null?"—":d>0?d:d===0?"Today":"Past")+"</b><span>"+(d===null?"dates needed":d===1?"day to go":d>1?"days to go":"")+"</span></div><div class='dashReadiness'><div class='dashReadinessTop'><span>Trip readiness</span><span>"+r.done+"/"+r.total+"</span></div><div class='dashBar'><i style='width:"+pct+"%'></i></div></div><div class='"+(r.missing.length?"dashMissing":"dashMissing dashReady")+"'>"+esc(missingText)+"</div><div class='dashTripActions'><a class='primary' href='workspace.html?id="+encodeURIComponent(t.id)+"'>Open trip</a><a href='workspace.html?id="+encodeURIComponent(t.id)+"#travel'>Schedule</a></div></div></article>"}).join("")||"<div class='empty' style='grid-column:1/-1'>"+(dashFilter==="upcoming"?"Your working trip is featured above. No other saved trips are currently upcoming.":dashFilter==="planning"?"No trips are currently in planning status.":dashFilter==="attention"?"Nothing else needs attention right now.":"No saved trips yet. Start your first journey above.")+"</div>";
 }
 function load(){return loadPersistentTrips()}
 function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
@@ -308,7 +308,7 @@ function renderHomeRoamSonio(){
     if(!items.length)continue;
     total+=items.length;
     items.sort(function(a,b){return (b.rating||0)-(a.rating||0)||a.name.localeCompare(b.name)});
-    html+="<div class='rwTripGroup'><div class='rwTripGroupHead'><div><small>"+esc((t.destinations||[]).join(" · "))+"</small><h3>"+esc(t.name||"Untitled trip")+"</h3></div><a href='trip.html?id="+encodeURIComponent(t.id)+"'>Open trip</a></div><div class='rwHomeGrid'>";
+    html+="<div class='rwTripGroup'><div class='rwTripGroupHead'><div><small>"+esc((t.destinations||[]).join(" · "))+"</small><h3>"+esc(t.name||"Untitled trip")+"</h3></div><a href='workspace.html?id="+encodeURIComponent(t.id)+"'>Open trip</a></div><div class='rwHomeGrid'>";
     items.forEach(function(x){
       var stars=x.rating?"★".repeat(Math.min(5,x.rating))+"☆".repeat(Math.max(0,5-x.rating)):"Not rated";
       html+="<article class='rwHomeCard'><div class='type'>"+esc(x.type)+" · "+esc(x.category)+"</div><h4>"+esc(x.name)+"</h4><div class='rwHomeMeta'>"+esc(x.destination||"This trip")+"</div><div class='rwHomeStars'>"+stars+(x.rating?" <span style='font-size:9px;color:var(--ink)'>"+x.rating+"/5</span>":"")+"</div><div class='rwHomeFlags'>"+(x.favorite?"<span class='rwHomeFlag'>Favorite</span>":"")+(x.recommend?"<span class='rwHomeFlag'>Would recommend</span>":"")+(x.visited?"<span class='rwHomeFlag'>Visited</span>":"")+"</div>"+(x.note?"<div class='rwHomeNote'>"+esc(x.note)+"</div>":"")+"</article>";
