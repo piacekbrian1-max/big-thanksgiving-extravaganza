@@ -42,7 +42,7 @@ const statusBox=document.getElementById("status");
 function status(msg){statusBox.textContent=msg;statusBox.classList.add("show")}
 document.getElementById("signupBtn").onclick=()=>location.href="login.html";
 
-document.getElementById("loginForm").onsubmit=async(e)=>{e.preventDefault();const p=document.getElementById("password").value,c=document.getElementById("confirm").value;if(p!==c){status("Passwords do not match.");return}if(p.length<6){status("Please use a password with at least 6 characters.");return}status("Creating your secure RoamSonio account…");const {data,error}=await client.auth.signUp({email:document.getElementById("email").value.trim(),password:p,options:{emailRedirectTo:location.origin+location.pathname.replace(/signup\.html$/,"account.html")}});if(error){status(error.message);return}if(data.session){location.href="account.html";}else{status("Account created. Check your email and click the verification link before signing in.");}};
+document.getElementById("loginForm").onsubmit=async(e)=>{e.preventDefault();const p=document.getElementById("password").value,c=document.getElementById("confirm").value;if(p!==c){status("Passwords do not match.");return}if(p.length<6){status("Please use a password with at least 6 characters.");return}status("Creating your secure RoamSonio account…");const {data,error}=await client.auth.signUp({email:document.getElementById("email").value.trim(),password:p,options:{emailRedirectTo:location.origin+location.pathname.replace(/signup\.html$/,"auth-callback.html")}});if(error){status(error.message);return}if(data.session){location.href="account.html";}else{status("Account created. Check your email and click the verification link before signing in.");}};
 </script>
 </body>
 </html>
