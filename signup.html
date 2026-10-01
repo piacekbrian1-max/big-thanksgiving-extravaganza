@@ -34,14 +34,15 @@ a{text-decoration:none;color:inherit}.top{height:74px;background:#0B2D4A;color:#
 <div id="status" class="status" role="status"></div>
 <div class="divider">or</div>
 <button class="secondary" type="button" id="signupBtn">Already have an account? Sign in</button>
-<div class="foot">Your account will be able to join or create a family after authentication is connected.</div>
+<div class="foot">Your account will be ready to join or create a family after you verify your email.</div>
 </section></main>
-<script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
+const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","sb_publishable_DyiQBLmIyGMBXCeJ9KKgSg_TFWO5vsy");
 const statusBox=document.getElementById("status");
 function status(msg){statusBox.textContent=msg;statusBox.classList.add("show")}
 document.getElementById("signupBtn").onclick=()=>location.href="login.html";
 
-document.getElementById("loginForm").onsubmit=(e)=>{e.preventDefault();const p=document.getElementById("password").value,c=document.getElementById("confirm").value;if(p!==c){status("Passwords do not match.");return}status("The RoamSonio account system is being connected now. This page establishes the account experience; no credentials are stored by this demo.");};
+document.getElementById("loginForm").onsubmit=async(e)=>{e.preventDefault();const p=document.getElementById("password").value,c=document.getElementById("confirm").value;if(p!==c){status("Passwords do not match.");return}if(p.length<6){status("Please use a password with at least 6 characters.");return}status("Creating your secure RoamSonio account…");const {data,error}=await client.auth.signUp({email:document.getElementById("email").value.trim(),password:p,options:{emailRedirectTo:location.origin+location.pathname.replace(/signup\.html$/,"account.html")}});if(error){status(error.message);return}if(data.session){location.href="account.html";}else{status("Account created. Check your email and click the verification link before signing in.");}};
 </script>
 </body>
 </html>
