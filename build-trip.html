@@ -49,6 +49,17 @@ function web(q){return "https://www.google.com/search?q="+encodeURIComponent(q)}
 function slug(s){return String(s||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim()}
 function catalog(dest){
 var s=slug(dest);
+if(s.indexOf("atlanta")>=0||s==="atl")return {
+city:"Atlanta",
+areas:["Downtown & Centennial Park","Midtown & Piedmont Park","Old Fourth Ward & Ponce City Market","BeltLine Eastside Trail","Inman Park & Little Five Points","Sweet Auburn & Martin Luther King Jr. Historic District","West Midtown"],
+sights:["Georgia Aquarium","World of Coca-Cola","Centennial Olympic Park","Piedmont Park & Atlanta Botanical Garden","Ponce City Market","Martin Luther King Jr. National Historical Park","High Museum of Art","Atlanta BeltLine Eastside Trail","Fox Theatre","Krog Street Market"],
+food:["Mary Mac's Tea Room","The Varsity","Busy Bee Cafe","Ponce City Market Food Hall","Krog Street Market","South City Kitchen Midtown","Antico Pizza Napoletana"],
+local:["Krog Street Market","Ponce City Market Food Hall","Buford Highway food corridor","Sweet Auburn Curb Market","Westside Provisions District"],
+events:"Atlanta events",
+weather:"Atlanta Georgia weather",
+cams:"Atlanta downtown webcam",
+resources:["https://discoveratlanta.com/","https://www.atlantaga.gov/","https://beltline.org/","https://www.nps.gov/malu/index.htm"],
+holiday:false};
 if(s.indexOf("new orleans")>=0||s.indexOf("nola")>=0)return {
 city:"New Orleans",areas:["French Quarter","Marigny","Garden District","Tremé","Mid-City","Uptown","Bayou St. John"],
 sights:["French Quarter & Jackson Square","St. Charles Avenue & Garden District","City Park & Sydney and Walda Besthoff Sculpture Garden","National WWII Museum","Frenchmen Street live music","French Market District","Bayou St. John"],
