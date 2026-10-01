@@ -474,7 +474,7 @@ button,a{max-width:100%}
 <section class="section" id="food">
 <div class="sectionHead"><div><div class="kicker">Local guide</div><h2>Food, drinks & things to do.</h2></div><p id="guideLead">Suggestions are organized by meal, neighborhood, entertainment and interest instead of one long tourist list.</p></div>
 <div class="guidePricingNote"><strong>How pricing works:</strong> $ = budget, $ = moderate, $$ = mid-range, $$ = expensive, $$$ = very expensive. “Typical food spend” is a planning estimate per person before tax, tip and drinks, based on the restaurant's price level and the type of meal. New Orleans-wide reference data currently puts an inexpensive restaurant meal around $26, while a three-course mid-range meal for two is around $141, so these ranges are meant for planning rather than a guaranteed bill. Check the current menu before booking.</div><div class="guidePricingNote"><strong>Ratings are international:</strong> RoamSonio uses a destination-aware source hierarchy rather than assuming a U.S.-only provider. Google provides the broad 1–5 baseline for places and businesses; Tripadvisor adds international traveler coverage; MICHELIN provides expert restaurant selections where available; Booking.com is used for accommodation guest scores; and stronger regional platforms can be used where they have better local coverage. The source and review count are shown with each rating, and RoamSonio never blends different scales into a single score.</div><div class="panel" style="padding:22px"><div class="guideFilter" id="guideFilter"></div><select class="guideSelect" id="guideSelect"></select><div class="guideMeta"><span class="guideCount" id="guideCount"></span><span class="guideHint">Open Maps, check the place, or research before you go.</span></div><div class="guideBrowse" id="guideBrowse"></div><div class="guideGrid" id="guideGrid"></div></div>
-<div class="sourceBar">For New Orleans, the guide is informed by current local destination guidance and current Eater New Orleans restaurant reporting; hours and menus should still be checked before visiting. <a href="https://www.neworleans.com/" target="_blank">New Orleans & Company</a> · <a href="https://nola.eater.com/" target="_blank">Eater New Orleans</a></div>
+<div class="sourceBar">RoamSonio provides curated destination suggestions; verify current hours, menus, availability and event details before visiting.</div>
 </section>
 
 <section class="section" id="events">
@@ -831,6 +831,17 @@ Markets:[
 ["Riverwalk Marketplace","CBD","Riverfront shopping","Central"],
 ["Mardi Gras World shop","Riverfront","Carnival souvenirs","Seasonal"]
 ]};
+var atlantaGuide={
+"Breakfast":[["Home Grown GA","Reynoldstown","Southern breakfast","Local favorite"],["Buttermilk Kitchen","Buckhead","Southern breakfast and brunch","Popular brunch"],["West Egg Cafe","West Midtown","Breakfast and brunch","West Midtown"],["Flying Biscuit Cafe","Midtown","Breakfast and brunch","Atlanta classic"]],
+"Lunch":[["Busy Bee Cafe","West End","Southern soul food","Atlanta institution"],["Krog Street Market","Old Fourth Ward","Food hall and local vendors","BeltLine stop"],["Ponce City Market Food Hall","Old Fourth Ward","Food hall and restaurants","Easy central stop"],["The Varsity","Downtown","Atlanta fast-food classic","Quick downtown stop"]],
+"Dinner":[["South City Kitchen Midtown","Midtown","Modern Southern","Midtown favorite"],["Staplehouse","Old Fourth Ward","Contemporary American","Special dinner"],["Antico Pizza Napoletana","West Midtown","Neapolitan pizza","Casual favorite"],["Busy Bee Cafe","West End","Southern soul food","Historic Atlanta restaurant"],["Gunshow","Glenwood Park","Chef-driven shared plates","Experience dinner"],["Rathbun's","Inman Park","Contemporary American","Neighborhood dinner"]],
+"Coffee & Bakeries":[["East Pole Coffee Co.","Atlanta","Specialty coffee","Local roaster"],["Chrome Yellow Trading Co.","Old Fourth Ward","Coffee + design shop","BeltLine area"],["Poncey-Highland Coffee","Poncey-Highland","Neighborhood coffee","Local stop"],["Dancing Goats Coffee Bar","Multiple","Coffee + bakery","Atlanta roaster"]],
+"Music & Shows":[["Fox Theatre","Midtown","Historic theater and performances","Atlanta landmark"],["Tabernacle","Downtown","Concert venue","Live music"],["Terminal West","West Midtown","Live music venue","Westside"],["City Winery Atlanta","West Midtown","Music + food","Dinner and show"]],
+"Things to Do":[["Georgia Aquarium","Downtown & Centennial Park","Aquarium","Major attraction"],["World of Coca-Cola","Downtown & Centennial Park","Museum / experience","Atlanta classic"],["Piedmont Park & Atlanta Botanical Garden","Midtown","Park + gardens","Outdoor day"],["Martin Luther King Jr. National Historical Park","Sweet Auburn","History and civil rights","Cultural site"],["High Museum of Art","Midtown","Art museum","Culture"],["Atlanta BeltLine Eastside Trail","Old Fourth Ward","Walking and neighborhood exploration","Outdoor route"],["Ponce City Market","Old Fourth Ward","Shopping, food and rooftop","BeltLine hub"],["Fox Theatre","Midtown","Historic theater","Architecture + shows"]],
+"Neighborhoods":[["Old Fourth Ward & Ponce City Market","Old Fourth Ward","BeltLine, food and historic sites","Explore on foot"],["Inman Park & Little Five Points","East Atlanta","Neighborhoods, shops and food","Local exploration"],["Sweet Auburn & MLK","Sweet Auburn","Civil-rights history","Cultural district"],["West Midtown","West Midtown","Design, restaurants and galleries","Food + design"],["Downtown & Centennial Park","Downtown","Major attractions and skyline","Central cluster"],["Midtown & Piedmont Park","Midtown","Parks, museums and theater","Cultural cluster"]],
+"Markets":[["Krog Street Market","Old Fourth Ward","Food hall and vendors","BeltLine"],["Ponce City Market","Old Fourth Ward","Food, shopping and rooftop","BeltLine"],["Sweet Auburn Curb Market","Sweet Auburn","Historic public market","Local history"],["Buford Highway food corridor","Northeast Atlanta","International food and markets","Food exploration"]],
+"Museums":[["High Museum of Art","Midtown","Art museum","Culture"],["National Center for Civil and Human Rights","Downtown","Civil and human rights museum","History"],["World of Coca-Cola","Downtown","Brand history and experience","Downtown"],["Atlanta History Center","Buckhead","Atlanta history museum complex","History"]]
+};
 var categories=Object.keys(nolaGuide);
 var profile={
 neworleans:{
@@ -1189,11 +1200,11 @@ return text||("A "+(category||"destination").toLowerCase()+" option worth consid
 }
 var guidePages={};
 function renderGuide(){
-var isN=!!cityProfile(),filter=document.getElementById("guideFilter"),sel=document.getElementById("guideSelect"),browse=document.getElementById("guideBrowse"),grid=document.getElementById("guideGrid"),count=document.getElementById("guideCount");filter.innerHTML="";sel.innerHTML="";
-var cats=isN?categories:["Breakfast","Lunch","Dinner","Special Occasions","Bars","Breweries","Coffee & Bakeries","Music","Theater & Shows","Family","Neighborhoods","Museums","Markets"];var active=trip.guideCategory||"Dinner";
+var isN=!!cityProfile(),destinationKey=slug((trip.destinations||[])[0]||""),isAtlanta=destinationKey.indexOf("atlanta")>=0||destinationKey==="atl",filter=document.getElementById("guideFilter"),sel=document.getElementById("guideSelect"),browse=document.getElementById("guideBrowse"),grid=document.getElementById("guideGrid"),count=document.getElementById("guideCount");filter.innerHTML="";sel.innerHTML="";
+var cats=isN?categories:(isAtlanta?Object.keys(atlantaGuide):["Breakfast","Lunch","Dinner","Special Occasions","Bars","Breweries","Coffee & Bakeries","Music","Theater & Shows","Family","Neighborhoods","Museums","Markets"]);var active=trip.guideCategory||"Dinner";
 function draw(){
 grid.innerHTML="";
-var allItems=isN?(nolaGuide[active]||[]):[[active+" near "+baseLabel(),"Around your home base","Search current local options","Destination-specific"]];
+var allItems=isN?(nolaGuide[active]||[]):(isAtlanta?(atlantaGuide[active]||[]):[[active+" near "+baseLabel(),"Around your home base","Search current local options","Destination-specific"]]);
 var pageSize=4,totalPages=Math.max(1,Math.ceil(allItems.length/pageSize)),page=Math.min(guidePages[active]||0,totalPages-1);
 guidePages[active]=page;
 var start=page*pageSize,items=allItems.slice(start,start+pageSize);
@@ -1214,7 +1225,7 @@ card.innerHTML="<div class='ey guideEyebrow'><span>"+esc(active)+"</span>"+price
 bindGuideReviewControls(card,name,review);
 grid.appendChild(card);hydrateGuideLiveRating(name,(trip.destinations||[])[0]||"",card)
 }}
-for(var i=0;i<cats.length;i++){(function(cat){var b=document.createElement("button");b.textContent=cat;b.className=cat===active?"active":"";b.onclick=function(){active=cat;trip.guideCategory=cat;save();renderGuide()};filter.appendChild(b);var o=document.createElement("option");o.value=cat;o.textContent=cat+" · "+(isN?(nolaGuide[cat]||[]).length+" places":"local options");o.selected=cat===active;sel.appendChild(o)})(cats[i])}
+for(var i=0;i<cats.length;i++){(function(cat){var b=document.createElement("button");b.textContent=cat;b.className=cat===active?"active":"";b.onclick=function(){active=cat;trip.guideCategory=cat;save();renderGuide()};filter.appendChild(b);var o=document.createElement("option");o.value=cat;o.textContent=cat+" · "+(isN?(nolaGuide[cat]||[]).length:(isAtlanta?(atlantaGuide[cat]||[]).length:0))+" suggestions";o.selected=cat===active;sel.appendChild(o)})(cats[i])}
 sel.onchange=function(){trip.guideCategory=this.value;save();renderGuide()};draw();
 }
 function renderEvents(){
