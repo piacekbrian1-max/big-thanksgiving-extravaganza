@@ -93,6 +93,18 @@ var group=document.getElementById("groupType").value,kids=document.getElementByI
 var plan=dayPlan(c,d,document.getElementById("pace").value,document.getElementById("mobility").value,ps,must,group,kids,evening,energy);
 var t={id:"trip-"+Date.now(),name:document.getElementById("name").value||c.city+" Adventure",travelers:parseInt(document.getElementById("travelers").value,10)||2,start:document.getElementById("start").value,end:document.getElementById("end").value,destinations:[c.city],mustSee:must,preferences:ps,days:d,status:"Built — editable",transport:document.getElementById("transport").value,pace:document.getElementById("pace").value,foodBudget:document.getElementById("foodbudget").value,stay:document.getElementById("stay").value,homeBase:document.getElementById("homeBase").value,stayLink:document.getElementById("stayLink").value,flights:document.getElementById("flights").value,flightLink:document.getElementById("flightLink").value,mobility:document.getElementById("mobility").value,groupType:group,kidsAges:kids,energy:energy,evening:evening,dietary:document.getElementById("dietary").value,avoid:avoid,occasion:document.getElementById("occasion").value,areas:c.areas,plan:plan,localFood:c.local,food:c.food,sights:c.sights,resources:c.resources,weatherQuery:c.weather,camsQuery:c.cams,eventQuery:c.events,created:new Date().toISOString()};
 var a;try{a=JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){a=[]}
+var same=a.find(function(x){
+  return String(x.name||"").trim().toLowerCase()===String(t.name||"").trim().toLowerCase() &&
+    String(x.start||"")===String(t.start||"") &&
+    String(x.end||"")===String(t.end||"") &&
+    JSON.stringify(x.destinations||[])===JSON.stringify(t.destinations||[]);
+});
+if(same){
+  sessionStorage.setItem("openTripId",same.id);
+  document.getElementById("status").textContent="That trip is already saved. Opening the existing trip…";
+  setTimeout(function(){location.href="trip.html?id="+encodeURIComponent(same.id)},250);
+  return;
+}
 localStorage.setItem(KEY,JSON.stringify(a.concat([t])));
 sessionStorage.setItem("openTripId",t.id);
 (async function(){
