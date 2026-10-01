@@ -5,7 +5,7 @@ body{margin:0;background:#F8F5ED;color:#0B2D4A;font-family:Arial,sans-serif}.her
 @media(min-width:601px) and (max-width:1180px){.wrap{width:92%}.grid{grid-template-columns:1fr 1fr}.actions{display:flex;flex-wrap:wrap}.btn,.chip{max-width:100%;white-space:normal;overflow-wrap:anywhere}.field input,.field textarea,.field select{min-width:0}}.brandIcon{width:25px;height:25px;display:block;color:#D4A85A}.mark .brandIcon,.logoMark .brandIcon{width:27px;height:27px}.wordRoam{color:#F8F5ED}.wordSonio{color:#D4A85A}</style></head><body>
 <header class="hero"><div class="ey">ROAMSONIO · INTELLIGENT TRIP BUILDER</div><h1>Build a trip that builds itself.</h1><p>Answer a few questions. The planner turns them into a starting itinerary with daily pacing, local food, things happening during your dates, weather guidance, resources, maps and webcams. Everything stays editable after the first build.</p></header>
 <main class="wrap">
-<div class="actions"><a class="btn" href="index.html">Home</a><a class="btn" href="my-trips.html">My Trips</a><a class="btn" href="current-trip.html">Current trip</a></div>
+<div class="actions"><a class="btn" href="index.html">Home</a><a class="btn" href="my-trips.html">My Trips</a><a class="btn" href="current-workspace.html">Current trip</a></div>
 <section class="panel"><div class="ey">Start with the basics</div><h2 style="font:600 31px Georgia,serif">Tell the planner about your trip</h2>
 <div class="grid">
 <div class="field"><label>Trip name</label><input id="name" value="My New Adventure"></div><div class="field"><label>Travelers</label><input id="travelers" type="number" min="1" value="2"></div>
@@ -102,7 +102,7 @@ var same=a.find(function(x){
 if(same){
   sessionStorage.setItem("openTripId",same.id);
   document.getElementById("status").textContent="That trip is already saved. Opening the existing trip…";
-  setTimeout(function(){location.href="trip.html?id="+encodeURIComponent(same.id)},250);
+  setTimeout(function(){location.href="workspace.html?id="+encodeURIComponent(same.id)},250);
   return;
 }
 localStorage.setItem(KEY,JSON.stringify(a.concat([t])));
@@ -120,7 +120,7 @@ try{updated=JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){updated=[]}
 for(var i=0;i<updated.length;i++)if(updated[i].id===t.id)updated[i]=t;
 localStorage.setItem(KEY,JSON.stringify(updated));
 document.getElementById("status").textContent="Trip saved to your RoamSonio account. Opening your trip workspace…";
-setTimeout(function(){location.href="trip.html?id="+encodeURIComponent(t.id)},250);
+setTimeout(function(){location.href="workspace.html?id="+encodeURIComponent(t.id)},250);
 }catch(e){document.getElementById("status").textContent="Your trip was saved on this device, but account saving is temporarily unavailable.";return}
 })();
 document.getElementById("status").textContent="Saving your RoamSonio trip…";
