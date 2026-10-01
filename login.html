@@ -40,8 +40,8 @@ a{text-decoration:none;color:inherit}.top{height:74px;background:#0B2D4A;color:#
 const statusBox=document.getElementById("status");
 function status(msg){statusBox.textContent=msg;statusBox.classList.add("show")}
 document.getElementById("signupBtn").onclick=()=>location.href="signup.html";
-document.getElementById("resetBtn").onclick=(e)=>{e.preventDefault();status("Password recovery will be connected when RoamSonio authentication is enabled.");};
-document.getElementById("loginForm").onsubmit=(e)=>{e.preventDefault();status("The RoamSonio account system is being connected now. This page is the first authentication step; no credentials are stored by this demo.");};
+document.getElementById("resetBtn").onclick=(e)=>{e.preventDefault();status("Password recovery will be available when secure authentication is enabled.");};
+document.getElementById("loginForm").onsubmit=(e)=>{e.preventDefault();status("Authentication is not connected yet. Your information is not being stored here. We are finishing the secure account connection before enabling sign-in.");};
 </script>
 </body>
 </html>
