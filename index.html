@@ -250,7 +250,7 @@ var box=document.getElementById("suggestGrid");if(!box)return;
 var seasonEl=document.getElementById("suggestSeason");if(seasonEl)seasonEl.textContent=season+" · new adventures every Sunday";
 box.innerHTML=selected.map(function(name){
 var x=catalog[name],v=base[x[4]],href="trip-workspace.html?inspiration="+encodeURIComponent(x[4])+"&adventure="+encodeURIComponent(name)+"&magazine=1&v="+Date.now();
-return "<a class='suggestCard' href='"+href+"' aria-label='Explore "+esc(name)+" as a 7-day inspiration trip' style=\"--suggest-image:url('"+v.image+"')\"><div class='suggestContent'><div class='suggestTag'>"+esc(x[1])+"</div><h3>"+esc(name)+"</h3><p>"+esc(x[0])+" · "+esc(x[2])+"</p><span class='suggestAction'>"+esc(x[3])+" · Explore this trip</span></div></a>";
+return "<a class='suggestCard' href='"+href+"' aria-label='Explore "+esc(name)+" as a 7-day inspiration trip' style=\"--suggest-image:url('"+v.image+"')\"><div class='suggestContent'><div class='suggestTag'>"+travelEsc(x[1])+"</div><h3>"+esc(name)+"</h3><p>"+travelEsc(x[0])+" · "+esc(x[2])+"</p><span class='suggestAction'>"+esc(x[3])+" · Explore this trip</span></div></a>";
 }).join("");
 }
 function renderUpcomingTrips(all,current){
@@ -387,11 +387,13 @@ var travelDeskData=[
 function initTravelDesk(){
   var choices=document.getElementById("countryChoices"),grid=document.getElementById("travelDeskGrid");
   if(!choices||!grid)return;
+  function travelEsc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+  function travelKey(s){return String(s||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim().replace(/ /g,"-")}
   var countries=["United States","Canada","United Kingdom","France","Germany","Austria","Czech Republic","Slovakia","Spain","Italy","Japan","Portugal"];
   var key="roamsonio-travel-countries";
   var saved=[];
   try{saved=JSON.parse(localStorage.getItem(key)||"[]")}catch(e){}
-  choices.innerHTML=countries.map(function(x){return "<span class='countryChoice'><input type='checkbox' id='country-"+guideKey(x)+"' value='"+esc(x)+"' "+(saved.indexOf(x)>=0?"checked":"")+" onchange='window.roamsonioTravelDesk()'><label for='country-"+guideKey(x)+"'>"+esc(x)+"</label></span>"}).join("");
+  choices.innerHTML=countries.map(function(x){return "<span class='countryChoice'><input type='checkbox' id='country-"+travelKey(x)+"' value='"+travelEsc(x)+"' "+(saved.indexOf(x)>=0?"checked":"")+" onchange='window.roamsonioTravelDesk()'><label for='country-"+travelKey(x)+"'>"+travelEsc(x)+"</label></span>"}).join("");
   window.roamsonioTravelDesk=function(){
     var selected=[].slice.call(choices.querySelectorAll("input:checked")).map(function(x){return x.value});
     localStorage.setItem(key,JSON.stringify(selected));
@@ -399,7 +401,7 @@ function initTravelDesk(){
     var grouped={};
     rows.forEach(function(g){grouped[g.cat]=grouped[g.cat]||{desc:g.desc,links:[]};grouped[g.cat].links=grouped[g.cat].links.concat(g.links)});
     var cats=Object.keys(grouped);
-    grid.innerHTML=cats.map(function(cat){var g=grouped[cat];return "<div class='travelDeskGroup'><h3>"+esc(cat)+"</h3><p>"+esc(g.desc)+"</p><div class='travelLinks'>"+g.links.map(function(x){return "<a class='travelLink' href='"+x[2]+"' target='_blank' rel='noopener noreferrer'><span>"+esc(x[0])+"</span><small>"+esc(x[1])+" ↗</small></a>"}).join("")+"</div></div>"}).join("")||"<div class='travelDeskEmpty'>Select one or more countries to see destination-specific rail and airline shortcuts, while global booking, hotel and car-rental options remain available.</div>";
+    grid.innerHTML=cats.map(function(cat){var g=grouped[cat];return "<div class='travelDeskGroup'><h3>"+travelEsc(cat)+"</h3><p>"+travelEsc(g.desc)+"</p><div class='travelLinks'>"+g.links.map(function(x){return "<a class='travelLink' href='"+x[2]+"' target='_blank' rel='noopener noreferrer'><span>"+travelEsc(x[0])+"</span><small>"+travelEsc(x[1])+" ↗</small></a>"}).join("")+"</div></div>"}).join("")||"<div class='travelDeskEmpty'>Select one or more countries to see destination-specific rail and airline shortcuts, while global booking, hotel and car-rental options remain available.</div>";
   };
   document.getElementById("travelDeskAll").onclick=function(){choices.querySelectorAll("input").forEach(function(x){x.checked=true});window.roamsonioTravelDesk()};
   document.getElementById("travelDeskClear").onclick=function(){choices.querySelectorAll("input").forEach(function(x){x.checked=false});window.roamsonioTravelDesk()};
