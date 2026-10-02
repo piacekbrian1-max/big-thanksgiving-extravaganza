@@ -1215,7 +1215,7 @@ if(note&&note!=="Local"&&note!=="Local favorite"&&note!=="Neighborhood"&&note!==
 return text||("A "+(category||"destination").toLowerCase()+" option worth considering in New Orleans.");
 }
 function renderGuide(){
-var destinationKey=slug((trip.destinations||[])[0]||""),isAtlanta=destinationKey.indexOf("atlanta")>=0,isN=!!cityProfile()&&!isAtlanta,filter=document.getElementById("guideFilter"),sel=document.getElementById("guideSelect"),grid=document.getElementById("guideGrid"),count=document.getElementById("guideCount");filter.innerHTML="";sel.innerHTML="";
+var destinationKey=slug((trip.destinations||[])[0]||""),tripNameKey=slug(trip.name||""),isAtlanta=destinationKey.indexOf("atlanta")>=0||tripNameKey.indexOf("atlanta")>=0,isN=!!cityProfile()&&!isAtlanta,filter=document.getElementById("guideFilter"),sel=document.getElementById("guideSelect"),grid=document.getElementById("guideGrid"),count=document.getElementById("guideCount");filter.innerHTML="";sel.innerHTML="";
 var cats=isN?categories:(isAtlanta?atlantaCategories:["Breakfast","Lunch","Dinner","Special Occasions","Bars","Breweries","Coffee & Bakeries","Music","Theater & Shows","Family","Neighborhoods","Museums","Markets"]);var active=trip.guideCategory||"Dinner";
 function draw(){
 grid.innerHTML="";
@@ -1231,19 +1231,29 @@ card.innerHTML="<div class='ey guideEyebrow'><span>"+esc(active)+"</span>"+price
 bindGuideReviewControls(card,name,review);
 grid.appendChild(card);hydrateGuideLiveRating(name,(trip.destinations||[])[0]||"",card)
 }}
-for(var i=0;i<cats.length;i++){(function(cat){var b=document.createElement("button");b.textContent=cat;b.className=cat===active?"active":"";b.onclick=function(){active=cat;trip.guideCategory=cat;save();renderGuide()};filter.appendChild(b);var o=document.createElement("option");o.value=cat;o.textContent=cat+" · "+(isN?(nolaGuide[cat]||[]).length+" places":"local options");o.selected=cat===active;sel.appendChild(o)})(cats[i])}
+for(var i=0;i<cats.length;i++){(function(cat){var b=document.createElement("button");b.textContent=cat;b.className=cat===active?"active":"";b.onclick=function(){active=cat;trip.guideCategory=cat;save();renderGuide()};filter.appendChild(b);var o=document.createElement("option");o.value=cat;o.textContent=cat+" · "+(isN?(nolaGuide[cat]||[]).length:(isAtlanta?(atlantaGuide[cat]||[]).length:0))+" places";o.selected=cat===active;sel.appendChild(o)})(cats[i])}
 sel.onchange=function(){trip.guideCategory=this.value;save();renderGuide()};draw();
 }
 function renderEvents(){
-var e=document.getElementById("eventGrid");e.innerHTML="";var n=slug((trip.destinations||[])[0]||"").indexOf("new orleans")>=0;
-if(!n){e.innerHTML="<div class='card'><div class='ey'>Date-aware</div><h3>Check events for your dates</h3><p>The smart itinerary will use destination event data when a supported city profile is available.</p></div>";return}
+var e=document.getElementById("eventGrid");e.innerHTML="";
+var dkey=slug((trip.destinations||[])[0]||""),n=dkey.indexOf("new orleans")>=0,a=dkey.indexOf("atlanta")>=0;
+if(a){
+var items=[
+["Your dates","Atlanta events calendar","Use the official Atlanta calendar to see concerts, theater, sports, festivals and city events for your exact stay.","https://discoveratlanta.com/events/"],
+["Food + culture","Atlanta Art Fair / city programming","Atlanta's major arts, dining and cultural programming changes frequently; check the official calendar before locking an evening.","https://discoveratlanta.com/events/"],
+["Live music + shows","Atlanta entertainment","Browse current performances and venue schedules rather than relying on a fixed static list.","https://discoveratlanta.com/events/"]
+];
+for(var j=0;j<items.length;j++){var y=document.createElement("div");y.className="card";y.innerHTML="<div class='ey'>"+items[j][0]+"</div><h3>"+items[j][1]+"</h3><p>"+items[j][2]+"</p><a class='btn' target='_blank' rel='noopener' href='"+items[j][3]+"'>Open Atlanta calendar ↗</a>";e.appendChild(y)}
+return
+}
+if(!n){e.innerHTML="<div class='card'><div class='ey'>Date-aware</div><h3>Check events for your dates</h3><p>The trip will use destination event data when a city profile is available.</p></div>";return}
 var items=[["Jan 14–17, 2027","Teaser Fest","Festival window overlaps the trip; check the day's program and ticketing."],["Jan 16, 2027","Intergalactic Krewe of Chewbacchus","Parade date overlaps the stay; verify the official route and timing."],["Jan 6–Feb 9, 2027","Carnival season","Seasonal Carnival activity continues throughout the visit."]];
-for(var i=0;i<items.length;i++){var x=document.createElement("div");x.className="card";x.innerHTML="<div class='ey'>"+items[i][0]+"</div><h3>"+items[i][1]+"</h3><p>"+items[i][2]+"</p><a class='btn' target='_blank' href='https://www.neworleans.com/events/holidays-seasonal/mardi-gras/mardi-gras-parade-schedule/'>Official calendar</a>";e.appendChild(x)}
+for(var i=0;i<items.length;i++){var x=document.createElement("div");x.className="card";x.innerHTML="<div class='ey'>"+items[i][0]+"</div><h3>"+items[i][1]+"</h3><p>"+items[i][2]+"</p><a class='btn' target='_blank' rel='noopener' href='https://www.neworleans.com/events/holidays-seasonal/mardi-gras/mardi-gras-parade-schedule/'>Official calendar</a>";e.appendChild(x)}
 }
 function renderWeather(){
 var ds=trip.destinations||[],e=document.getElementById("weatherGrid"),lead=document.getElementById("weatherLead");e.innerHTML="";lead.innerHTML="<div class='weatherLeadIntro'><b>Trip weather</b><span>Current conditions · stay averages</span></div>";
 var req=new XMLHttpRequest();req.open("GET","weather.json?v="+Date.now(),true);req.onreadystatechange=function(){if(req.readyState!==4)return;if(req.status<200||req.status>=300){document.getElementById("weatherText").textContent="Weather snapshot unavailable right now.";return}
-try{var data=JSON.parse(req.responseText);for(var i=0;i<Math.min(ds.length,4);i++){var name=ds[i],k=slug(name),key=k.indexOf("new orleans")>=0?"neworleans":k.indexOf("trnava")>=0?"trnava":k.indexOf("prague")>=0?"prague":k.indexOf("pilsen")>=0?"pilsen":k.indexOf("hlub")>=0?"hluboka":k.indexOf("vienna")>=0?"vienna":null,x=key&&data.locations[key];if(!x)continue;
+try{var data=JSON.parse(req.responseText);for(var i=0;i<Math.min(ds.length,4);i++){var name=ds[i],k=slug(name),key=k.indexOf("new orleans")>=0?"neworleans":k.indexOf("atlanta")>=0?"atlanta":k.indexOf("trnava")>=0?"trnava":k.indexOf("prague")>=0?"prague":k.indexOf("pilsen")>=0?"pilsen":k.indexOf("hlub")>=0?"hluboka":k.indexOf("vienna")>=0?"vienna":null,x=key&&data.locations[key];if(!x)continue;
 var card=document.createElement("div");card.className="weatherCard";card.innerHTML="<div class='kicker'>"+esc(name)+"</div><h3>Current</h3><div class='temp'>"+Math.round(x.temperature_f)+"°F</div><div class='cond'>"+esc(x.condition)+" · wind "+Math.round(x.wind_mph)+" mph</div><div class='metrics'><span>Humidity "+Math.round(x.humidity)+"%</span><span>Rain "+Number(x.precipitation_in||0).toFixed(2)+" in</span></div><div class='hist'><b>Stay average</b><br>"+Math.round(x.historical_high_f)+"° / "+Math.round(x.historical_low_f)+"° high / low</div>";e.appendChild(card);
 var lt=document.createElement("div");lt.className="liveTemp";lt.innerHTML="<small>"+esc(name)+"</small><b>"+Math.round(x.temperature_f)+"°F</b><span>"+esc(x.condition)+"</span>";lead.appendChild(lt)}
 document.getElementById("weatherText").textContent="Current conditions update hourly. Historical averages are tied to the destination's configured stay window; New Orleans uses the Jan 16–20, 2027 stay window."; }catch(z){document.getElementById("weatherText").textContent="Weather data could not be read."}};
