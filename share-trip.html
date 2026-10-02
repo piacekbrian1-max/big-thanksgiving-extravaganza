@@ -33,10 +33,10 @@ function shareUrl(token){return location.origin+location.pathname.replace(/share
 async function loadFamilyMembers(familyId){
   const picker=document.getElementById("memberPicker"),list=document.getElementById("memberList");
   if(mode!=="family"||!familyId){picker.classList.remove("show");list.innerHTML="";return}
-  const {data,error}=await client.from("family_members").select("user_id,role,status").eq("family_id",familyId).eq("status","active").order("role");
+  const {data,error}=await client.from("family_members").select("user_id,role,status,display_name").eq("family_id",familyId).eq("status","active").order("role");
   if(error){list.innerHTML="<div class='memberPickerNote'>Unable to load family members.</div>";picker.classList.add("show");return}
   list.innerHTML=(data||[]).map((m,i)=>{
-    const label=m.user_id===currentUserId?"You":(m.role==="owner"?"Family Owner":"Family Member "+(i+1));
+    const label=m.display_name?.trim()||(m.user_id===currentUserId?"You":(m.role==="owner"?"Family Owner":"Family Member "+(i+1)));
     return "<label class='memberRow'><input type='checkbox' class='excludeMember' value='"+esc(m.user_id)+"'><span>"+esc(label)+" · "+esc(m.role||"member")+"</span></label>";
   }).join("")||"<div class='memberPickerNote'>No active family members found.</div>";
   picker.classList.add("show");
