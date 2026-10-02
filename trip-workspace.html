@@ -1240,14 +1240,372 @@ if(c.indexOf("special occasions")>=0)return isAtlanta?["All cuisines","Contempor
 return ["All cuisines"];
 }
 function renderGuide(){
-var destinationKey=slug((trip.destinations||[])[0]||""),tripNameKey=slug(trip.name||""),isAtlanta=destinationKey.indexOf("atlanta")>=0||tripNameKey.indexOf("atlanta")>=0,isN=!!cityProfile()&&!isAtlanta,filter=document.getElementById("guideFilter"),sel=document.getElementById("guideSelect"),cuisineRow=document.getElementById("guideCuisineRow"),cuisineSel=document.getElementById("guideCuisine"),grid=document.getElementById("guideGrid"),count=document.getElementById("guideCount");
+var destinationKey=slug((trip.destinations||[])[0]||""),tripNameKey=slug(trip.name||""),
+isAtlanta=destinationKey.indexOf("atlanta")>=0||tripNameKey.indexOf("atlanta")>=0,
+isN=!!cityProfile()&&!isAtlanta,
+filter=document.getElementById("guideFilter"),sel=document.getElementById("guideSelect"),
+cuisineRow=document.getElementById("guideCuisineRow"),cuisineSel=document.getElementById("guideCuisine"),
+grid=document.getElementById("guideGrid"),count=document.getElementById("guideCount");
 filter.innerHTML="";sel.innerHTML="";
+
+/* Destination-safe guide registry.
+   The guide engine is shared, but every destination owns its own data/source rules.
+   Never fall back to another city's restaurants. */
+var destination=destinationKey,city=destination;
+if(destination.indexOf("new orleans")>=0||destination==="nola")city="neworleans";
+else if(destination.indexOf("prague")>=0||destination.indexOf("praha")>=0)city="prague";
+else if(destination.indexOf("vienna")>=0||destination.indexOf("wien")>=0)city="vienna";
+else if(destination.indexOf("pilsen")>=0||destination.indexOf("plzen")>=0)city="pilsen";
+else if(destination.indexOf("trnava")>=0)city="trnava";
+else if(destination.indexOf("hluboka")>=0)city="hluboka";
+else if(destination.indexOf("atlanta")>=0)city="atlanta";
+
+var destinationSources={
+prague:"https://prague.eu/en/objevujte-kategorie/food-and-drink/",
+vienna:"https://www.wien.info/en/dine-drink",
+pilsen:"https://www.visitpilsen.eu/en/gastro/",
+trnava:"https://www.regiontrnava.sk/en/kategoria/kaviarne",
+hluboka:"https://www.hluboka.cz/en/gastronomy",
+atlanta:"https://discoveratlanta.com/",
+neworleans:"https://www.neworleans.com/"
+};
+
+var localGuide={
+prague:{
+Breakfast:[
+["Café Savoy","Malá Strana","Czech café / breakfast","Czech"],
+["Café Imperial","Nové Město","Café / breakfast","Czech"],
+["Café Louvre","Nové Město","Historic café / breakfast","Czech"],
+["Café Slavia","Staré Město","Historic café / breakfast","Czech"],
+["Coda Restaurant","Malá Strana","Hotel breakfast / European","European"],
+["Augustine Restaurant & Garden","Malá Strana","Breakfast / European","European"],
+["An.bistro.cafe","Dejvice","Bistro / breakfast","International"],
+["Černá Madona","Staré Město","Café / breakfast","Czech"]
+],
+Lunch:[
+["Kuchyň","Hradčany","Czech cuisine","Czech"],
+["U Kalendů","Nové Město","Czech cuisine","Czech"],
+["The Eatery","Holešovice","Modern Czech","Czech"],
+["U Matěje","Dejvice","Czech cuisine","Czech"],
+["Café Savoy","Malá Strana","Czech café / lunch","Czech"],
+["Food Lab Restaurant","Staré Město","European / modern","European"],
+["Brasileiro Slovanský dům","Nové Město","Brazilian / grill","International"],
+["El Camino Tapas Restaurant","Vinohrady","Spanish / tapas","International"]
+],
+Dinner:[
+["La Degustation Bohême Bourgeoise","Staré Město","Modern Czech","Czech"],
+["Field","Staré Město","Contemporary / tasting menu","Contemporary"],
+["Alma Prague","Nové Město","Contemporary European","Contemporary"],
+["Levitate","Vinohrady","Fusion / tasting menu","Fusion"],
+["Casa De Carli","Staré Město","Southern European","Italian / European"],
+["Štangl","Karlín","Contemporary / fusion","Contemporary"],
+["Kuchyň","Hradčany","Czech cuisine","Czech"],
+["U Modré kachničky I.","Malá Strana","Traditional Czech","Czech"],
+["La Finestra in Cucina","Staré Město","Italian","Italian"],
+["Coda Restaurant","Malá Strana","European / fine dining","European"]
+],
+"Special Occasions":[
+["La Degustation Bohême Bourgeoise","Staré Město","Fine dining","Czech"],
+["Field","Staré Město","Tasting menu","Contemporary"],
+["Alma Prague","Nové Město","Contemporary dining","Contemporary"],
+["Levitate","Vinohrady","Tasting menu","Fusion"],
+["Terasa U Zlaté studně","Malá Strana","Fine dining / rooftop","European"],
+["Coda Restaurant","Malá Strana","Fine dining","European"]
+],
+Bars:[
+["Cobra Bar","Holešovice","Bar","Cocktails"],
+["Kolkovna v Kolkovně","Staré Město","Beer / pub","Beer"],
+["Budvarka Dejvice","Dejvice","Beer pub","Beer"],
+["Na břehu Rhôny – Výtoň","Nové Město","Wine bar","Wine"],
+["Buddha-Bar Prague","Staré Město","Cocktail bar","Cocktails"],
+["Cafe de Paris","Malá Strana","Bar / café","Cocktails"]
+],
+"Coffee & Bakeries":[
+["Café Louvre","Nové Město","Historic café","Czech"],
+["Café Savoy","Malá Strana","Café / bakery","French / Bakery"],
+["Café Slavia","Staré Město","Historic café","Czech"],
+["Café Letka","Holešovice","Neighborhood café","Café"],
+["Café Jen","Vršovice","Neighborhood café","Café"],
+["EMA espresso bar","Nové Město","Specialty coffee","Café"],
+["Café Platýz","Staré Město","Café","Café"],
+["Café V lese","Vršovice","Café","Café"]
+]
+},
+vienna:{
+Breakfast:[
+["Joma","Innere Stadt","Breakfast / international","International"],
+["Motto am Fluss","Innere Stadt","Breakfast / café","International"],
+["Haas & Haas","Innere Stadt","Breakfast / tea house","International"],
+["Café Central","Innere Stadt","Viennese coffeehouse","Viennese"],
+["Café Landtmann","Innere Stadt","Coffeehouse breakfast","Viennese"],
+["Café Sperl","Mariahilf","Traditional coffeehouse","Viennese"],
+["Demel","Innere Stadt","Café / pastry","Viennese"],
+["Ulrich","Neubau","Breakfast / brunch","International"]
+],
+Lunch:[
+["Glacis Beisl","Neubau","Viennese bistro","Viennese"],
+["Joma","Innere Stadt","International / Viennese","International"],
+["Motto am Fluss","Innere Stadt","Regional / international","International"],
+["Steman","Mariahilf","Traditional Viennese bistro","Viennese"],
+["Rebhuhn","Alsergrund","Traditional Viennese bistro","Viennese"],
+["Labstelle","Innere Stadt","Modern Austrian","Austrian"],
+["Amerlingbeisl","Neubau","Viennese bistro","Viennese"],
+["Spelunke","Leopoldstadt","Modern Austrian / international","International"]
+],
+Dinner:[
+["Motto am Fluss","Innere Stadt","Regional / international","International"],
+["Glacis Beisl","Neubau","Viennese cuisine","Viennese"],
+["Labstelle","Innere Stadt","Modern Austrian","Austrian"],
+["Salonplafond","Innere Stadt","Modern European","European"],
+["Café Ansari","Neubau","Georgian / Oriental","International"],
+["ShanghaiTan","Naschmarkt","Asian cuisine","Asian"],
+["Albert","Innere Stadt","Modern dining / cocktails","Contemporary"],
+["Chez Bernard","Mariahilf","Modern European","European"]
+],
+"Special Occasions":[
+["Motto am Fluss","Innere Stadt","Waterfront dining","International"],
+["Salonplafond","Innere Stadt","Design-led dining","European"],
+["Labstelle","Innere Stadt","Modern Austrian","Austrian"],
+["Café Ansari","Neubau","Georgian / Oriental","International"],
+["Motto am Fluss","Innere Stadt","Restaurant + bar","International"],
+["Glacis Beisl","Neubau","Traditional Viennese","Viennese"]
+],
+Bars:[
+["Motto am Fluss","Innere Stadt","Danube Canal bar","Cocktails"],
+["Motto Café","Innere Stadt","Café / bar","Cocktails"],
+["Spelunke","Leopoldstadt","Restaurant / bar","Cocktails"],
+["Albert","Innere Stadt","Cocktails / dining","Cocktails"],
+["Café Ansari","Neubau","Wine / cocktails","Wine"],
+["Sky Roofgarden & Bar","Innere Stadt","Rooftop bar","Cocktails"]
+],
+"Coffee & Bakeries":[
+["Joma","Innere Stadt","Coffee / breakfast","Café"],
+["Motto am Fluss","Innere Stadt","Café / pastries","Café"],
+["Café Central","Innere Stadt","Coffeehouse","Viennese"],
+["Café Landtmann","Innere Stadt","Coffeehouse","Viennese"],
+["Café Sperl","Mariahilf","Coffeehouse","Viennese"],
+["Demel","Innere Stadt","Pastry / café","Bakery"],
+["Ulrich","Neubau","Café / brunch","Café"],
+["Glacis Beisl","Neubau","Café / bistro","Viennese"]
+]
+},
+pilsen:{
+Breakfast:[
+["Café Semler","City Centre","Breakfast / coffee / pastries","Café"],
+["U Salzmannů","City Centre","Traditional Czech breakfast options","Czech"],
+["Na Parkánu","City Centre","Brewery pub / Czech food","Czech"],
+["Lékárna","City Centre","Czech pub / food","Czech"]
+],
+Lunch:[
+["U Salzmannů","City Centre","Traditional Czech cuisine","Czech"],
+["Na Parkánu","City Centre","Czech cuisine / Pilsner","Czech"],
+["Lékárna","City Centre","Czech cuisine / Pilsner","Czech"],
+["Lokál Pod Divadlem","City Centre","Czech food / tank beer","Czech"],
+["Plzeňka","City Centre","Czech pub food","Czech"],
+["Café Semler","City Centre","Regional lunch / café","Czech"]
+],
+Dinner:[
+["U Salzmannů","City Centre","Traditional Czech cuisine","Czech"],
+["Na Parkánu","City Centre","Czech cuisine / Pilsner","Czech"],
+["Lékárna","City Centre","Czech cuisine / Pilsner","Czech"],
+["Lokál Pod Divadlem","City Centre","Czech food / tank beer","Czech"],
+["Plzeňka","City Centre","Czech pub food","Czech"],
+["Pilsner Urquell Brewery","City Centre","Brewery experience","Beer"]
+],
+"Special Occasions":[
+["Pilsner Urquell Brewery","City Centre","Historic brewery experience","Beer"],
+["U Salzmannů","City Centre","Historic Czech pub","Czech"],
+["Na Parkánu","City Centre","Brewery-linked dining","Czech"],
+["Lékárna","City Centre","Cathedral-view dining","Czech"]
+],
+Bars:[
+["Na Parkánu","City Centre","Brewery bar","Beer"],
+["Lékárna","City Centre","Pilsner pub","Beer"],
+["U Salzmannů","City Centre","Historic pub","Beer"],
+["Plzeňka","City Centre","Pilsner pub","Beer"]
+],
+"Coffee & Bakeries":[
+["Café Semler","City Centre","Coffee / breakfast / desserts","Café"],
+["Café Semler","City Centre","Loos-designed café","Café"]
+]
+},
+trnava:{
+Breakfast:[
+["Caffe Verdon","Historic Centre","Breakfast / café","Café"],
+["Hedon Coffee & Cocktails","Trinity Square","Breakfast / brunch","Café"],
+["ONé espresso bar","City Centre","Specialty coffee","Café"],
+["Bábovka café & Bakery","City Centre","Bakery / café","Bakery"],
+["ReBarbora","Trinity Square","Coffee / desserts","Bakery"],
+["Thalmeiner","City Centre","Historic café","Café"]
+],
+Lunch:[
+["Forhaus","St. Nicholas Square","Modern European / local ingredients","European"],
+["Enak bistro & restaurant","City Centre","Vietnamese / Thai / Malaysian","Asian"],
+["The Patriot Restaurant","City Centre","Local / European","European"],
+["Tučný Kocúr","City Centre","Burgers / street food","American"],
+["Sessler","Near Calvary","Central European","European"],
+["Al Trivio","City Centre","Italian","Italian"],
+["TiAmo","City Centre","Italian","Italian"],
+["Wasabi Sushi Bar","City Centre","Japanese","Asian"]
+],
+Dinner:[
+["Forhaus","St. Nicholas Square","Modern European","European"],
+["The Patriot Restaurant","City Centre","Local / European","European"],
+["Enak bistro & restaurant","City Centre","Southeast Asian","Asian"],
+["Sessler","Near Calvary","Central European","European"],
+["Al Trivio","City Centre","Italian","Italian"],
+["TiAmo","City Centre","Italian","Italian"],
+["Wasabi Sushi Bar","City Centre","Japanese","Asian"],
+["Na Mlyne","Hrnčiarovce nad Parnou","Slovak / Czech","Czech / Slovak"]
+],
+"Special Occasions":[
+["Forhaus","St. Nicholas Square","Modern European / local ingredients","European"],
+["The Patriot Restaurant","City Centre","Restaurant / city landmark setting","European"],
+["Sessler","Near Calvary","Central European","European"],
+["Al Trivio","City Centre","Italian","Italian"]
+],
+Bars:[
+["Forhaus Bar & Rooftop","St. Nicholas Square","Cocktails / wine","Cocktails"],
+["Hedon Coffee & Cocktails","Trinity Square","Cocktails","Cocktails"],
+["Lokal Pub","Main Street","Beer pub","Beer"],
+["Bokovka","Lower Bastions","Beer / restaurant","Beer"],
+["Quest Bar","City Centre","Games / bar","Cocktails"]
+],
+"Coffee & Bakeries":[
+["Caffe Verdon","Main Street","Coffee / breakfast / cakes","Café"],
+["ReBarbora","Trinity Square","Coffee / desserts / bakery","Bakery"],
+["Hedon Coffee & Cocktails","Trinity Square","Coffee / brunch / cocktails","Café"],
+["ONé espresso bar","City Centre","Espresso bar","Café"],
+["Fefe Café","City Centre","Café","Café"],
+["Thalmeiner","City Centre","Historic café","Café"],
+["Synagóga Café","City Centre","Café / culture","Café"],
+["Bábovka café & Bakery","City Centre","Bakery / café","Bakery"]
+]
+},
+hluboka:{
+Breakfast:[
+["Restaurace - Bistro Hluboká","Town Centre","Traditional Czech breakfast / bistro","Czech"],
+["Bistro Panorama","Castle route","Coffee / cakes","Café"],
+["KN CAFE BAR","Sports Centre","Café / snacks","Café"],
+["Café JeštěKAFE","Town Centre","Coffee / homemade treats","Café"],
+["Café Maringotka","Town Centre","Specialty coffee / pastries","Café"]
+],
+Lunch:[
+["Restaurace - Bistro Hluboká","Town Centre","Traditional Czech cuisine","Czech"],
+["Restaurant Schneck","Castle route","Czech / seasonal","Czech"],
+["Lovecká chata","Hluboká area","Czech / game specialties","Czech"],
+["Restaurace Park Hluboká","Park Hluboká","Casual / grill / café","International"],
+["Restaurace Eleonora","Castle route","Restaurant","European"],
+["Restaurace Jinghu","Town Centre","Chinese","Asian"]
+],
+Dinner:[
+["Restaurant Hotel Diamant","Town Centre","Hotel restaurant","European"],
+["Lovecká chata","Hluboká area","Czech / game specialties","Czech"],
+["Restaurace Hotel Podhrad","Town Centre","Hotel restaurant","European"],
+["Restaurace Solidní šance","Town Centre","Traditional Czech hospitality","Czech"],
+["Restaurace Hubert","Town Centre","Game specialties","Czech"],
+["Restaurace Eleonora","Castle route","Stylish restaurant","European"],
+["Restaurace Jinghu","Town Centre","Chinese","Asian"]
+],
+"Special Occasions":[
+["Restaurant Hotel Diamant","Town Centre","Hotel dining","European"],
+["Lovecká chata","Hluboká area","Game / modern gastronomy","Czech"],
+["Restaurace Eleonora","Castle route","Stylish restaurant","European"],
+["Restaurace Hotel Podhrad","Town Centre","Hotel restaurant / terrace","European"]
+],
+Bars:[
+["Cafe Bar Na Růžku","Town Centre","Café / bar","Bar"],
+["KN CAFE BAR","Sports Centre","Café / bar","Bar"],
+["Hotel Podhrad Lobby Bar","Town Centre","Hotel bar","Bar"],
+["Restaurace Park Hluboká Aloha Bar","Park Hluboká","Cocktails / grill","Bar"]
+],
+"Coffee & Bakeries":[
+["Bistro Panorama","Castle route","Coffee / gluten-free cakes","Bakery"],
+["Café JeštěKAFE","Town Centre","Coffee / homemade treats","Café"],
+["Café Maringotka","Town Centre","Specialty coffee / pastries","Café"],
+["KN CAFE BAR","Sports Centre","Coffee / snacks","Café"],
+["Restaurace Park Hluboká","Park Hluboká","Coffee / desserts","Café"]
+]
+}
+};
+
 var cats=isN?categories:(isAtlanta?atlantaCategories:["Breakfast","Lunch","Dinner","Special Occasions","Bars","Breweries","Coffee & Bakeries","Music","Theater & Shows","Family","Neighborhoods","Museums","Markets"]);
 var active=trip.guideCategory||"Dinner",cuisine=trip.guideCuisine||"All cuisines",guidePages={};
+
+function destinationItems(category){
+var items;
+if(isN)items=nolaGuide[category]||[];
+else if(isAtlanta)items=atlantaGuide[category]||[];
+else items=(localGuide[city]&&localGuide[city][category])||[];
+if(items.length)return items;
+
+/* For categories without curated destination data, provide destination-specific
+   discovery lanes rather than borrowing another city's content. */
+var areaSets={
+prague:["Staré Město","Malá Strana","Vinohrady","Karlín","Holešovice","Nové Město"],
+vienna:["Innere Stadt","Neubau","Mariahilf","Leopoldstadt","Alsergrund","Landstraße"],
+pilsen:["City Centre","Old Town","Brewery District","Lochotín"],
+trnava:["City Centre","Main Street","Trinity Square","Historic Centre"],
+hluboka:["Town Centre","Castle route","Park Hluboká","Hluboká area"],
+default:["City Centre","Historic Centre","Downtown","Main Square","Local neighbourhoods","Nearby"]
+};
+var areas=areaSets[city]||areaSets.default,arr=[];
+for(var q=0;q<areas.length;q++)arr.push([
+"Explore "+category+" in "+areas[q],
+areas[q],
+"Search current "+category.toLowerCase()+" options in this destination area",
+"Destination discovery"
+]);
+return arr;
+}
+function classifyDestinationCuisine(item,category){
+var n=slug((item[0]||"")+" "+(item[2]||"")+" "+(item[3]||"")),c=slug(category||"");
+if(city==="prague"){
+if(c==="breakfast")return /cafe|bakery|coffee|breakfast|savoy|imperial|louvre|slavia|madona|augustine|bistro/.test(n)?"Café / Bakery":"Czech";
+if(c==="lunch"||c==="dinner"||c.indexOf("special")>=0){
+if(/italian/.test(n))return "Italian";
+if(/asian|japanese|sushi|brazil|spanish|tapas|international/.test(n))return "International";
+if(/fine|tasting|contemporary|european|coda|field|alma|levitate|de carli/.test(n))return "Contemporary / European";
+return "Czech";
+}}
+if(city==="vienna"){
+if(c==="breakfast"||c.indexOf("coffee")>=0)return /viennese|coffeehouse|pastry/.test(n)?"Viennese / Coffeehouse":"International";
+if(/georgian|asian|shanghai|international/.test(n))return "International";
+if(/modern|european|austrian/.test(n))return "Modern Austrian / European";
+return "Viennese";
+}
+if(city==="pilsen"||city==="hluboka"){
+if(/asian|chinese/.test(n))return "Asian";
+if(/italian/.test(n))return "Italian";
+if(/czech|pilsner|brewery|game/.test(n))return "Czech";
+return "European";
+}
+if(city==="trnava"){
+if(/asian|vietnam|thai|malays|sushi|japanese/.test(n))return "Asian";
+if(/italian/.test(n))return "Italian";
+if(/slovak|czech/.test(n))return "Slovak / Czech";
+return "European / Café";
+}
+return "All cuisines";
+}
+function destinationCuisineOptions(category){
+if(isAtlanta)return guideCuisineOptions(category,true);
+if(isN)return guideCuisineOptions(category,false);
+if(city==="prague")return category==="Breakfast"?["All cuisines","Café / Bakery","Czech"]:["All cuisines","Czech","Contemporary / European","International","Italian"];
+if(city==="vienna")return category==="Breakfast"?["All cuisines","Viennese / Coffeehouse","International"]:["All cuisines","Viennese","Modern Austrian / European","International"];
+if(city==="pilsen"||city==="hluboka")return ["All cuisines","Czech","European","Asian","Italian"];
+if(city==="trnava")return ["All cuisines","Slovak / Czech","European / Café","Italian","Asian"];
+return ["All cuisines"];
+}
+
 function draw(){
 grid.innerHTML="";
-var items=isN?(nolaGuide[active]||[]):(isAtlanta?(atlantaGuide[active]||[]):[[active+" near "+baseLabel(),"Around your home base","Search current local options","Destination-specific"]]);
-if(["Breakfast","Lunch","Dinner","Special Occasions"].indexOf(active)>=0&&(isN||isAtlanta)&&cuisine!=="All cuisines")items=items.filter(function(it){return guideCuisine(it[0],it[2],active)===cuisine});
+var items=destinationItems(active);
+if(["Breakfast","Lunch","Dinner","Special Occasions"].indexOf(active)>=0&&(isN||isAtlanta||localGuide[city])&&cuisine!=="All cuisines"){
+items=items.filter(function(it){
+return isN||isAtlanta?guideCuisine(it[0],it[2],active)===cuisine:classifyDestinationCuisine(it,active)===cuisine;
+});
+}
 var pageSize=4,totalPages=Math.max(1,Math.ceil(items.length/pageSize)),page=Math.min(guidePages[active+"|"+cuisine]||0,totalPages-1);
 guidePages[active+"|"+cuisine]=page;
 var startIndex=page*pageSize,visible=items.slice(startIndex,startIndex+pageSize);
@@ -1257,22 +1615,31 @@ var prev=document.createElement("button");prev.type="button";prev.textContent="�
 var next=document.createElement("button");next.type="button";next.textContent=page>=totalPages-1?"Refresh places":"Refresh for more";next.onclick=function(){guidePages[active+"|"+cuisine]=page>=totalPages-1?0:page+1;draw()};
 var label=document.createElement("span");label.className="guidePage";label.textContent="Set "+(page+1)+" of "+totalPages;
 browse.appendChild(prev);browse.appendChild(label);browse.appendChild(next);
+
 for(var i=0;i<visible.length;i++){
 var it=visible[i],name=it[0],neighborhood=it[1],type=it[2],note=it[3],price=guidePrice(name,active),cost=guideCost(price,active),description=guideDescription(name,type,note,active),card=document.createElement("article");
 card.className="card guideCard";
 var q=name+" "+((trip.destinations||[])[0]||""),review=guideReviews()[guideReviewKey(name)]||{},online=guideOnlineRating(name),onlineHtml=guideOnlineHtml(name);
-card.innerHTML="<div class='ey guideEyebrow'><span>"+esc(active)+"</span>"+priceMarkup(price)+"</div><h3>"+esc(name)+"</h3><span class='guideNeighborhood'>"+esc(neighborhood)+"</span><div class='guideCost'><b>Typical food spend</b><span>"+cost+" / person</span></div><p class='guideType'>"+esc(description)+"</p><div class='guideReview'><div class='guideOnlineSlot'>"+onlineHtml+"</div><div class='guidePersonal'><span class='guidePersonalLabel'>Your rating</span>"+guideStarButtons(name,Number(review.rating||0))+"</div><div class='guideReviewActions'><button type='button' class='guideReviewToggle "+(review.favorite?"active":"")+"' data-favorite>Favorite</button><button type='button' class='guideReviewToggle "+(review.recommend?"active":"")+"' data-recommend>Would recommend</button><label class='guideVisited'><input type='checkbox' data-visited "+(review.visited?"checked":"")+"> Visited</label></div><textarea class='guideReviewNote' data-note placeholder='Add your private RoamSonio note...'>"+esc(review.note||"")+"</textarea><button type='button' class='guideReviewSave' data-save-review>Save your experience</button></div><p class='guideNote'>Check current hours, menus and reservations before visiting.</p><div class='guideActions'><a class='guideButton primary' target='_blank' rel='noopener' href='"+maps(q)+"'>Open in Maps</a><a class='guideButton' target='_blank' rel='noopener' href='"+search(q+" official website")+"' >Website / hours</a><a class='guideButton' target='_blank' rel='noopener' href='"+search(q+" reviews")+"' >Reviews</a></div>";
-bindGuideReviewControls(card,name,review);
-grid.appendChild(card);hydrateGuideLiveRating(name,(trip.destinations||[])[0]||"",card)
+var isDiscovery=name.indexOf("Explore ")===0;
+if(isDiscovery){
+q=((trip.destinations||[])[0]||city)+" "+active+" "+neighborhood;
+}
+var sourceUrl=destinationSources[city]||search(q+" "+active);
+card.innerHTML="<div class='ey guideEyebrow'><span>"+esc(active)+"</span>"+priceMarkup(price)+"</div><h3>"+esc(name)+"</h3><span class='guideNeighborhood'>"+esc(neighborhood)+"</span><div class='guideCost'><b>"+(isDiscovery?"Current local search":"Typical food spend")+"</b><span>"+(isDiscovery?"Open current options":" "+cost+" / person")+"</span></div><p class='guideType'>"+esc(description)+"</p>"+(isDiscovery?"<div class='guideNote'>RoamSonio keeps this destination-specific. Open the current local source/search to see live options.</div>":"<div class='guideReview'><div class='guideOnlineSlot'>"+onlineHtml+"</div><div class='guidePersonal'><span class='guidePersonalLabel'>Your rating</span>"+guideStarButtons(name,Number(review.rating||0))+"</div><div class='guideReviewActions'><button type='button' class='guideReviewToggle "+(review.favorite?"active":"")+"' data-favorite>Favorite</button><button type='button' class='guideReviewToggle "+(review.recommend?"active":"")+"' data-recommend>Would recommend</button><label class='guideVisited'><input type='checkbox' data-visited "+(review.visited?"checked":"")+"> Visited</label></div><textarea class='guideReviewNote' data-note placeholder='Add your private RoamSonio note...'>"+esc(review.note||"")+"</textarea><button type='button' class='guideReviewSave' data-save-review>Save your experience</button></div>")+"<p class='guideNote'>Check current hours, menus and reservations before visiting.</p><div class='guideActions'><a class='guideButton primary' target='_blank' rel='noopener' href='"+(isDiscovery?search(q):maps(q))+"'>"+(isDiscovery?"Search current options":"Open in Maps")+"</a><a class='guideButton' target='_blank' rel='noopener' href='"+(isDiscovery?sourceUrl:search(q+" official website"))+"'>"+(isDiscovery?"Official destination guide":"Website / hours")+"</a><a class='guideButton' target='_blank' rel='noopener' href='"+search(q+" reviews")+"'>Reviews</a></div>";
+if(!isDiscovery){bindGuideReviewControls(card,name,review);hydrateGuideLiveRating(name,(trip.destinations||[])[0]||"",card)}
+grid.appendChild(card);
 }}
-for(var i=0;i<cats.length;i++){(function(cat){var b=document.createElement("button");b.textContent=cat;b.className=cat===active?"active":"";b.onclick=function(){active=cat;trip.guideCategory=cat;trip.guideCuisine="All cuisines";guidePages={};save();renderGuide()};filter.appendChild(b);var o=document.createElement("option");o.value=cat;o.textContent=cat+" · "+(isN?(nolaGuide[cat]||[]).length:(isAtlanta?(atlantaGuide[cat]||[]).length:0))+" places";o.selected=cat===active;sel.appendChild(o)})(cats[i])}
+
+for(var i=0;i<cats.length;i++){(function(cat){var b=document.createElement("button");b.textContent=cat;b.className=cat===active?"active":"";b.onclick=function(){active=cat;trip.guideCategory=cat;trip.guideCuisine="All cuisines";guidePages={};save();renderGuide()};filter.appendChild(b);var o=document.createElement("option");o.value=cat;o.textContent=cat+" · "+destinationItems(cat).length+" places";o.selected=cat===active;sel.appendChild(o)})(cats[i])}
+
 var cuisineCats=["Breakfast","Lunch","Dinner","Special Occasions"];
-if((isN||isAtlanta)&&cuisineCats.indexOf(active)>=0){
+if(cuisineCats.indexOf(active)>=0&&(isN||isAtlanta||localGuide[city])){
 cuisineRow.style.display="flex";cuisineSel.innerHTML="";
-guideCuisineOptions(active,isAtlanta).forEach(function(option){var o=document.createElement("option");o.value=option;o.textContent=option;o.selected=option===cuisine;cuisineSel.appendChild(o)});
+destinationCuisineOptions(active).forEach(function(option){var o=document.createElement("option");o.value=option;o.textContent=option;o.selected=option===cuisine;cuisineSel.appendChild(o)});
 cuisineSel.onchange=function(){cuisine=this.value;trip.guideCuisine=cuisine;guidePages={};save();draw()};
 }else{cuisineRow.style.display="none";cuisineSel.innerHTML="";cuisine="All cuisines";trip.guideCuisine="All cuisines"}
-sel.onchange=function(){trip.guideCategory=this.value;trip.guideCuisine="All cuisines";guidePages={};save();renderGuide()};draw();
+sel.onchange=function(){trip.guideCategory=this.value;trip.guideCuisine="All cuisines";guidePages={};save();renderGuide()};
+draw();
 }
 function renderEvents(){
 var e=document.getElementById("eventGrid");e.innerHTML="";
