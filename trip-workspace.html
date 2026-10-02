@@ -1571,6 +1571,137 @@ Bars:[
 }
 };
 
+var activityGuide={
+prague:{
+Family:[
+["Prague Zoo","Troja","Zoo","Family"],
+["National Technical Museum","Holešovice","Science & technology","Family"],
+["Museum of Senses","Nové Město","Interactive museum","Family"],
+["Petřín Hill & Mirror Maze","Malá Strana","Park + viewpoint","Family"]
+],
+Neighborhoods:[
+["Staré Město","Old Town","Historic core","Explore"],
+["Malá Strana","Lesser Town","Baroque streets","Explore"],
+["Josefov","Old Town","Jewish Quarter","Explore"],
+["Vinohrady","Prague 2","Cafés + residential streets","Explore"]
+],
+Museums:[
+["National Museum","Nové Město","History & natural history","Culture"],
+["National Gallery Prague – Trade Fair Palace","Holešovice","Modern art","Culture"],
+["DOX Centre for Contemporary Art","Holešovice","Contemporary art","Culture"],
+["Museum of Communism","Nové Město","Modern history","Culture"]
+],
+Markets:[
+["Old Town Square Christmas Market","Staré Město","Seasonal market","Seasonal"],
+["Wenceslas Square Christmas Market","Nové Město","Seasonal market","Seasonal"],
+["Havelské tržiště","Staré Město","Historic market","Local"],
+["Náplavka Farmers' Market","Vltava riverfront","Farmers' market","Local"]
+]
+},
+vienna:{
+Family:[
+["Schönbrunn Zoo","Hietzing","Zoo","Family"],
+["Prater","Leopoldstadt","Amusement park + park","Family"],
+["Haus des Meeres","Mariahilf","Aquarium","Family"],
+["Natural History Museum Vienna","Mariahilf","Natural history","Family"]
+],
+Neighborhoods:[
+["Innere Stadt","1st District","Imperial core","Explore"],
+["Neubau","7th District","Museums + cafés","Explore"],
+["Leopoldstadt","2nd District","Prater + Danube Canal","Explore"],
+["Naschmarkt & Freihausviertel","6th District","Market + local streets","Explore"]
+],
+Museums:[
+["Kunsthistorisches Museum","Innere Stadt","Fine arts","Culture"],
+["Albertina","Innere Stadt","Art + prints","Culture"],
+["Belvedere","Landstraße","Art + palace","Culture"],
+["MuseumsQuartier","Neubau","Museums + culture","Culture"]
+],
+Markets:[
+["Schönbrunn Christmas Market","Schönbrunn","Seasonal market","Seasonal"],
+["Rathausplatz Christmas Market","Innere Stadt","Seasonal market","Seasonal"],
+["Belvedere Christmas Village","Landstraße","Seasonal market","Seasonal"],
+["Naschmarkt","Naschmarkt","Food market","Local"]
+]
+},
+pilsen:{
+Family:[
+["Pilsen Zoo","Vinice","Zoo","Family"],
+["Techmania Science Center","Bory","Science center","Family"],
+["DinoPark Pilsen","Vinice","Dinosaur park","Family"],
+["Puppet Museum","City Centre","Puppetry museum","Family"]
+],
+Neighborhoods:[
+["Republic Square & Old Town","City Centre","Historic core","Explore"],
+["Lochotín","North Pilsen","Park + zoo area","Explore"],
+["Bolevec","North Pilsen","Lakes + outdoor area","Explore"],
+["Brewery District","South Pilsen","Beer heritage","Explore"]
+],
+Museums:[
+["Brewery Museum","City Centre","Beer history","Culture"],
+["Museum of West Bohemia","City Centre","Regional history","Culture"],
+["Puppet Museum","City Centre","Puppetry","Culture"],
+["Great Synagogue","City Centre","Jewish heritage","Culture"]
+],
+Markets:[
+["Pilsen Christmas Market","Republic Square","Seasonal market","Seasonal"],
+["Republic Square Market","City Centre","Local market","Local"],
+["Pilsen Gastro & Markets","City Centre","Food + market events","Seasonal"],
+["DEPO2015 events & markets","DEPO2015","Creative market / events","Local"]
+]
+},
+trnava:{
+Family:[
+["City Tower","Historic Centre","Historic tower","Family"],
+["Mestská veža surroundings","Historic Centre","Old town walk","Family"],
+["Ján Palárik Theatre","City Centre","Theater","Family"],
+["Trnava city parks","City Centre","Parks + walking","Family"]
+],
+Neighborhoods:[
+["Historic Centre","Old Town","Pedestrian core","Explore"],
+["Trojičné námestie","City Centre","Main square","Explore"],
+["Halenárska Street","Historic Centre","Historic street + cafés","Explore"],
+["Trnava fortifications","Historic Centre","City walls","Explore"]
+],
+Museums:[
+["West Slovak Museum","City Centre","Regional history","Culture"],
+["Ján Koniarik Gallery","City Centre","Art gallery","Culture"],
+["Synagogue – Contemporary Art Centre","City Centre","Art + heritage","Culture"],
+["City Tower exhibitions","Historic Centre","Local history","Culture"]
+],
+Markets:[
+["Trnava Christmas Market","Trojičné námestie","Seasonal market","Seasonal"],
+["Trnava farmers' markets","City Centre","Local produce","Local"],
+["Trojičné námestie seasonal events","City Centre","Seasonal stalls + events","Seasonal"],
+["City Centre artisan markets","Historic Centre","Crafts + local goods","Local"]
+]
+},
+hluboka:{
+Family:[
+["Hluboká Castle","Town Centre","Castle + gardens","Family"],
+["South Bohemian Zoo Hluboká","Ohrada","Zoo","Family"],
+["Castle Park Educational Trail","Castle Park","Walking trail","Family"],
+["Munický Pond trail","Hluboká area","Easy nature walk","Family"]
+],
+Neighborhoods:[
+["Hluboká Castle Quarter","Town Centre","Castle + historic streets","Explore"],
+["Castle Park","Hluboká","Gardens + viewpoints","Explore"],
+["Ohrada","Hluboká area","Zoo + hunting lodge","Explore"],
+["Munický Pond","Hluboká area","Nature + walking","Explore"]
+],
+Museums:[
+["Aleš South Bohemian Gallery","Castle area","South Bohemian art","Culture"],
+["Ohrada Hunting & Fishing Museum","Ohrada","Hunting + fishing history","Culture"],
+["Hluboká Castle interiors","Town Centre","Historic interiors","Culture"],
+["Historical Hluboká walking tour","Town Centre","Local history","Culture"]
+],
+Markets:[
+["Hluboká seasonal events","Town Centre","Seasonal market / events","Seasonal"],
+["Pumpkin Fest","Hluboká","Seasonal festival","Seasonal"],
+["Town Centre artisan events","Town Centre","Local crafts","Local"],
+["Castle-area seasonal events","Castle Park","Seasonal programming","Seasonal"]
+]
+};
 var cats=isN?categories:(isAtlanta?atlantaCategories:["Breakfast","Lunch","Dinner","Special Occasions","Bars","Breweries","Coffee & Bakeries","Music","Theater & Shows","Family","Neighborhoods","Museums","Markets"]);
 var active=trip.guideCategory||"Dinner",cuisine=trip.guideCuisine||"All cuisines",guidePages={};
 
@@ -1578,7 +1709,7 @@ function destinationItems(category){
 var items;
 if(isN)items=nolaGuide[category]||[];
 else if(isAtlanta)items=atlantaGuide[category]||[];
-else items=(localGuide[city]&&localGuide[city][category])||[];
+else items=(activityGuide[city]&&activityGuide[city][category])||((localGuide[city]&&localGuide[city][category])||[]);
 if(items.length)return items;
 
 /* For categories without curated destination data, provide destination-specific
