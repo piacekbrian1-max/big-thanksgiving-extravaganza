@@ -35,7 +35,7 @@ footer{background:#0B2D4A;color:#4F6B8A;padding:38px 0}.foot{max-width:1440px;wi
 <body>
 <header class="top"><div class="nav">
 <a class="brand" href="index.html"><span class="mark" aria-label="RoamSonio"><svg class="brandIcon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="32" r="29" fill="#F8F5ED"/><circle cx="45" cy="18" r="8" fill="#D4A85A"/><path d="M10 46 25 29l8 9 8-12 13 20H10Z" fill="#0B2D4A"/><path d="M19 43 32 28l7 8" fill="none" stroke="#F8F5ED" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 20c8-7 18-8 27-4 5 2 8 5 10 9" fill="none" stroke="#D4A85A" stroke-width="3" stroke-linecap="round"/><path d="M51 24l4 1-2 4" fill="none" stroke="#D4A85A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><strong><span class="wordRoam">Roam</span><span class="wordSonio">Sonio</span></strong><small>DREAM IT. PLAN IT. LIVE IT.</small></span></a>
-<div class="navright"><a href="#my-roamwell">My RoamSonio</a><a href="my-trips.html">My Trips</a><a href="build-trip.html">Build Your Trip</a><a href="about.html">About Us</a><a href="login.html?return=index.html" id="authLink">Sign In</a></div>
+<div class="navright"><a href="#my-roamwell">My RoamSonio</a><a href="my-trips.html">My Trips</a><a href="build-trip.html">Build Your Trip</a><a href="travel-desk.html">Travel Desk</a><a href="about.html">About Us</a><a href="login.html?return=index.html" id="authLink">Sign In</a></div>
 </div></header>
 
 <main>
@@ -76,31 +76,7 @@ footer{background:#0B2D4A;color:#4F6B8A;padding:38px 0}.foot{max-width:1440px;wi
 
 <div class="roamwellHome" id="my-roamwell"><div class="roamwellHomeHead"><div><div class="ey">Your personal travel collection</div><h2>My RoamSonio.</h2></div><p>Everything you personally rated, favorited, recommended or visited — organized by trip so you can find it again without opening every journey.</p></div><div class="rwHomePanel"><div class="rwHomeToolbar"><div class="rwHomeFilters" id="rwHomeFilters"></div><div class="rwHomeCount" id="rwHomeCount"></div></div><div id="rwHomeGroups"></div></div></div><div id="working" class="working" style="display:none"></div>
 </section>
-<section class="travelDesk" id="travel-desk">
-  <div class="travelDeskHead">
-    <div><div class="ey">Your booking shortcuts</div><h2>Travel Desk.</h2></div>
-    <p>Choose the part of the world you are traveling to. RoamSonio narrows the shortcuts to useful airlines, booking sites, hotels, car rentals and rail operators for that region.</p>
-  </div>
-  <div class="travelDeskSelect">
-    <div class="travelDeskSelectTop"><strong>Where are you traveling?</strong></div>
-    <div class="travelDeskDropdownWrap">
-      <label for="travelDeskRegion">Travel region</label>
-      <select id="travelDeskRegion" class="travelDeskDropdown">
-        <option value="Worldwide">Worldwide</option>
-        <option value="North America">North America</option>
-        <option value="Latin America & Caribbean">Latin America & Caribbean</option>
-        <option value="Europe">Europe</option>
-        <option value="Middle East">Middle East</option>
-        <option value="Africa">Africa</option>
-        <option value="Asia">Asia</option>
-        <option value="Oceania">Oceania</option>
-      </select>
-      <p class="travelDeskDropdownHint">Choose a region instead of having to search through a long list of countries. We can add country-level shortcuts as the Travel Desk expands.</p>
-    </div>
-  </div>
-  <div class="travelDeskGrid" id="travelDeskGrid"></div>
-  <div class="travelDeskNote">Booking shortcuts take you to the provider's official site. RoamSonio does not rank providers or guarantee availability, prices, policies or loyalty benefits.</div>
-</section>
+
 
 </main>
 
@@ -360,73 +336,6 @@ buildSuggestions();
 renderHomeRoamSonio();
 setInterval(renderDashboard,60000);
 })();
-</script>
-<script>
-
-var travelDeskData=[
-  {country:"Global",cat:"Flights & booking",desc:"Useful starting points for international and domestic flight planning.",links:[
-    ["Expedia","Flights · hotels · cars","https://www.expedia.com/"],
-    ["Booking.com","Flights · stays · cars","https://www.booking.com/"],
-    ["Delta","Airline","https://www.delta.com/"],
-    ["United","Airline","https://www.united.com/"],
-    ["American Airlines","Airline","https://www.aa.com/"],
-    ["Southwest","Airline","https://www.southwest.com/"]
-  ]},
-  {country:"Global",cat:"Hotels & stays",desc:"Direct hotel-chain booking plus vacation-home options.",links:[
-    ["Airbnb","Vacation rentals","https://www.airbnb.com/"],
-    ["Marriott Bonvoy","Hotels","https://www.marriott.com/"],
-    ["Hilton","Hotels","https://www.hilton.com/"],
-    ["Hyatt","Hotels","https://www.hyatt.com/"],
-    ["IHG Hotels & Resorts","Hotels","https://www.ihg.com/"],
-    ["Accor","Hotels","https://all.accor.com/"]
-  ]},
-  {country:"Global",cat:"Car rentals",desc:"Major rental networks with broad international coverage.",links:[
-    ["Enterprise","Car rental","https://www.enterprise.com/"],
-    ["Hertz","Car rental","https://www.hertz.com/"],
-    ["Avis","Car rental","https://www.avis.com/"],
-    ["SIXT","Car rental","https://www.sixt.com/"]
-  ]},
-  {country:"United States",cat:"Trains",desc:"US passenger rail.",links:[["Amtrak","US rail","https://www.amtrak.com/"]]},
-  {country:"Canada",cat:"Trains",desc:"Canadian passenger rail.",links:[["VIA Rail Canada","Canada rail","https://www.viarail.ca/"]]},
-  {country:"United Kingdom",cat:"Flights & rail",desc:"Major international airline and cross-Channel rail links.",links:[["British Airways","Airline","https://www.britishairways.com/"],["Eurostar","International rail","https://www.eurostar.com/"]]},
-  {country:"France",cat:"Flights & rail",desc:"France and European rail connections.",links:[["Air France","Airline","https://www.airfrance.com/"],["SNCF Connect","France rail","https://www.sncf-connect.com/"]]},
-  {country:"Germany",cat:"Flights & rail",desc:"German and European air and rail connections.",links:[["Lufthansa","Airline","https://www.lufthansa.com/"],["Deutsche Bahn","Germany rail","https://int.bahn.de/en"]]},
-  {country:"Austria",cat:"Flights & rail",desc:"Austria and Central European rail connections.",links:[["Austrian Airlines","Airline","https://www.austrian.com/"],["ÖBB","Austria rail","https://www.oebb.at/en/"]]},
-  {country:"Czech Republic",cat:"Flights & rail",desc:"Czech rail and European connections.",links:[["Czech Railways","Czech rail","https://www.cd.cz/en/"]]},
-  {country:"Slovakia",cat:"Flights & rail",desc:"Slovak rail and regional connections.",links:[["ZSSK","Slovakia rail","https://www.zssk.sk/"]]},
-  {country:"Spain",cat:"Flights & rail",desc:"Spanish high-speed and national rail.",links:[["Renfe","Spain rail","https://www.renfe.com/"]]},
-  {country:"Italy",cat:"Flights & rail",desc:"Italian high-speed and national rail.",links:[["Trenitalia","Italy rail","https://www.trenitalia.com/"]]},
-  {country:"Japan",cat:"Flights & rail",desc:"Japan rail and international flight starting points.",links:[["JR East","Japan rail","https://www.jreast.co.jp/multi/en/"],["Japan Airlines","Airline","https://www.jal.co.jp/jp/en/"]]},
-  {country:"Portugal",cat:"Flights & rail",desc:"Portugal and European travel connections.",links:[["TAP Air Portugal","Airline","https://www.flytap.com/"]]}
-];
-function initTravelDesk(){
-  var region=document.getElementById("travelDeskRegion"),grid=document.getElementById("travelDeskGrid");
-  if(!region||!grid)return;
-  function travelEsc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
-  var countryRegion={
-    "United States":"North America","Canada":"North America",
-    "United Kingdom":"Europe","France":"Europe","Germany":"Europe","Austria":"Europe","Czech Republic":"Europe","Slovakia":"Europe","Spain":"Europe","Italy":"Europe","Portugal":"Europe",
-    "Japan":"Asia"
-  };
-  var key="roamsonio-travel-region";
-  var saved="Worldwide";
-  try{saved=localStorage.getItem(key)||"Worldwide"}catch(e){}
-  if([].slice.call(region.options).some(function(o){return o.value===saved}))region.value=saved;
-  window.roamsonioTravelDesk=function(){
-    var selected=region.value||"Worldwide";
-    try{localStorage.setItem(key,selected)}catch(e){}
-    var rows=travelDeskData.filter(function(g){
-      return g.country==="Global"||(selected==="Worldwide"||countryRegion[g.country]===selected);
-    });
-    var grouped={};
-    rows.forEach(function(g){grouped[g.cat]=grouped[g.cat]||{desc:g.desc,links:[]};grouped[g.cat].links=grouped[g.cat].links.concat(g.links)});
-    var cats=Object.keys(grouped);
-    grid.innerHTML=cats.map(function(cat){var g=grouped[cat];return "<div class='travelDeskGroup'><h3>"+travelEsc(cat)+"</h3><p>"+travelEsc(g.desc)+"</p><div class='travelLinks'>"+g.links.map(function(x){return "<a class='travelLink' href='"+x[2]+"' target='_blank' rel='noopener noreferrer'><span>"+travelEsc(x[0])+"</span><small>"+travelEsc(x[1])+" ↗</small></a>"}).join("")+"</div></div>"}).join("")||"<div class='travelDeskEmpty'>We are expanding destination-specific shortcuts for this region. Global booking, hotel and car-rental options remain available.</div>";
-  };
-  region.addEventListener("change",window.roamsonioTravelDesk);
-  window.roamsonioTravelDesk();
-}
-if(document.readyState === "loading"){document.addEventListener("DOMContentLoaded",initTravelDesk)}else{initTravelDesk()}
 </script>
 </body>
 </html>
