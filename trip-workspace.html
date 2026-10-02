@@ -897,7 +897,13 @@ for(var i=0;i<Math.max(ds.length,1);i++){var d=ds[i]||"Your destination";var x=d
 function renderPlan(){
 var e=document.getElementById("smartPlan");e.innerHTML="";
 if(trip.smartVersion!==2){buildSmartPlan();return}
-if(!trip.plan||!trip.plan.length)buildSmartPlan();
+var placeholderPlan=Array.isArray(trip.plan)&&trip.plan.some(function(d){return String(d&&d.morning||"").trim().toLowerCase()==="a"||String(d&&d.afternoon||"").trim().toLowerCase()==="b"||String(d&&d.evening||"").trim().toLowerCase()==="c"});
+if(!trip.plan||!trip.plan.length||placeholderPlan){
+  trip.plan=makeOriginalPlan();
+  trip.originalPlan=clonePlan(trip.plan);
+  trip.days=trip.plan.length;
+  save();
+}
 for(var i=0;i<trip.plan.length;i++){(function(d,idx){
 var x=document.createElement("article");x.className="smartDay";var ev=d.event?"<span class='tag'>Date-specific event</span>":"<span class='tag'>Smart day</span>";
 x.innerHTML="<div class='smartDayHead'><div><div class='kicker'>Day "+(idx+1)+" · "+fmtDate(d.date)+"</div><h3>"+esc(d.title||d.area)+"</h3><p>"+esc(d.area||"Destination center")+" · based around "+esc(baseLabel())+"</p></div>"+ev+"</div><div class='smartSlots'>"+
