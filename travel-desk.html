@@ -239,7 +239,7 @@ footer{background:var(--navy);color:#fff;padding:35px 28px}.foot{max-width:1380p
 <body>
 <header class="top"><div class="nav">
 <a class="brand" href="index.html"><span class="mark" aria-label="RoamSonio"><svg class="brandIcon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="32" r="29" fill="#F8F5ED"/><circle cx="45" cy="18" r="8" fill="#D4A85A"/><path d="M10 46 25 29l8 9 8-12 13 20H10Z" fill="#0B2D4A"/><path d="M19 43 32 28l7 8" fill="none" stroke="#F8F5ED" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 20c8-7 18-8 27-4 5 2 8 5 10 9" fill="none" stroke="#D4A85A" stroke-width="3" stroke-linecap="round"/><path d="M51 24l4 1-2 4" fill="none" stroke="#D4A85A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><strong><span class="wordRoam">Roam</span><span class="wordSonio">Sonio</span></strong><small>DREAM IT. PLAN IT. LIVE IT.</small></span></a>
-<div class="navright"><a href="index.html#my-roamwell">My RoamSonio</a><a href="my-trips.html">My Trips</a><a href="build-trip.html">Build Your Trip</a><a href="travel-desk.html">Travel Desk</a><a href="about.html">About Us</a><a href="login.html?return=travel-desk.html">Sign In</a></div>
+<div class="navright"><a href="index.html#my-roamwell">My RoamSonio</a><a href="my-trips.html">My Trips</a><a href="build-trip.html">Build Your Trip</a><a href="travel-desk.html">Travel Desk</a><a href="about.html">About Us</a><a href="login.html?return=travel-desk.html" id="authLink">Sign In</a></div>
 </div></header>
 <main>
 <section class="heroVisual">
@@ -518,6 +518,25 @@ function render(){
  try{s.value=localStorage.getItem("roamsonio-travel-region")||"Worldwide"}catch(e){}
  if(s)s.addEventListener("change",function(){try{render()}catch(e){console.error("Travel Desk render error",e)}});
  try{render()}catch(e){console.error("Travel Desk initialization error",e)}
+})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+  var authLink=document.getElementById("authLink");
+  if(!authLink || !window.supabase) return;
+  var client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","sb_publishable_DyiQBLmIyGMBXCeJ9KKgSg_TFWO5vsy");
+  function updateAuth(session){
+    if(session && session.user){
+      authLink.textContent="My Account";
+      authLink.href="account.html";
+    }else{
+      authLink.textContent="Sign In";
+      authLink.href="login.html?return=travel-desk.html";
+    }
+  }
+  client.auth.getSession().then(function(result){ updateAuth(result.data && result.data.session); });
+  client.auth.onAuthStateChange(function(event,session){ updateAuth(session); });
 })();
 </script>
 </body>
