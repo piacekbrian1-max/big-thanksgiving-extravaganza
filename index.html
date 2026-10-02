@@ -33,7 +33,7 @@ footer{background:#0B2D4A;color:#4F6B8A;padding:38px 0}.foot{max-width:1440px;wi
 <body>
 <header class="top"><div class="nav">
 <a class="brand" href="index.html"><span class="mark" aria-label="RoamSonio"><svg class="brandIcon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="32" r="29" fill="#F8F5ED"/><circle cx="45" cy="18" r="8" fill="#D4A85A"/><path d="M10 46 25 29l8 9 8-12 13 20H10Z" fill="#0B2D4A"/><path d="M19 43 32 28l7 8" fill="none" stroke="#F8F5ED" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 20c8-7 18-8 27-4 5 2 8 5 10 9" fill="none" stroke="#D4A85A" stroke-width="3" stroke-linecap="round"/><path d="M51 24l4 1-2 4" fill="none" stroke="#D4A85A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><strong><span class="wordRoam">Roam</span><span class="wordSonio">Sonio</span></strong><small>DREAM IT. PLAN IT. LIVE IT.</small></span></a>
-<div class="navright"><a href="#my-roamwell">My RoamSonio</a><a href="my-trips.html">My Trips</a><a href="build-trip.html">Build Your Trip</a><a href="about.html">About Us</a><a href="login.html">Sign In</a></div>
+<div class="navright"><a href="#my-roamwell">My RoamSonio</a><a href="my-trips.html">My Trips</a><a href="build-trip.html">Build Your Trip</a><a href="about.html">About Us</a><a href="login.html?return=index.html" id="authLink">Sign In</a></div>
 </div></header>
 
 <main>
@@ -107,11 +107,6 @@ function cleanSavedTrips(a){
 function loadPersistentTrips(){
   try{
     var raw=JSON.parse(localStorage.getItem(KEY)||"null");
-    if(Array.isArray(raw)&&raw.length){
-      var cleaned=cleanSavedTrips(raw);
-      if(JSON.stringify(cleaned)!==JSON.stringify(raw))localStorage.setItem(KEY,JSON.stringify(cleaned));
-      return cleaned;
-    }
     var restored=[{
       id:"european-thanksgiving-adventure-2026",
       name:"European Thanksgiving Adventure 2026",
@@ -150,8 +145,13 @@ function loadPersistentTrips(){
       budget:{flights:2764.65,rentalCar:569,lodging:1133.64},
       isPromoted:true
     }];
-    localStorage.setItem(KEY,JSON.stringify(restored));
-    return restored;
+    if(!Array.isArray(raw))raw=[];
+    var cleaned=cleanSavedTrips(raw);
+    if(!cleaned.some(function(t){return t&&t.id==="european-thanksgiving-adventure-2026"})){
+      cleaned.unshift(restored[0]);
+    }
+    if(JSON.stringify(cleaned)!==JSON.stringify(raw))localStorage.setItem(KEY,JSON.stringify(cleaned));
+    return cleaned;
   }catch(e){return[]}
 }
 function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
