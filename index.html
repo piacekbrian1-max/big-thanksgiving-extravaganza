@@ -347,6 +347,8 @@ buildSuggestions();
 renderHomeRoamSonio();
 setInterval(renderDashboard,60000);
 })();
+</script>
+<script>
 
 var travelDeskData=[
   {country:"Global",cat:"Flights & booking",desc:"Useful starting points for international and domestic flight planning.",links:[
@@ -407,7 +409,7 @@ function initTravelDesk(){
   document.getElementById("travelDeskClear").onclick=function(){choices.querySelectorAll("input").forEach(function(x){x.checked=false});window.roamsonioTravelDesk()};
   window.roamsonioTravelDesk();
 }
-initTravelDesk();
+if(document.readyState === "loading"){document.addEventListener("DOMContentLoaded",initTravelDesk)}else{initTravelDesk()}
 </script>
 </body>
 </html>
