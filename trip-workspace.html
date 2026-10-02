@@ -421,11 +421,13 @@ button,a{max-width:100%}
 .guideLiveLoading{color:#D4A85A!important}
 .guideLiveError{color:#8b918c!important}
 .guideOnlineSlot{min-height:30px}
+</style><style id="roamsonio-core-ux">
+.tripCompass{display:grid;grid-template-columns:1.15fr .85fr;gap:14px;margin-top:22px}.compassCard{border:1px solid var(--line);background:var(--paper);border-radius:16px;padding:24px;box-shadow:var(--shadow)}.compassCard.primaryCompass{background:linear-gradient(135deg,#0B2D4A,#163F60);color:white;border-color:#0B2D4A}.compassEyebrow{font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:#D4A85A;font-weight:700}.compassCard h3{font:600 28px "Playfair Display",serif;margin:8px 0}.compassCard p{font-size:11px;line-height:1.65;color:var(--muted);margin:0}.primaryCompass p{color:#dbe4e0}.compassSteps{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:18px}.compassStep{padding:11px 10px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);border-radius:9px}.compassStep b{display:block;font:600 16px "Playfair Display",serif;color:#D4A85A}.compassStep span{display:block;font-size:8px;line-height:1.45;color:#d9e2de;margin-top:4px}@media(max-width:800px){.tripCompass{grid-template-columns:1fr}.compassSteps{grid-template-columns:1fr 1fr}}@media(max-width:600px){.compassCard{padding:20px}}
 </style></head>
 <body>
 <header class="top"><div class="nav">
 <a class="logo" href="index.html"><span class="logoMark">TRIP</span><span><strong id="brand" class="logoRoam">ROAMSONIO</strong><small class="logoTag">DREAM IT. PLAN IT. LIVE IT.</small></span></a>
-<nav class="navlinks" id="tripNav"><a href="index.html">Home</a><a href="#dashboard">Dashboard</a><a href="my-trips.html">My Trips</a><a href="build-trip.html">Build Your Trip</a><a href="#itinerary">Itinerary</a><a href="#destinations">Destinations</a><a href="#food">Food Guide</a><a href="#weather">Weather</a><a href="#webcams">Webcams</a><a href="#travel">Bookings</a><a href="#budget">Budget</a><a href="#packing">Travel Info</a></nav>
+<nav class="navlinks" id="tripNav"><a href="index.html">Home</a><a href="#dashboard">Overview</a><a href="#itinerary">Plan</a><a href="#food">Explore</a><a href="#travel">Travel</a><a href="#budget">My Trip</a><a href="build-trip.html">New Trip</a></nav>
 <span class="datepill" id="datePill">TRIP</span><button type="button" class="menu" id="menuToggle" aria-expanded="false" aria-controls="tripNav">Menu</button>
 </div></header>
 
@@ -441,10 +443,14 @@ button,a{max-width:100%}
 <section id="dashboard" class="section">
 <div class="sectionHead"><div><div class="kicker">Your trip</div><h2>Plan · travel · remember.</h2></div><p id="overviewLead">The workspace keeps the visual structure of the Thanksgiving trip, while making the content destination-specific and editable.</p></div>
 <div class="dash"><div class="panel today"><div class="todayDate"><b id="daysCount">—</b><small>days</small></div><div><div class="kicker" id="tripDates">YOUR DATES</div><h2 id="dashTitle">Trip</h2><p id="dashMeta">Travelers · destination · pace</p></div></div><div class="panel quick"><a href="#itinerary">Itinerary</a><a href="#weather">Weather</a><a href="#travel">Bookings</a><a href="#webcams">Webcams</a></div></div>
+<div class="tripCompass">
+<div class="compassCard primaryCompass"><div class="compassEyebrow">RoamSonio trip guide</div><h3>Start with help. Keep control.</h3><p>If you do not travel often, RoamSonio gives you a clear starting point. If you already know what you want, skip the suggestions and make the trip your own.</p><div class="compassSteps"><div class="compassStep"><b>01</b><span>Understand the destination</span></div><div class="compassStep"><b>02</b><span>Build a realistic day</span></div><div class="compassStep"><b>03</b><span>Choose what fits you</span></div><div class="compassStep"><b>04</b><span>Make it your trip</span></div></div></div>
+<div class="compassCard"><div class="compassEyebrow">Simple navigation</div><h3>Overview → Plan → Explore → Travel → My Trip</h3><p>Every trip follows the same rhythm. Beginners can follow the guidance; experienced travelers can jump straight to their own plans, bookings and discoveries.</p></div>
+</div>
 </section>
 
 <section class="section" id="smart">
-<div class="sectionHead"><div><div class="kicker">The trip brain</div><h2>Tell it where you are based.</h2></div><p>Give the planner your hotel, address or neighborhood. If you leave it blank, it uses <b>downtown / the city center</b> as the working home base. It then clusters each day around that base instead of scattering random attractions across the city.</p></div>
+<div class="sectionHead"><div><div class="kicker">The trip brain</div><h2>Plan with help — or make it your own.</h2></div><p>Give RoamSonio your hotel, address or neighborhood. If you leave it blank, it uses <b>downtown / the city center</b> as the working home base. It then clusters each day around that base instead of scattering random attractions across the city.</p></div>
 <div class="smartPanel">
 <div class="smartGrid">
 <div class="smartField"><label>Home base / hotel / location</label><input id="homeBase" placeholder="Hotel, address or neighborhood — blank = downtown / city center"></div>
@@ -472,7 +478,7 @@ button,a{max-width:100%}
 </section>
 
 <section class="section" id="food">
-<div class="sectionHead"><div><div class="kicker">Local guide</div><h2>Food, drinks & things to do.</h2></div><p id="guideLead">Suggestions are organized by meal, neighborhood, entertainment and interest instead of one long tourist list.</p></div>
+<div class="sectionHead"><div><div class="kicker">Explore</div><h2>Discover the destination.</h2></div><p id="guideLead">Start with curated ideas, then add your own places. Suggestions are organized into useful categories so first-time travelers can explore confidently without limiting experienced travelers.</p></div>
 <div class="guidePricingNote"><strong>How pricing works:</strong> $ = budget, $ = moderate, $$ = mid-range, $$ = expensive, $$$ = very expensive. “Typical food spend” is a planning estimate per person before tax, tip and drinks, based on the restaurant's price level and the type of meal. New Orleans-wide reference data currently puts an inexpensive restaurant meal around $26, while a three-course mid-range meal for two is around $141, so these ranges are meant for planning rather than a guaranteed bill. Check the current menu before booking.</div><div class="guidePricingNote"><strong>Ratings are international:</strong> RoamSonio uses a destination-aware source hierarchy rather than assuming a U.S.-only provider. Google provides the broad 1–5 baseline for places and businesses; Tripadvisor adds international traveler coverage; MICHELIN provides expert restaurant selections where available; Booking.com is used for accommodation guest scores; and stronger regional platforms can be used where they have better local coverage. The source and review count are shown with each rating, and RoamSonio never blends different scales into a single score.</div><div class="panel" style="padding:22px"><div class="guideFilter" id="guideFilter"></div><select class="guideSelect" id="guideSelect"></select><div class="guideCuisineRow" id="guideCuisineRow" style="display:none"><label for="guideCuisine">Cuisine</label><select class="guideCuisine" id="guideCuisine"></select></div><div class="guideMeta"><span class="guideCount" id="guideCount"></span><span class="guideHint">Open Maps, check the place, or research before you go.</span></div><div class="guideGrid" id="guideGrid"></div></div>
 <div class="sourceBar">For New Orleans, the guide is informed by current local destination guidance and current Eater New Orleans restaurant reporting; hours and menus should still be checked before visiting. <a href="https://www.neworleans.com/" target="_blank">New Orleans & Company</a> · <a href="https://nola.eater.com/" target="_blank">Eater New Orleans</a></div>
 </section>
@@ -1021,6 +1027,7 @@ plan.push({day:i+1,date:isoDay(i),destination:destination,area:area,title:(desti
 }
 return plan;
 }
+function ensureRoamsonioFramework(){trip.frameworkVersion="roamsonio-v2";trip.planningMode=trip.planningMode||"guided";if(!trip.customPlans)trip.customPlans={};save()}
 function ensureOriginalPlan(){
 if(!trip.originalPlan||!Array.isArray(trip.originalPlan)||!trip.originalPlan.length){
 trip.originalPlan=makeOriginalPlan();
@@ -2209,7 +2216,7 @@ function renderResources(){var e=document.getElementById("resourceGrid"),d=(trip
 if(slug(d).indexOf("new orleans")>=0){rs[0]=["New Orleans & Company","https://www.neworleans.com/"];rs[2]=["January / event guide","https://www.neworleans.com/plan/january-in-new-orleans/"];rs[3]=["Eater New Orleans","https://nola.eater.com/"];rs.push(["Mardi Gras parade schedule","https://www.neworleans.com/events/holidays-seasonal/mardi-gras/mardi-gras-parade-schedule/"])}
 e.innerHTML="";for(var i=0;i<rs.length;i++){var a=document.createElement("a");a.className="link";a.target="_blank";a.href=rs[i][1];a.innerHTML="<b>"+esc(rs[i][0])+"</b><small>Open resource</small>";e.appendChild(a)}}
 
-ensureOriginalPlan();renderHeader();renderRoute();renderDestinations();renderPlan();renderGuide();renderEvents();renderWeather();renderCams();renderTravel();renderBudget();renderMemories();renderResources();var shareTripButton=document.getElementById("shareTripButton");if(shareTripButton)shareTripButton.href="share-trip.html?id="+encodeURIComponent(trip.id);
+ensureRoamsonioFramework();ensureOriginalPlan();renderHeader();renderRoute();renderDestinations();renderPlan();renderGuide();renderEvents();renderWeather();renderCams();renderTravel();renderBudget();renderMemories();renderResources();var shareTripButton=document.getElementById("shareTripButton");if(shareTripButton)shareTripButton.href="share-trip.html?id="+encodeURIComponent(trip.id);
 })();
 </script>
 </body></html>
