@@ -1,9 +1,8 @@
 <!doctype html>
 <html lang="en">
 <head>
-<!-- RoamSonio trip workspace v2 deployment refresh 2026-10-01 -->
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>RoamSonio · Trip Workspace</title>
+<title>RoamSonio · Trip Workspace</title><!-- RoamSonio stable trip workspace 2026-10-01 -->
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -169,7 +168,7 @@ main{max-width:1500px;width:94%;margin:auto}.dash{margin-top:-34px;position:rela
  .budgetRow>div:nth-child(5){grid-column:1}
  .budgetRow>div:nth-child(6){grid-column:2}
 }
-.smartPanel{padding:26px;background:var(--green);color:white;border-radius:16px}.smartGrid{display:grid;grid-template-columns:1.4fr .8fr .8fr;gap:10px}.smartField label{display:block;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:#d9e2dd;font-weight:700}.smartField input,.smartField select{width:100%;box-sizing:border-box;margin-top:6px;padding:10px;border:1px solid #ffffff2a;border-radius:7px;background:#ffffff0d;color:white}.smartField option{color:#0B2D4A}.smartExplain{font-size:10px;color:#c9d5cf;line-height:1.6;margin-top:13px}.smartDay{border:1px solid var(--line);background:var(--paper);border-radius:14px;overflow:hidden;margin-bottom:12px}.smartDayHead{display:flex;justify-content:space-between;gap:15px;align-items:start;padding:20px 22px;background:#E9D9B7}.smartDayHead h3{font:600 27px "Playfair Display",serif;margin:3px 0}.smartDayHead p{margin:0;color:var(--muted);font-size:10px}.smartSlots{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:15px}.smartSlot{border:1px solid var(--line);border-radius:11px;padding:14px}.smartSlot .time{font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:#D4A85A;font-weight:700}.smartSlot h4{font:600 19px "Playfair Display",serif;margin:6px 0}.smartSlot p{font-size:9px;line-height:1.55;color:var(--muted);margin:0}.smartSlot .why{margin-top:8px;padding-top:8px;border-top:1px solid var(--line);font-size:8px;color:#66736e}.smartActions{display:flex;gap:7px;flex-wrap:wrap;padding:0 15px 15px}.smartActions .btn{border-color:var(--line);color:var(--ink);background:#fffdf9}.editSmart{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:15px;border-top:1px solid var(--line)}.editSmart label{display:block;font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:#D4A85A;font-weight:700}.editSmart input,.editSmart textarea{width:100%;box-sizing:border-box;margin-top:5px;padding:9px;border:1px solid var(--line);border-radius:7px;background:#fffdf9;font:inherit;font-size:10px}.editSmart textarea{min-height:62px}.sourceBar{font-size:8px;color:#4F6B8A;line-height:1.6;margin-top:12px}.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.card{background:var(--paper);border:1px solid var(--line);border-radius:15px;padding:22px;box-shadow:0 10px 30px #0B2D4A0b}.card h3{font:600 25px "Playfair Display",serif;margin:7px 0 8px;color:var(--ink)}.card p{font-size:11px;line-height:1.65;color:var(--muted);margin:0}.card .ey{font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:#D4A85A;font-weight:700}.card .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.guideFilter{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;padding-bottom:17px;border-bottom:1px solid var(--line)}.guideFilter button{border:1px solid #d5d0c5;background:#E9D9B7;color:#52615c;padding:10px 13px;border-radius:999px;font-size:8px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;cursor:pointer;transition:.2s}.guideFilter button:hover{border-color:#bba76b;background:#ece7da}.guideFilter button.active{background:var(--green);color:#fff;border-color:var(--green)}.guideSelect{display:none;width:100%;padding:11px;border:1px solid var(--line);border-radius:9px;background:#fffdf9;margin-bottom:15px}.guideMeta{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px}.guideBrowse{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:16px}.guideBrowse button{border:1px solid #C8D1DA;background:#fffdf9;color:#24312d;padding:9px 12px;border-radius:7px;font-size:8px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}.guideBrowse button:hover{background:#eeeae0}.guideBrowse button:disabled{opacity:.38;cursor:not-allowed}.guideBrowse .guidePage{font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:#4F6B8A;padding:0 4px}.guideCount{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#4F6B8A}.guideHint{font-size:10px;color:var(--muted)}.guideGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.guideCard{min-height:218px;display:flex;flex-direction:column}.guideCard .guideNeighborhood{display:inline-flex;align-self:flex-start;margin-top:4px;padding:5px 8px;border-radius:999px;background:#eeeae0;color:#65716c;font-size:8px;text-transform:uppercase;letter-spacing:.08em}.guideCard .guideType{margin-top:12px;font-weight:700;color:#293833}.guideCard .guideNote{margin-top:4px}.guideActions{margin-top:auto;padding-top:18px;display:flex;gap:7px;flex-wrap:wrap}.guideButton{display:inline-flex;align-items:center;justify-content:center;padding:9px 11px;border:1px solid #C8D1DA;background:#fffdf9;color:#24312d!important;border-radius:7px;font-size:8px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.guideButton.primary{background:var(--green);border-color:var(--green);color:#fff!important}.guideButton:hover{background:#eeeae0}.guideButton.primary:hover{background:#2b4d43}.smartActions .btn,.info .btn,.card .btn{border-color:#C8D1DA;color:#24312d;background:#fffdf9}.smartActions .btn:hover,.info .btn:hover,.card .btn:hover{background:#eeeae0}.heroPhotoCredit{position:absolute;z-index:4;right:14px;top:14px;font-size:8px;color:#f7f2e6aa;letter-spacing:.04em;background:#071E3366;padding:6px 8px;border-radius:4px;backdrop-filter:blur(5px)}@media(max-width:1000px){.three,.guideGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:700px){.smartGrid,.smartSlots,.editSmart{grid-template-columns:1fr}.guideFilter{display:none}.guideSelect{display:block}.smartDayHead{display:block}.smartActions{padding-top:0}.guideGrid{grid-template-columns:1fr}.guideMeta{display:block}.guideHint{margin-top:5px}} 
+.smartPanel{padding:26px;background:var(--green);color:white;border-radius:16px}.smartGrid{display:grid;grid-template-columns:1.4fr .8fr .8fr;gap:10px}.smartField label{display:block;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:#d9e2dd;font-weight:700}.smartField input,.smartField select{width:100%;box-sizing:border-box;margin-top:6px;padding:10px;border:1px solid #ffffff2a;border-radius:7px;background:#ffffff0d;color:white}.smartField option{color:#0B2D4A}.smartExplain{font-size:10px;color:#c9d5cf;line-height:1.6;margin-top:13px}.smartDay{border:1px solid var(--line);background:var(--paper);border-radius:14px;overflow:hidden;margin-bottom:12px}.smartDayHead{display:flex;justify-content:space-between;gap:15px;align-items:start;padding:20px 22px;background:#E9D9B7}.smartDayHead h3{font:600 27px "Playfair Display",serif;margin:3px 0}.smartDayHead p{margin:0;color:var(--muted);font-size:10px}.smartSlots{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:15px}.smartSlot{border:1px solid var(--line);border-radius:11px;padding:14px}.smartSlot .time{font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:#D4A85A;font-weight:700}.smartSlot h4{font:600 19px "Playfair Display",serif;margin:6px 0}.smartSlot p{font-size:9px;line-height:1.55;color:var(--muted);margin:0}.smartSlot .why{margin-top:8px;padding-top:8px;border-top:1px solid var(--line);font-size:8px;color:#66736e}.smartActions{display:flex;gap:7px;flex-wrap:wrap;padding:0 15px 15px}.smartActions .btn{border-color:var(--line);color:var(--ink);background:#fffdf9}.editSmart{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:15px;border-top:1px solid var(--line)}.editSmart label{display:block;font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:#D4A85A;font-weight:700}.editSmart input,.editSmart textarea{width:100%;box-sizing:border-box;margin-top:5px;padding:9px;border:1px solid var(--line);border-radius:7px;background:#fffdf9;font:inherit;font-size:10px}.editSmart textarea{min-height:62px}.sourceBar{font-size:8px;color:#4F6B8A;line-height:1.6;margin-top:12px}.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.card{background:var(--paper);border:1px solid var(--line);border-radius:15px;padding:22px;box-shadow:0 10px 30px #0B2D4A0b}.card h3{font:600 25px "Playfair Display",serif;margin:7px 0 8px;color:var(--ink)}.card p{font-size:11px;line-height:1.65;color:var(--muted);margin:0}.card .ey{font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:#D4A85A;font-weight:700}.card .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.guideFilter{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;padding-bottom:17px;border-bottom:1px solid var(--line)}.guideFilter button{border:1px solid #d5d0c5;background:#E9D9B7;color:#52615c;padding:10px 13px;border-radius:999px;font-size:8px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;cursor:pointer;transition:.2s}.guideFilter button:hover{border-color:#bba76b;background:#ece7da}.guideFilter button.active{background:var(--green);color:#fff;border-color:var(--green)}.guideSelect{display:none;width:100%;padding:11px;border:1px solid var(--line);border-radius:9px;background:#fffdf9;margin-bottom:15px}.guideMeta{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px}.guideCount{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#4F6B8A}.guideHint{font-size:10px;color:var(--muted)}.guideGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.guideCard{min-height:218px;display:flex;flex-direction:column}.guideCard .guideNeighborhood{display:inline-flex;align-self:flex-start;margin-top:4px;padding:5px 8px;border-radius:999px;background:#eeeae0;color:#65716c;font-size:8px;text-transform:uppercase;letter-spacing:.08em}.guideCard .guideType{margin-top:12px;font-weight:700;color:#293833}.guideCard .guideNote{margin-top:4px}.guideActions{margin-top:auto;padding-top:18px;display:flex;gap:7px;flex-wrap:wrap}.guideButton{display:inline-flex;align-items:center;justify-content:center;padding:9px 11px;border:1px solid #C8D1DA;background:#fffdf9;color:#24312d!important;border-radius:7px;font-size:8px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.guideButton.primary{background:var(--green);border-color:var(--green);color:#fff!important}.guideButton:hover{background:#eeeae0}.guideButton.primary:hover{background:#2b4d43}.smartActions .btn,.info .btn,.card .btn{border-color:#C8D1DA;color:#24312d;background:#fffdf9}.smartActions .btn:hover,.info .btn:hover,.card .btn:hover{background:#eeeae0}.heroPhotoCredit{position:absolute;z-index:4;right:14px;top:14px;font-size:8px;color:#f7f2e6aa;letter-spacing:.04em;background:#071E3366;padding:6px 8px;border-radius:4px;backdrop-filter:blur(5px)}@media(max-width:1000px){.three,.guideGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:700px){.smartGrid,.smartSlots,.editSmart{grid-template-columns:1fr}.guideFilter{display:none}.guideSelect{display:block}.smartDayHead{display:block}.smartActions{padding-top:0}.guideGrid{grid-template-columns:1fr}.guideMeta{display:block}.guideHint{margin-top:5px}} 
 .discoveryBox,.practicalBox{margin-top:12px;padding:14px 16px;border-radius:11px;border:1px solid var(--line);background:#f7f3e9}.discoveryBox{border-left:3px solid var(--gold)}.practicalBox{border-left:3px solid var(--green)}.discoveryBox b,.practicalBox b{display:block;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:#D4A85A}.discoveryBox p,.practicalBox p{margin:6px 0 0;font-size:11px;line-height:1.55;color:#5f6d68}.brandIcon{width:25px;height:25px;display:block;color:#D4A85A}.mark .brandIcon,.logoMark .brandIcon{width:27px;height:27px}.wordRoam{color:#F8F5ED}.wordSonio{color:#D4A85A}</style>
 <style id="roamwell-final-responsive">
 /* RoamSonio final responsive system — intentionally last so it wins over legacy rules */
@@ -432,7 +431,7 @@ button,a{max-width:100%}
 <header class="hero" id="home">
 <div class="coverGrid">
 <div class="coverMain"><img id="heroMain" src="images/prague-christmas.jpg" alt=""><div class="heroPhotoCredit" id="heroPhotoCredit">Photo · destination editorial image</div><div class="coverCaption"><div class="eyebrow" id="heroEyebrow">YOUR TRIP · SMARTLY PLANNED</div><h1 id="heroTitle">Trip</h1><p id="heroText">A magazine-style trip workspace that plans around your home base, interests, pace, dates and travel group.</p><div class="heroActions"><a class="btn primary" href="#itinerary">Explore the journey</a><a class="btn" id="routeMap" target="_blank">Open route map</a><a class="btn" href="index.html">Home</a></div></div></div>
-<div class="coverSide"><div><img id="heroSide1" src="images/neworleans-gardendistrict.jpg" alt=""><div class="coverMini" id="side1Label">Destination</div></div><div><img id="heroSide2" src="images/neworleans-carnival.jpg" alt=""><div class="coverMini" id="side2Label">Local character</div></div></div>
+<div class="coverSide"><div><img id="heroSide1" src="images/prague-christmas.jpg" alt=""><div class="coverMini" id="side1Label">Destination</div></div><div><img id="heroSide2" src="images/prague-christmas.jpg" alt=""><div class="coverMini" id="side2Label">Local character</div></div></div>
 </div>
 <div class="weatherLead" id="weatherLead"><div class="weatherLeadIntro"><b>Trip weather</b><span>Current conditions · stay averages</span></div></div>
 </header>
@@ -473,8 +472,8 @@ button,a{max-width:100%}
 
 <section class="section" id="food">
 <div class="sectionHead"><div><div class="kicker">Local guide</div><h2>Food, drinks & things to do.</h2></div><p id="guideLead">Suggestions are organized by meal, neighborhood, entertainment and interest instead of one long tourist list.</p></div>
-<div class="guidePricingNote"><strong>How pricing works:</strong> $ = budget, $ = moderate, $$ = mid-range, $$ = expensive, $$$ = very expensive. “Typical food spend” is a planning estimate per person before tax, tip and drinks, based on the restaurant's price level and the type of meal. New Orleans-wide reference data currently puts an inexpensive restaurant meal around $26, while a three-course mid-range meal for two is around $141, so these ranges are meant for planning rather than a guaranteed bill. Check the current menu before booking.</div><div class="guidePricingNote"><strong>Ratings are international:</strong> RoamSonio uses a destination-aware source hierarchy rather than assuming a U.S.-only provider. Google provides the broad 1–5 baseline for places and businesses; Tripadvisor adds international traveler coverage; MICHELIN provides expert restaurant selections where available; Booking.com is used for accommodation guest scores; and stronger regional platforms can be used where they have better local coverage. The source and review count are shown with each rating, and RoamSonio never blends different scales into a single score.</div><div class="panel" style="padding:22px"><div class="guideFilter" id="guideFilter"></div><select class="guideSelect" id="guideSelect"></select><div class="guideMeta"><span class="guideCount" id="guideCount"></span><span class="guideHint">Open Maps, check the place, or research before you go.</span></div><div class="guideBrowse" id="guideBrowse"></div><div class="guideGrid" id="guideGrid"></div></div>
-<div class="sourceBar">RoamSonio provides curated destination suggestions; verify current hours, menus, availability and event details before visiting.</div>
+<div class="guidePricingNote"><strong>How pricing works:</strong> $ = budget, $ = moderate, $$ = mid-range, $$ = expensive, $$$ = very expensive. “Typical food spend” is a planning estimate per person before tax, tip and drinks, based on the restaurant's price level and the type of meal. New Orleans-wide reference data currently puts an inexpensive restaurant meal around $26, while a three-course mid-range meal for two is around $141, so these ranges are meant for planning rather than a guaranteed bill. Check the current menu before booking.</div><div class="guidePricingNote"><strong>Ratings are international:</strong> RoamSonio uses a destination-aware source hierarchy rather than assuming a U.S.-only provider. Google provides the broad 1–5 baseline for places and businesses; Tripadvisor adds international traveler coverage; MICHELIN provides expert restaurant selections where available; Booking.com is used for accommodation guest scores; and stronger regional platforms can be used where they have better local coverage. The source and review count are shown with each rating, and RoamSonio never blends different scales into a single score.</div><div class="panel" style="padding:22px"><div class="guideFilter" id="guideFilter"></div><select class="guideSelect" id="guideSelect"></select><div class="guideMeta"><span class="guideCount" id="guideCount"></span><span class="guideHint">Open Maps, check the place, or research before you go.</span></div><div class="guideGrid" id="guideGrid"></div></div>
+<div class="sourceBar">For New Orleans, the guide is informed by current local destination guidance and current Eater New Orleans restaurant reporting; hours and menus should still be checked before visiting. <a href="https://www.neworleans.com/" target="_blank">New Orleans & Company</a> · <a href="https://nola.eater.com/" target="_blank">Eater New Orleans</a></div>
 </section>
 
 <section class="section" id="events">
@@ -584,43 +583,6 @@ button,a{max-width:100%}
 
 <footer><div class="foot"><div><b id="footerTitle">Trip Workspace</b><p>Built from the Thanksgiving trip design system, with destination-specific planning intelligence layered on top.</p></div><div><p><a href="index.html">Home</a> · <a href="my-trips.html">My Trips</a> · <a href="build-trip.html">Build a new trip</a> · <a href="#home">Back to top</a></p></div></div></footer>
 
-<script>
-/* RoamSonio emergency workspace bootstrap */
-(function(){
-try{
-var KEY="big-thanksgiving-trips-v1",q=new URLSearchParams(location.search),wanted=q.get("id")||sessionStorage.getItem("openTripId"),all=JSON.parse(localStorage.getItem(KEY)||"[]"),t=all.find(function(x){return x.id===wanted})||all[all.length-1];
-if(!t)return;
-var d=(q.get("destination")||((t.destinations||[])[0]||"")).trim(),low=d.toLowerCase();if(!d)return;
-var atl=low.indexOf("atlanta")>=0;
-var imgs=atl?["https://commons.wikimedia.org/wiki/Special:FilePath/Atlanta%20Skyline%20from%20Piedmont%20Park%20-%20October%202024.png?width=1800","https://commons.wikimedia.org/wiki/Special:FilePath/Ponce%20City%20Market%20from%20Historic%20Fourth%20Ward%20Park.jpg?width=1600","https://commons.wikimedia.org/wiki/Special:FilePath/To%20the%20Beltline.jpg?width=1600"]:null;
-var el=function(id){return document.getElementById(id)},set=function(id,v){var x=el(id);if(x&&v!==undefined)x.textContent=v},esc=function(v){return String(v==null?"":v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")},fmt=function(v){if(!v)return "Date not set";return new Date(v+"T12:00:00").toLocaleDateString(undefined,{month:"short",day:"numeric",year:"numeric"})};
-document.title=(t.name||d)+" · Smart Travel Workspace";set("brand",t.name||d+" Trip");set("heroTitle",t.name||d+" Trip");set("footerTitle",t.name||d+" Trip");set("heroEyebrow",d+" · "+(t.groupType||"TRAVEL"));set("heroText","A smart, editable journey built around "+(t.homeBase||"the city center")+", your interests, your dates and the people traveling with you.");set("datePill",fmt(t.start)+" — "+fmt(t.end));set("tripDates",fmt(t.start)+" → "+fmt(t.end));set("dashTitle",t.name||d+" Trip");set("daysCount",String(t.days||1));set("dashMeta",(t.travelers||2)+" travelers · "+d+" · "+(t.pace||"balanced"));set("overviewLead","RoamSonio is building this trip around "+d+" with destination-specific neighborhoods, sights, food and daily planning.");
-var hero=el("heroMain"),s1=el("heroSide1"),s2=el("heroSide2");if(atl&&imgs){hero.src=imgs[0];s1.src=imgs[1];s2.src=imgs[2];hero.alt="Atlanta skyline";s1.alt="Ponce City Market";s2.alt="Atlanta BeltLine";set("side1Label","Atlanta · Ponce City Market");set("side2Label","Atlanta · BeltLine Eastside Trail");}set("heroPhotoCredit","Destination editorial image");var rb=el("routeMap");if(rb)rb.href="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(d);
-var areas=atl?["Downtown & Centennial Park","Midtown & Piedmont Park","Old Fourth Ward & Ponce City Market","Sweet Auburn & Martin Luther King Jr. Historic District","West Midtown"]:(t.areas||[d+" center"]);var dg=el("destGrid");if(dg)dg.innerHTML=areas.slice(0,5).map(function(a,i){var im=atl&&imgs?imgs[i%3]:"images/prague-christmas.jpg";return "<div class='dest "+(i===0?"tall":"")+"'><img src='"+im+"' alt='"+esc(a)+"'><div class='destText'><div class='num'>"+String(i+1).padStart(2,"0")+" · destination</div><h3>"+esc(a)+"</h3><p>"+esc(d+" · destination-specific planning")+"</p></div></div>"}).join("");
-var plan=el("smartPlan"),p=t.plan&&t.plan.length?t.plan:[];if(atl&&(!p.length||/historic center|signature landmark/i.test((p[0].morning||"")+" "+(p[0].afternoon||"")))){var sights=["Georgia Aquarium","Piedmont Park & Atlanta Botanical Garden","Ponce City Market + BeltLine Eastside Trail","Martin Luther King Jr. National Historical Park","High Museum of Art + Midtown"],food=["South City Kitchen Midtown","Krog Street Market","Ponce City Market Food Hall","Busy Bee Cafe","West Midtown dinner"];p=sights.map(function(x,i){return {date:new Date(new Date(t.start+"T12:00:00").getTime()+i*86400000).toISOString().slice(0,10),title:areas[i%areas.length],area:areas[i%areas.length],morning:x,afternoon:["Explore the surrounding neighborhood","Local lunch + wandering","Atlanta BeltLine","Historic district walk","Local café or gallery"][i],evening:food[i]}}).slice(0,Math.max(1,t.days||5));}
-if(atl){
-var gf=el("guideFilter"),gs=el("guideSelect"),gg=el("guideGrid"),gc=el("guideCount");
-var guide=[
-["South City Kitchen Midtown","Midtown","Modern Southern","Dinner"],
-["Busy Bee Cafe","West End","Southern soul food","Lunch"],
-["Krog Street Market","Old Fourth Ward","Food hall + local vendors","Lunch"],
-["Ponce City Market","Old Fourth Ward","Food, shopping + rooftop","Things to do"],
-["Georgia Aquarium","Downtown & Centennial Park","Aquarium","Things to do"],
-["Piedmont Park & Atlanta Botanical Garden","Midtown","Park + gardens","Things to do"],
-["Martin Luther King Jr. National Historical Park","Sweet Auburn","Civil-rights history","Things to do"],
-["High Museum of Art","Midtown","Art museum","Things to do"],
-["Fox Theatre","Midtown","Historic theater + performances","Music & Shows"],
-["Atlanta BeltLine Eastside Trail","Old Fourth Ward","Walking + neighborhood exploration","Things to do"]
-];
-if(gf)gf.innerHTML=guide.slice(0,5).map(function(x){return "<button type='button' class='active'>"+esc(x[3])+"</button>"}).join("");
-if(gs)gs.innerHTML="<option>Atlanta suggestions</option>";
-if(gc)gc.textContent=guide.length+" Atlanta suggestions";
-if(gg)gg.innerHTML=guide.map(function(x){return "<article class='card guideCard'><div class='ey guideEyebrow'><span>"+esc(x[3])+"</span></div><h3>"+esc(x[0])+"</h3><span class='guideNeighborhood'>"+esc(x[1])+"</span><p class='guideType'>"+esc(x[2])+"</p><p class='guideNote'>A RoamSonio planning suggestion for Atlanta. Check current hours and availability before visiting.</p><div class='guideActions'><a class='guideButton primary' target='_blank' rel='noopener' href='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(x[0]+" Atlanta")>Open in Maps</a></div></article>"}).join("");
-}
-if(plan&&p.length)plan.innerHTML=p.map(function(x,i){return "<article class='smartDay'><div class='smartDayHead'><div><div class='kicker'>Day "+(i+1)+" · "+esc(fmt(x.date))+"</div><h3>"+esc(x.title||x.area||d)+"</h3><p>"+esc(x.area||d)+" · based around "+esc(t.homeBase||"the city center")+"</p></div><span class='tag'>Smart day</span></div><div class='smartSlots'><div class='smartSlot'><div class='time'>Morning</div><h4>"+esc(x.morning)+"</h4><p>Start with a destination-specific experience.</p></div><div class='smartSlot'><div class='time'>Afternoon</div><h4>"+esc(x.afternoon)+"</h4><p>Stay near the day's neighborhood cluster.</p></div><div class='smartSlot'><div class='time'>Evening</div><h4>"+esc(x.evening)+"</h4><p>Local food and a flexible evening.</p></div></div></article>"}).join("");
-}catch(e){console.warn("RoamSonio workspace bootstrap:",e)}
-})();
-</script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script>
 (function(){
@@ -632,17 +594,18 @@ if(tripNav){tripNav.querySelectorAll("a").forEach(function(a){a.addEventListener
 document.addEventListener("click",function(e){if(tripNav&&tripNav.classList.contains("open")&&!tripNav.contains(e.target)&&e.target!==menuToggle)closeTripMenu()});
 document.addEventListener("keydown",function(e){if(e.key==="Escape")closeTripMenu()});
 var KEY="big-thanksgiving-trips-v1";
-var params=new URLSearchParams(location.search),id=params.get("id")||sessionStorage.getItem("openTripId"),urlDestination=(params.get("destination")||"").trim();
+var params=new URLSearchParams(location.search),id=params.get("id")||sessionStorage.getItem("openTripId");
 function load(){try{return JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){return[]}}
 var trips=load(),trip=trips.find(function(t){return t.id===id})||trips[trips.length-1];
-if(trip && urlDestination){
+var urlDestination=(params.get("destination")||"").trim();
+if(trip&&urlDestination){
   trip.destinations=[urlDestination];
-  if(!trip.name||trip.name==="Trip"||trip.name==="Untitled trip")trip.name=urlDestination+" Trip";
+  if(!trip.name||trip.name==="Trip"||trip.name==="Untitled trip"||trip.name==="New Trip")trip.name=urlDestination+" Trip";
 }
 if(trip){
-  var nm=String(trip.name||"").toLowerCase(),ds0=String((trip.destinations||[])[0]||"").toLowerCase();
-  if(nm.indexOf("new orleans")>=0 || ds0.indexOf("new orleans")>=0)trip.destinations=["New Orleans"];
-  if(nm.indexOf("atlanta")>=0 || ds0.indexOf("atlanta")>=0)trip.destinations=["Atlanta"];
+  var tripNameKey=String(trip.name||"").toLowerCase(),tripDestKey=String((trip.destinations||[])[0]||"").toLowerCase();
+  if(tripNameKey.indexOf("new orleans")>=0||tripDestKey.indexOf("new orleans")>=0||tripDestKey==="nola")trip.destinations=["New Orleans"];
+  if(tripNameKey.indexOf("atlanta")>=0||tripDestKey.indexOf("atlanta")>=0||tripDestKey==="atl")trip.destinations=["Atlanta"];
 }
 /*
  * CANONICAL NEW ORLEANS MASTER RECOVERY
@@ -651,56 +614,8 @@ if(trip){
  * ratings, travel logistics, train/group controls and responsive UI remain
  * from the restored feature build.
  */
-if(id==="trip-1790519550831-6393"){
-  var nolaExisting=load().find(function(t){return t.id===id})||null;
-  var nolaDates=["2027-01-16","2027-01-17","2027-01-18","2027-01-19","2027-01-20"];
-  var nolaDays=[
-    ["Carnival kickoff + French Quarter","French Quarter + Jackson Square","French Market + Mississippi Riverfront","Local Creole/Cajun dinner + live music"],
-    ["Garden District + Magazine Street","St. Charles Avenue + Garden District","Magazine Street + neighborhood cafés","Local dinner + music"],
-    ["Culture + City Park","National WWII Museum","City Park + sculpture garden","Neighborhood restaurant"],
-    ["Neighborhoods + local food","Tremé + historic New Orleans","Mid-City + Bayou St. John","Local favorite restaurant + music"],
-    ["Favorites + flexible day","Return to a favorite area or must-see","King cake / café / shopping stop","Farewell dinner"]
-  ];
-  var nolaNotes=[
-    "Keep the evening flexible for Carnival atmosphere.",
-    "Balance walking with a relaxed afternoon.",
-    "Use indoor options if weather turns wet or cool.",
-    "Prioritize neighborhood experiences over backtracking.",
-    "Leave room for anything discovered during the trip."
-  ];
-  var nolaPlan=nolaDays.map(function(x,i){return {day:i+1,date:nolaDates[i],title:x[0],morning:x[1],afternoon:x[2],evening:x[3],area:"New Orleans neighborhoods",note:nolaNotes[i],event:null}});
-  trip={
-    id:id,name:"New Orleans · Jan 16–20, 2027",title:"New Orleans · Jan 16–20, 2027",
-    destinations:["New Orleans"],travelers:2,start:"2027-01-16",end:"2027-01-20",days:5,
-    status:"Built — January trip updated",groupType:"Couples / friends",
-    pace:"Balanced — see a lot without rushing",transport:"Walk + transit",
-    homeBase:"Downtown / city center",
-    preferences:["Local food","History & culture","Music & shows","Neighborhoods","Museums","Photography","Seasonal events"],
-    mustSee:["French Quarter + Jackson Square","Garden District + St. Charles Avenue","National WWII Museum","City Park + sculpture garden","Tremé + Mid-City","Bayou St. John","French Market"],
-    localFood:["Dooky Chase’s Restaurant","Parkway Bakery & Tavern","Lilly’s Cafe","Neyow’s Creole Café","Domilise’s Po-Boy & Bar","Turkey and the Wolf","Ayu Bakehouse","Bywater Bakery","Cochon Butcher","Dian Xin"],
-    food:["Dooky Chase’s Restaurant","Parkway Bakery & Tavern","Lilly’s Cafe","Neyow’s Creole Café","Domilise’s Po-Boy & Bar","Turkey and the Wolf","Ayu Bakehouse","Bywater Bakery","Cochon Butcher","Dian Xin"],
-    sights:["French Quarter + Jackson Square","Garden District + St. Charles Avenue","National WWII Museum","City Park + sculpture garden","Tremé + Mid-City","Bayou St. John","French Market","St. Charles Avenue streetcar","Magazine Street","Marigny / Bywater"],
-    areas:["French Quarter","Tremé","Marigny / Bywater","Garden District / Uptown","Mid-City / City Park","Warehouse / CBD"],
-    resources:["https://www.neworleans.com/plan/january-in-new-orleans/","https://www.neworleans.com/events/year-at-a-glance/","https://www.neworleans.com/events/holidays-seasonal/mardi-gras/mardi-gras-parade-schedule/","https://nola.eater.com/maps/best-restaurants-new-orleans-38-map-nola"],
-    weatherQuery:"New Orleans January 2027 weather",eventQuery:"New Orleans January 2027 events",
-    camsQuery:"New Orleans French Quarter live webcam",
-    foodBudget:"Mixed — casual local food + one or two special dinners",
-    mobility:"Normal walking",energy:"Balanced days",
-    evening:"Mix of live music, neighborhood dinners and relaxed evenings",
-    plan:nolaPlan,originalPlan:JSON.parse(JSON.stringify(nolaPlan)),
-    smartVersion:2,masterTemplate:"new-orleans-master-v1"
-  };
-  if(nolaExisting){
-    ["homeBase","transport","walkingRadius","preferences","mustSee","foodBudget","mobility","energy","evening",
-     "guideReviews","roamwellExperiences","travelFlights","travelTrains","travelStays","travelCars","travelGroups",
-     "budget","expenses","memories","journal","resources","weatherData","webcamData","notes"].forEach(function(k){
-      if(nolaExisting[k]!==undefined)trip[k]=nolaExisting[k];
-    });
-  }
-  var nolaSaved=load(),nolaIndex=nolaSaved.findIndex(function(t){return t.id===id});
-  if(nolaIndex>=0)nolaSaved[nolaIndex]=trip;else nolaSaved.push(trip);
-  localStorage.setItem(KEY,JSON.stringify(nolaSaved));
-  sessionStorage.setItem("openTripId",id);
+if(id==="trip-template"){
+  trip={id:"trip-template",name:"New Trip",title:"New Trip",destinations:[],travelers:1,start:"",end:"",days:1,status:"Planning",groupType:"Individual traveler",pace:"Balanced",transport:"Walk + transit",homeBase:"Downtown / city center",preferences:[],mustSee:[],localFood:[],food:[],sights:[],areas:[],resources:[],weatherQuery:"",eventQuery:"",camsQuery:"",foodBudget:"",mobility:"",energy:"",evening:"",plan:[],originalPlan:[],smartVersion:2,masterTemplate:"roamwell-trip-master-v1"};
 }
 if(!trip){location.href="my-trips.html";return}
 function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
@@ -718,9 +633,9 @@ prague:"images/prague-christmas.jpg",
 trnava:"images/trnava-advent.jpg",
 pilsen:"images/pilsen-christmas.jpg",
 hluboka:"images/hluboka-winter.jpg",
-neworleans:"https://images.unsplash.com/photo-1617893620448-3b4e44fd57dc?auto=format&fit=crop&fm=jpg&q=88&w=3000",
-neworleans2:"https://images.unsplash.com/photo-1689568914860-4ecf6e58099c?auto=format&fit=crop&fm=jpg&q=88&w=3000",
-neworleans3:"https://images.unsplash.com/photo-1678839041538-f5b45013e377?auto=format&fit=crop&fm=jpg&q=88&w=3000",
+
+
+
 vienna:"images/prague-christmas.jpg",
 atlanta:"https://commons.wikimedia.org/wiki/Special:FilePath/Atlanta%20Skyline%20from%20Piedmont%20Park%20-%20October%202024.png?width=1800",
 atlanta2:"https://commons.wikimedia.org/wiki/Special:FilePath/Ponce%20City%20Market%20from%20Historic%20Fourth%20Ward%20Park.jpg?width=1600",
@@ -870,7 +785,94 @@ var atlantaGuide={
 "Markets":[["Krog Street Market","Old Fourth Ward","Food hall and vendors","BeltLine"],["Ponce City Market","Old Fourth Ward","Food, shopping and rooftop","BeltLine"],["Sweet Auburn Curb Market","Sweet Auburn","Historic public market","Local history"],["Buford Highway food corridor","Northeast Atlanta","International food and markets","Food exploration"]],
 "Museums":[["High Museum of Art","Midtown","Art museum","Culture"],["National Center for Civil and Human Rights","Downtown","Civil and human rights museum","History"],["World of Coca-Cola","Downtown","Brand history and experience","Downtown"],["Atlanta History Center","Buckhead","Atlanta history museum complex","History"]]
 };
-var categories=Object.keys(nolaGuide);
+var atlantaGuide={"Breakfast":[
+["Home Grown GA","Reynoldstown","Southern breakfast + brunch","Neighborhood favorite"],
+["Buttermilk Kitchen","Buckhead","Modern Southern breakfast","Brunch"],
+["West Egg Cafe","West Midtown","Breakfast + brunch","Popular neighborhood stop"],
+["Flying Biscuit Cafe","Multiple","Southern breakfast","Casual"],
+["Atlanta Breakfast Club","Downtown","Breakfast + Southern comfort food","Central"],
+["Ria's Bluebird","Grant Park","Breakfast + brunch","Local favorite"]
+],
+"Lunch":[
+["Busy Bee Cafe","West End","Southern soul food","Atlanta classic"],
+["Krog Street Market","Old Fourth Ward","Food hall + local vendors","BeltLine area"],
+["Ponce City Market Food Hall","Old Fourth Ward","Food hall","Central Eastside"],
+["The Varsity","Downtown","Classic Atlanta fast food","Historic"],
+["Antico Pizza Napoletana","West Midtown","Neapolitan pizza","Local favorite"],
+["Mary Mac's Tea Room","Midtown","Southern comfort food","Atlanta institution"]
+],
+"Dinner":[
+["South City Kitchen Midtown","Midtown","Modern Southern","Dinner"],
+["Staplehouse","Old Fourth Ward","Chef-driven seasonal dining","Special occasion"],
+["Gunshow","Glenwood Park","Creative chef-led dining","Experience"],
+["Rathbun's","Inman Park","Contemporary American","Neighborhood"],
+["Busy Bee Cafe","West End","Southern soul food","Local classic"],
+["Antico Pizza Napoletana","West Midtown","Neapolitan pizza","Casual dinner"]
+],
+"Special Occasions":[
+["Bacchanalia","Westside","Fine dining","Celebration"],
+["Lazy Betty","Candler Park","Chef-driven tasting experience","Celebration"],
+["The Optimist","West Midtown","Seafood-focused dining","Celebration"],
+["Aria","Buckhead","Fine dining","Special occasion"]
+],
+"Bars":[
+["Kimball House","Decatur","Cocktails + oysters","Local favorite"],
+["Ticonderoga Club","Krog Street Market","Cocktails","BeltLine area"],
+["Red Phone Booth","Downtown","Cocktail bar","Downtown"],
+["Ladybird Grove & Mess Hall","Old Fourth Ward","Rooftop/social bar","BeltLine"]
+],
+"Breweries":[
+["SweetWater Brewing Company","Southwest Atlanta","Atlanta brewery","Brewery visit"],
+["Monday Night Brewing","West Midtown","Atlanta brewery","Brewery visit"],
+["Elsewhere Brewing","Grant Park","Neighborhood brewery","Local"],
+["Halfway Crooks Beer","Summerhill","Craft beer","Local"]
+],
+"Coffee & Bakeries":[
+["East Pole Coffee Co.","Multiple","Specialty coffee","Local"],
+["Chrome Yellow Trading Co.","Old Fourth Ward","Coffee + lifestyle shop","Neighborhood"],
+["Poncey-Highland Coffee","Poncey-Highland","Coffee","Neighborhood"],
+["Dancing Goats Coffee Bar","Multiple","Coffee","Atlanta local"],
+["Revelator Coffee","West Midtown","Coffee","Neighborhood"]
+],
+"Music":[
+["The Tabernacle","Downtown","Live music","Historic venue"],
+["Terminal West","West Midtown","Live music","Warehouse venue"],
+["City Winery Atlanta","Downtown","Music + dining","Live performances"],
+["Eddie's Attic","Decatur","Singer-songwriter venue","Neighborhood"],
+["Variety Playhouse","Little Five Points","Live music","Historic venue"]
+],
+"Theater & Shows":[
+["Fox Theatre","Midtown","Historic theater","Performances"],
+["Alliance Theatre","Midtown","Regional theater","Performances"],
+["Atlanta Symphony Hall","Midtown","Orchestra + concerts","Performances"],
+["Center Stage Theater","Midtown","Live theater + music","Performances"]
+],
+"Family":[
+["Georgia Aquarium","Downtown","Aquarium","Family"],
+["World of Coca-Cola","Downtown","Museum / experience","Family"],
+["Zoo Atlanta","Grant Park","Zoo","Family"],
+["Fernbank Museum of Natural History","Druid Hills","Science + natural history","Family"]
+],
+"Neighborhoods":[
+["Old Fourth Ward","Eastside","BeltLine + Ponce City Market","Explore"],
+["Inman Park","East Atlanta","Historic homes + restaurants","Explore"],
+["Virginia-Highland","Northeast Atlanta","Walkable neighborhood","Explore"],
+["West Midtown","West Atlanta","Design + restaurants","Explore"],
+["Grant Park","Southeast Atlanta","Historic homes + park","Explore"]
+],
+"Museums":[
+["High Museum of Art","Midtown","Art museum","Culture"],
+["National Center for Civil and Human Rights","Downtown","Civil rights + human rights","Culture"],
+["Atlanta History Center","Buckhead","Atlanta history","Culture"],
+["Fernbank Museum of Natural History","Druid Hills","Natural history","Culture"]
+],
+"Markets":[
+["Ponce City Market","Old Fourth Ward","Food + shops + rooftop","Market"],
+["Krog Street Market","Old Fourth Ward","Food hall + vendors","Market"],
+["Sweet Auburn Curb Market","Sweet Auburn","Historic public market","Market"],
+["Westside Market","West Midtown","Food + local vendors","Market"]
+]};
+var categories=Object.keys(nolaGuide);var atlantaCategories=Object.keys(atlantaGuide);Object.keys(nolaGuide);
 var profile={
 neworleans:{
 areas:{
@@ -880,15 +882,14 @@ areas:{
 "Garden District / Uptown":{photo:imgs.neworleans2,desc:"Mansions, gardens, Magazine Street and neighborhood restaurants.",morning:["St. Charles Avenue","Garden District architecture","Magazine Street coffee"],afternoon:["Magazine Street shops","La Petite Grocery","Audubon Park"],evening:["Tipitina's","Uptown dinner","Cure"]},
 "Mid-City / City Park":{photo:imgs.neworleans,desc:"Parks, sculpture, neighborhood food and a slower local day.",morning:["City Park","Besthoff Sculpture Garden","Cafe Degas"],afternoon:["New Orleans Museum of Art","Parkway Bakery & Tavern","Bayou St. John"],evening:["Katie's Restaurant & Bar","Local bar","Early night"]},
 "Warehouse / CBD":{photo:imgs.neworleans,desc:"Museums, theaters, riverfront and central dining.",morning:["National WWII Museum","Warehouse District walk","Coffee stop"],afternoon:["Ogden Museum","Arts District","Mississippi Riverfront"],evening:["Saenger Theatre","Orpheum Theater","Peche Seafood Grill"]}
-},
 atlanta:{
 areas:{
-"Downtown & Centennial Park":{photo:imgs.atlanta,desc:"Atlanta's central core with Centennial Olympic Park, the Georgia Aquarium and World of Coca-Cola.",morning:["Centennial Olympic Park","Georgia Aquarium","World of Coca-Cola"],afternoon:["College Football Hall of Fame","CNN Center area","Downtown food stop"],evening:["Centennial Park lights","Downtown dinner","Mercedes-Benz Stadium area"]},
-"Midtown & Piedmont Park":{photo:imgs.atlanta,desc:"Atlanta's cultural heart with Piedmont Park, the High Museum and the BeltLine nearby.",morning:["Piedmont Park","Atlanta Botanical Garden","Atlanta BeltLine"],afternoon:["High Museum of Art","Midtown neighborhood walk","Local café"],evening:["Fox Theatre","South City Kitchen Midtown","Midtown skyline"]},
-"Old Fourth Ward & Ponce City Market":{photo:imgs.atlanta2,desc:"The Eastside BeltLine, Ponce City Market and Historic Fourth Ward Park.",morning:["Ponce City Market","Historic Fourth Ward Park","BeltLine Eastside Trail"],afternoon:["Krog Street Market","Inman Park","Little Five Points"],evening:["BeltLine sunset walk","Ponce City Market dinner","Inman Park"]},
-"Sweet Auburn & MLK":{photo:imgs.atlanta3,desc:"Atlanta's civil-rights history and the Martin Luther King Jr. National Historical Park.",morning:["Martin Luther King Jr. Birth Home area","Ebenezer Baptist Church","King Center"],afternoon:["National Center for Civil and Human Rights","Sweet Auburn Curb Market","Historic district walk"],evening:["Sweet Auburn dinner","Downtown return","Flexible evening"]},
-"West Midtown":{photo:imgs.atlanta2,desc:"Industrial architecture, design, restaurants and Westside Provisions.",morning:["Westside Provisions District","Atlanta contemporary architecture","Local coffee"],afternoon:["Antico Pizza Napoletana","West Midtown galleries","Design District"],evening:["West Midtown dinner","The Works","Local cocktail or music option"]}
-}};
+"Downtown & Centennial Park":{photo:imgs.atlanta,desc:"Atlanta's central core with Centennial Olympic Park, the Georgia Aquarium and World of Coca-Cola.",morning:["Centennial Olympic Park","Georgia Aquarium","World of Coca-Cola"],afternoon:["College Football Hall of Fame","Downtown neighborhood walk","Local lunch"],evening:["Downtown dinner","Mercedes-Benz Stadium area","Centennial Park evening"]},
+"Midtown & Piedmont Park":{photo:imgs.atlanta,desc:"Atlanta's cultural heart with Piedmont Park, the High Museum and the BeltLine nearby.",morning:["Piedmont Park","Atlanta Botanical Garden","Atlanta BeltLine"],afternoon:["High Museum of Art","Midtown walk","Local café"],evening:["Fox Theatre","South City Kitchen Midtown","Midtown evening"]},
+"Old Fourth Ward & Ponce City Market":{photo:imgs.atlanta2,desc:"The Eastside BeltLine, Ponce City Market and Historic Fourth Ward Park.",morning:["Ponce City Market","Historic Fourth Ward Park","BeltLine Eastside Trail"],afternoon:["Krog Street Market","Inman Park","Little Five Points"],evening:["BeltLine sunset","Ponce City Market dinner","Inman Park"]},
+"Sweet Auburn & MLK":{photo:imgs.atlanta3,desc:"Atlanta's civil-rights history and the Martin Luther King Jr. National Historical Park.",morning:["Martin Luther King Jr. National Historical Park","Ebenezer Baptist Church","King Center"],afternoon:["National Center for Civil and Human Rights","Sweet Auburn Curb Market","Historic district walk"],evening:["Sweet Auburn dinner","Downtown return","Flexible evening"]},
+"West Midtown":{photo:imgs.atlanta2,desc:"Industrial architecture, design, restaurants and Westside destinations.",morning:["Westside Provisions District","Local coffee","Design District"],afternoon:["The Works","Antico Pizza Napoletana","West Midtown galleries"],evening:["West Midtown dinner","Terminal West","Local music"]}}
+}\n}}};
 function cityProfile(){
 var d=slug((trip.destinations||[])[0]||"");
 if(d.indexOf("new orleans")>=0||d.indexOf("nola")>=0)return profile.neworleans;
@@ -914,7 +915,7 @@ if((trip.groupType||"").indexOf("Family")>=0&&s.match(/park|museum|aquarium|zoo|
 return score;
 }
 function eventFor(date){
-var ds=slug((trip.destinations||[])[0]||"");if(ds.indexOf("atlanta")>=0||ds==="atl"){return null}if(ds.indexOf("new orleans")<0)return null;
+var ds=slug((trip.destinations||[])[0]||"");if(ds.indexOf("new orleans")<0)return null;
 var d=date;
 if(d==="2027-01-16")return {name:"Teaser Fest + Intergalactic Krewe of Chewbacchus",when:"Jan 16, 2027",note:"Two date-specific events overlap this day. Check the official schedules and parade route before locking the evening."};
 if(d==="2027-01-14"||d==="2027-01-15"||d==="2027-01-17")return {name:"Teaser Fest",when:"Jan 14–17, 2027",note:"Date-specific festival; verify the day's lineup and ticketing before locking the evening."};
@@ -930,7 +931,7 @@ function homeBaseArea(){
 var h=slug(trip.homeBase||"");
 var names=Object.keys((cityProfile()||{}).areas||{});
 for(var i=0;i<names.length;i++){var n=slug(names[i]);if(h.indexOf(n)>=0||n.indexOf(h)>=0&&h.length>3)return names[i]}
-if(h.indexOf("centennial")>=0||h.indexOf("downtown")>=0||h.indexOf("midtown")>=0&&h.indexOf("midtown")>=0)return h.indexOf("midtown")>=0?"Midtown & Piedmont Park":"Downtown & Centennial Park";if(h.indexOf("ponce")>=0||h.indexOf("old fourth")>=0||h.indexOf("beltline")>=0||h.indexOf("inman")>=0)return "Old Fourth Ward & Ponce City Market";if(h.indexOf("king")>=0||h.indexOf("sweet auburn")>=0||h.indexOf("mlk")>=0)return "Sweet Auburn & MLK";if(h.indexOf("west midtown")>=0||h.indexOf("westside")>=0)return "West Midtown";if(h.indexOf("bourbon")>=0||h.indexOf("jackson square")>=0||h.indexOf("quarter")>=0)return "French Quarter";
+if(h.indexOf("bourbon")>=0||h.indexOf("jackson square")>=0||h.indexOf("quarter")>=0)return "French Quarter";
 if(h.indexOf("frenchmen")>=0||h.indexOf("marigny")>=0||h.indexOf("bywater")>=0)return "Marigny";
 if(h.indexOf("garden district")>=0||h.indexOf("uptown")>=0||h.indexOf("st charles")>=0)return "Garden District";
 if(h.indexOf("trem")>=0||h.indexOf("tremé")>=0)return "Tremé";
@@ -940,7 +941,7 @@ return null;
 function discoveryFor(area,idx){
 var p=cityProfile(),s=slug(area||"")+" "+(trip.preferences||[]).join(" ");
 if(!p)return "Leave one flexible block for a neighborhood discovery near your home base.";
-if(/centennial|downtown/.test(s))return "Consider pairing Centennial Olympic Park with the Georgia Aquarium and World of Coca-Cola so the day stays clustered downtown.";if(/midtown|piedmont/.test(s))return "Consider Piedmont Park, the Atlanta Botanical Garden and the High Museum as one walkable cultural cluster.";if(/ponce|old fourth|beltline|inman/.test(s))return "Consider following the Eastside BeltLine Trail through Ponce City Market, Historic Fourth Ward Park and Inman Park.";if(/sweet auburn|mlk/.test(s))return "Consider giving the civil-rights sites enough time for interpretation rather than stacking too many stops.";if(/west midtown|westside/.test(s))return "Consider a slower West Midtown food-and-design afternoon.";if(/french quarter/.test(s))return "Consider a quieter French Quarter history walk beyond the busiest Bourbon Street blocks, then use Jackson Square as your photo stop.";
+if(/french quarter/.test(s))return "Consider a quieter French Quarter history walk beyond the busiest Bourbon Street blocks, then use Jackson Square as your photo stop.";
 if(/marigny/.test(s))return "Consider pairing Frenchmen Street with a short Marigny/Bywater architecture walk before dinner.";
 if(/garden/.test(s))return "Consider the Garden District streetcar + cemetery/architecture route for a slower photographic half-day.";
 if(/trem/.test(s))return "Consider a Tremé history-and-music afternoon followed by a neighborhood Creole dinner.";
@@ -952,7 +953,7 @@ var base=baseLabel(),s=slug(area||"");
 var n="Confirm timed-entry, restaurant and evening reservations before locking the day.";
 if(idx===0)n="Confirm arrival timing, luggage drop and the first reservation before adding extra stops.";
 if(idx===dates().n-1)n="Keep the final day flexible around checkout, luggage and departure timing.";
-if(/downtown|centennial/.test(s))n="Downtown attractions are close together, but allow time for security lines and event traffic.";if(/midtown|piedmont/.test(s))n="Combine Piedmont Park and nearby cultural stops, and check outdoor conditions before committing to long walks.";if(/beltline|ponce|inman/.test(s))n="The BeltLine is best treated as a walking route; allow extra time for stops, food and neighborhood exploration.";if(/sweet auburn|mlk/.test(s))n="Allow time for the historic sites and check National Park Service hours before arrival.";if(/french quarter/.test(s))n="Wear comfortable shoes and account for pedestrian-only/slow-traffic streets around the Quarter.";
+if(/french quarter/.test(s))n="Wear comfortable shoes and account for pedestrian-only/slow-traffic streets around the Quarter.";
 if(/garden|uptown/.test(s))n="Streetcar travel is part of the experience; allow extra time rather than stacking tight reservations.";
 if(/mid city|city park/.test(s))n="Check opening hours and weather before committing to the outdoor portion.";
 return "Don't overlook: "+n+" Home base: "+base+".";
@@ -1006,7 +1007,7 @@ document.getElementById("heroText").textContent="A smart, editable journey built
 document.getElementById("datePill").textContent=fmtDate(trip.start)+" — "+fmtDate(trip.end);
 document.getElementById("tripDates").textContent=fmtDate(trip.start)+" → "+fmtDate(trip.end);
 document.getElementById("dashTitle").textContent=trip.name||"Your trip";document.getElementById("daysCount").textContent=n;document.getElementById("dashMeta").textContent=(trip.travelers||2)+" travelers · "+ds.join(" · ")+" · "+(trip.pace||"balanced");
-document.getElementById("overviewLead").textContent="RoamSonio uses the completed European Thanksgiving trip as the master template, then adapts the same structure to this destination, your dates, home base, interests and traveler profile.";
+document.getElementById("overviewLead").textContent="RoamSonio uses a proven trip-planning structure, then adapts it to this destination, your dates, home base, interests and traveler profile.";
 document.getElementById("homeBase").value=trip.homeBase&&trip.homeBase!=="Downtown / city center"?trip.homeBase:"";
 document.getElementById("smartTransport").value=trip.transport||"Walk + transit";document.getElementById("smartRadius").value=trip.walkingRadius||"Moderate — combine nearby areas";
 var d0=ds[0]||"";document.getElementById("heroMain").src=destinationImage(d0,0);document.getElementById("heroMain").alt=d0;
@@ -1226,23 +1227,13 @@ var text=type||"";
 if(note&&note!=="Local"&&note!=="Local favorite"&&note!=="Neighborhood"&&note!=="Central")text+=" · "+note;
 return text||("A "+(category||"destination").toLowerCase()+" option worth considering in New Orleans.");
 }
-var guidePages={};
 function renderGuide(){
-var destinationKey=slug((trip.destinations||[])[0]||""),isAtlanta=destinationKey.indexOf("atlanta")>=0||destinationKey==="atl",isN=!!cityProfile()&&!isAtlanta,filter=document.getElementById("guideFilter"),sel=document.getElementById("guideSelect"),browse=document.getElementById("guideBrowse"),grid=document.getElementById("guideGrid"),count=document.getElementById("guideCount");filter.innerHTML="";sel.innerHTML="";
-var cats=isN?categories:(isAtlanta?Object.keys(atlantaGuide):["Breakfast","Lunch","Dinner","Special Occasions","Bars","Breweries","Coffee & Bakeries","Music","Theater & Shows","Family","Neighborhoods","Museums","Markets"]);var active=trip.guideCategory||"Dinner";
+var destinationKey=slug((trip.destinations||[])[0]||""),isAtlanta=destinationKey.indexOf("atlanta")>=0||destinationKey==="atl",isN=!!cityProfile()&&!isAtlanta,filter=document.getElementById("guideFilter"),sel=document.getElementById("guideSelect"),grid=document.getElementById("guideGrid"),count=document.getElementById("guideCount");filter.innerHTML="";sel.innerHTML="";
+var cats=isN?categories:(isAtlanta?atlantaCategories:["Breakfast","Lunch","Dinner","Special Occasions","Bars","Breweries","Coffee & Bakeries","Music","Theater & Shows","Family","Neighborhoods","Museums","Markets"]);var active=trip.guideCategory||"Dinner";
 function draw(){
 grid.innerHTML="";
-var allItems=isN?(nolaGuide[active]||[]):(isAtlanta?(atlantaGuide[active]||[]):[[active+" near "+baseLabel(),"Around your home base","Search current local options","Destination-specific"]]);
-var pageSize=4,totalPages=Math.max(1,Math.ceil(allItems.length/pageSize)),page=Math.min(guidePages[active]||0,totalPages-1);
-guidePages[active]=page;
-var start=page*pageSize,items=allItems.slice(start,start+pageSize);
-if(!items.length)items=allItems.slice(0,pageSize);
-count.textContent=allItems.length+" suggestions · "+active+" · showing "+(allItems.length?start+1:0)+"–"+Math.min(start+pageSize,allItems.length);
-browse.innerHTML="";
-var prev=document.createElement("button");prev.type="button";prev.textContent="← Previous places";prev.disabled=page===0;prev.onclick=function(){guidePages[active]=Math.max(0,page-1);draw()};
-var next=document.createElement("button");next.type="button";next.textContent=page>=totalPages-1?"Refresh places":"Refresh for more";next.onclick=function(){guidePages[active]=page>=totalPages-1?0:page+1;draw()};
-var label=document.createElement("span");label.className="guidePage";label.textContent="Set "+(page+1)+" of "+totalPages;
-browse.appendChild(prev);browse.appendChild(label);browse.appendChild(next);
+var items=isN?(nolaGuide[active]||[]):(isAtlanta?(atlantaGuide[active]||[]):[[active+" near "+baseLabel(),"Around your home base","Search current local options","Destination-specific"]]);
+count.textContent=(items.length||0)+" suggestions · "+active;
 for(var i=0;i<items.length;i++){
 var it=items[i],name=it[0],neighborhood=it[1],type=it[2],note=it[3],price=guidePrice(name,active),cost=guideCost(price,active),description=guideDescription(name,type,note,active),card=document.createElement("article");
 card.className="card guideCard";
@@ -1253,25 +1244,26 @@ card.innerHTML="<div class='ey guideEyebrow'><span>"+esc(active)+"</span>"+price
 bindGuideReviewControls(card,name,review);
 grid.appendChild(card);hydrateGuideLiveRating(name,(trip.destinations||[])[0]||"",card)
 }}
-for(var i=0;i<cats.length;i++){(function(cat){var b=document.createElement("button");b.textContent=cat;b.className=cat===active?"active":"";b.onclick=function(){active=cat;trip.guideCategory=cat;save();renderGuide()};filter.appendChild(b);var o=document.createElement("option");o.value=cat;o.textContent=cat+" · "+(isN?(nolaGuide[cat]||[]).length:(isAtlanta?(atlantaGuide[cat]||[]).length:0))+" suggestions";o.selected=cat===active;sel.appendChild(o)})(cats[i])}
+for(var i=0;i<cats.length;i++){(function(cat){var b=document.createElement("button");b.textContent=cat;b.className=cat===active?"active":"";b.onclick=function(){active=cat;trip.guideCategory=cat;save();renderGuide()};filter.appendChild(b);var o=document.createElement("option");o.value=cat;o.textContent=cat+" · "+(isN?(nolaGuide[cat]||[]).length+" places":"local options");o.selected=cat===active;sel.appendChild(o)})(cats[i])}
 sel.onchange=function(){trip.guideCategory=this.value;save();renderGuide()};draw();
 }
 function renderEvents(){
-var e=document.getElementById("eventGrid");e.innerHTML="";var n=slug((trip.destinations||[])[0]||"").indexOf("new orleans")>=0;
+var e=document.getElementById("eventGrid");e.innerHTML="";var destination=slug((trip.destinations||[])[0]||""),n=destination.indexOf("new orleans")>=0,a=destination.indexOf("atlanta")>=0||destination==="atl";
+if(a){e.innerHTML="<div class='card'><div class='ey'>Date-aware</div><h3>Atlanta events for your dates</h3><p>Use the official Atlanta event calendar to confirm performances, sports and seasonal events for this trip.</p><a class='btn' target='_blank' href='https://www.atlanta.net/events/'>Official Atlanta events</a></div>";return}
 if(!n){e.innerHTML="<div class='card'><div class='ey'>Date-aware</div><h3>Check events for your dates</h3><p>The smart itinerary will use destination event data when a supported city profile is available.</p></div>";return}
 var items=[["Jan 14–17, 2027","Teaser Fest","Festival window overlaps the trip; check the day's program and ticketing."],["Jan 16, 2027","Intergalactic Krewe of Chewbacchus","Parade date overlaps the stay; verify the official route and timing."],["Jan 6–Feb 9, 2027","Carnival season","Seasonal Carnival activity continues throughout the visit."]];
 for(var i=0;i<items.length;i++){var x=document.createElement("div");x.className="card";x.innerHTML="<div class='ey'>"+items[i][0]+"</div><h3>"+items[i][1]+"</h3><p>"+items[i][2]+"</p><a class='btn' target='_blank' href='https://www.neworleans.com/events/holidays-seasonal/mardi-gras/mardi-gras-parade-schedule/'>Official calendar</a>";e.appendChild(x)}
 }
 function renderWeather(){
 var ds=trip.destinations||[],e=document.getElementById("weatherGrid"),lead=document.getElementById("weatherLead");e.innerHTML="";lead.innerHTML="<div class='weatherLeadIntro'><b>Trip weather</b><span>Current conditions · stay averages</span></div>";
-var req=new XMLHttpRequest();req.open("GET","weather.json?v="+Date.now(),true);req.onreadystatechange=function(){if(req.readyState!==4)return;if(req.status<200||req.status>=300){if((ds[0]||"").toLowerCase().indexOf("atlanta")>=0){fetch("https://api.open-meteo.com/v1/forecast?latitude=33.749&longitude=-84.388&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&timezone=auto").then(function(r){return r.json()}).then(function(x){var c=x.current;if(!c)return;var card=document.createElement("div");card.className="weatherCard";card.innerHTML="<div class='kicker'>Atlanta</div><h3>Current</h3><div class='temp'>"+Math.round(c.temperature_2m)+"°F</div><div class='cond'>Current conditions · wind "+Math.round(c.wind_speed_10m)+" mph</div><div class='metrics'><span>Humidity "+Math.round(c.relative_humidity_2m)+"%</span><span>Rain "+Number(c.precipitation||0).toFixed(2)+" in</span></div><div class='hist'><b>Atlanta planning average</b><br>Seasonal weather snapshot</div>";e.appendChild(card);document.getElementById("weatherText").textContent="Atlanta weather loaded directly from the live weather service.";}).catch(function(){document.getElementById("weatherText").textContent="Atlanta weather is temporarily unavailable.";});return}document.getElementById("weatherText").textContent="Weather snapshot unavailable right now.";return}
-try{var data=JSON.parse(req.responseText);for(var i=0;i<Math.min(ds.length,4);i++){var name=ds[i],k=slug(name),key=k.indexOf("new orleans")>=0?"neworleans":k.indexOf("trnava")>=0?"trnava":k.indexOf("prague")>=0?"prague":k.indexOf("pilsen")>=0?"pilsen":k.indexOf("hlub")>=0?"hluboka":k.indexOf("vienna")>=0?"vienna":k.indexOf("atlanta")>=0?"atlanta":null,x=key&&data.locations[key];if(!x)continue;
+var req=new XMLHttpRequest();req.open("GET","weather.json?v="+Date.now(),true);req.onreadystatechange=function(){if(req.readyState!==4)return;if(req.status<200||req.status>=300){document.getElementById("weatherText").textContent="Weather snapshot unavailable right now.";return}
+try{var data=JSON.parse(req.responseText);for(var i=0;i<Math.min(ds.length,4);i++){var name=ds[i],k=slug(name),key=k.indexOf("new orleans")>=0?"neworleans":k.indexOf("trnava")>=0?"trnava":k.indexOf("prague")>=0?"prague":k.indexOf("pilsen")>=0?"pilsen":k.indexOf("hlub")>=0?"hluboka":k.indexOf("vienna")>=0?"vienna":null,x=key&&data.locations[key];if(!x)continue;
 var card=document.createElement("div");card.className="weatherCard";card.innerHTML="<div class='kicker'>"+esc(name)+"</div><h3>Current</h3><div class='temp'>"+Math.round(x.temperature_f)+"°F</div><div class='cond'>"+esc(x.condition)+" · wind "+Math.round(x.wind_mph)+" mph</div><div class='metrics'><span>Humidity "+Math.round(x.humidity)+"%</span><span>Rain "+Number(x.precipitation_in||0).toFixed(2)+" in</span></div><div class='hist'><b>Stay average</b><br>"+Math.round(x.historical_high_f)+"° / "+Math.round(x.historical_low_f)+"° high / low</div>";e.appendChild(card);
 var lt=document.createElement("div");lt.className="liveTemp";lt.innerHTML="<small>"+esc(name)+"</small><b>"+Math.round(x.temperature_f)+"°F</b><span>"+esc(x.condition)+"</span>";lead.appendChild(lt)}
 document.getElementById("weatherText").textContent="Current conditions update hourly. Historical averages are tied to the destination's configured stay window; New Orleans uses the Jan 16–20, 2027 stay window."; }catch(z){document.getElementById("weatherText").textContent="Weather data could not be read."}};
 req.send(null);
 }
-function renderCams(){var e=document.getElementById("camGrid");e.innerHTML="";var d=(trip.destinations||[])[0]||"destination";var dk=slug(d),places=(dk.indexOf("atlanta")>=0||dk==="atl")?["Downtown Atlanta","Centennial Olympic Park","Piedmont Park","Ponce City Market / BeltLine"]:(cityProfile()?["French Quarter","Jackson Square","Garden District","Frenchmen Street"]:["City center","Main square","Historic district","Downtown"]);for(var i=0;i<places.length;i++){var x=document.createElement("div");x.className="cam";x.innerHTML="<img src='"+destinationImage(d,i)+"' alt=''><div class='camText'><div class='live'>Visual check</div><h3>"+esc(places[i])+"</h3><p>Open a current webcam/search result for this area.</p><a target='_blank' href='"+search(d+" "+places[i]+" live webcam")+"'>Open webcam search</a></div>";e.appendChild(x)}}
+function renderCams(){var e=document.getElementById("camGrid");e.innerHTML="";var d=(trip.destinations||[])[0]||"destination";var places=cityProfile()?["French Quarter","Jackson Square","Garden District","Frenchmen Street"]:["City center","Main square","Historic district","Downtown"];for(var i=0;i<places.length;i++){var x=document.createElement("div");x.className="cam";x.innerHTML="<img src='"+destinationImage(d,i)+"' alt=''><div class='camText'><div class='live'>Visual check</div><h3>"+esc(places[i])+"</h3><p>Open a current webcam/search result for this area.</p><a target='_blank' href='"+search(d+" "+places[i]+" live webcam")+"'>Open webcam search</a></div>";e.appendChild(x)}}
 function travelGroups(){
 if(!Array.isArray(trip.travelGroups))trip.travelGroups=[];
 return trip.travelGroups;
