@@ -633,14 +633,36 @@ var TripPlanner=(function(){
     ]
   };
   var foods=[
-    ["Trnava","Local restaurants","Search local restaurants in Trnava","Local food","Choose neighborhood-oriented options; compare recent reviews and menus.","Trnava Slovakia"],
-    ["Trnava","Traditional Slovak","Traditional Slovak restaurants in Trnava","Traditional","Useful for regional dishes rather than international chains.","traditional Slovak restaurant Trnava"],
-    ["Prague","Neighborhood gems","Local restaurants outside Old Town tourist core","Local-oriented","Look beyond the primary sightseeing streets and compare recent local reviews.","local restaurants Prague Czechia"],
-    ["Prague","Traditional Czech","Traditional Czech restaurants","Traditional","Good for Czech classics; check menus and recent reviews.","traditional Czech restaurant Prague"],
-    ["Pilsen","Local Czech","Local restaurants in Pilsen","Local-oriented","Pair a brewery evening with a nearby Czech dinner rather than adding another cross-city trip.","local Czech restaurant Pilsen"],
-    ["Pilsen","Beer & food","Beer halls and Czech food","Beer & breweries","Useful for a local-style meal around the brewery night.","beer hall Czech food Pilsen"],
-    ["Hluboká","Local lunch","Restaurants in Hluboká nad Vltavou","Local-oriented","Keep lunch close to the castle and town so the airport transfer stays predictable.","restaurants Hluboka nad Vltavou"],
-    ["Vienna","Neighborhood dining","Local restaurants in Vienna","Local-oriented","For future trips, filter by neighborhood, cuisine and reservation needs.","local restaurants Vienna Austria"]
+    ["Trnava","MEDZI MÚRMI Restaurant","Modern European · historic center","Contemporary","Small, reservation-friendly restaurant in the historic center.","MEDZI MÚRMI Restaurant Trnava Slovakia"],
+    ["Trnava","PATRIOT","European · Slovak-leaning · historic center","Traditional","Established restaurant and guesthouse near Trnava's historic core.","PATRIOT restaurant Trnava Slovakia"],
+    ["Trnava","Forhaus","Steakhouse · grill","Steak & grill","Historic-center option focused on grilled meats and steaks.","Forhaus Trnava Slovakia"],
+    ["Trnava","Truffle Pig","European · fusion · wine bar","Special occasion","Modern European/fusion dining in a renovated historic setting.","Truffle Pig Trnava Slovakia"],
+    ["Trnava","Akademia","Beer garden · European","Casual · beer","Central courtyard-style spot for food and local/craft beer.","Akademia Trnava Slovakia"],
+    ["Trnava","ENAK bistro & restaurant","Thai · Asian","Asian","Stylish central bistro with Southeast Asian-inspired dishes.","ENAK bistro restaurant Trnava Slovakia"],
+    ["Prague","Lokál Dlouhááá","Traditional Czech · beer hall","Czech classics","Central Czech pub with tank Pilsner and traditional dishes.","Lokál Dlouhááá Prague Czechia"],
+    ["Prague","Mincovna","Traditional Czech · modern","Czech classics","Old Town Square restaurant serving modern interpretations of Czech cuisine.","Restaurace Mincovna Prague Czechia"],
+    ["Prague","Kuchyň","Czech · Castle district","Czech classics","Czech cooking near Prague Castle, useful when sightseeing in Malá Strana/Hradčany.","Kuchyň Prague Czechia"],
+    ["Prague","U Kroka","Traditional Czech","Neighborhood classic","Neighborhood restaurant near Vyšehrad known for Czech comfort food.","U Kroka Prague Czechia"],
+    ["Prague","Kantýna","Czech · butcher restaurant","Meat-focused","Modern butcher-restaurant format with Czech meat dishes.","Kantýna Prague Czechia"],
+    ["Prague","Čestr","Czech · contemporary","Modern Czech","Czech beef-focused restaurant in Vinohrady.","Čestr Prague Czechia"],
+    ["Pilsen","Na Parkánu","Czech · brewpub","Beer & Czech","Historic Pilsen beer pub near the brewery with traditional beer-matched food.","Na Parkánu Pilsen Czechia"],
+    ["Pilsen","U Salzmannů","Traditional Czech · brewpub","Czech classics","Historic central pub serving traditional Czech food and Pilsner Urquell.","U Salzmannů Pilsen Czechia"],
+    ["Pilsen","Lokál Pod Divadlem","Czech · pub","Czech classics","Central restaurant beside the J. K. Tyl Theatre with tank beer and Czech food.","Lokál Pod Divadlem Pilsen Czechia"],
+    ["Pilsen","ŠTIPEC","Contemporary Czech","Food-focused","Open-kitchen contemporary Czech restaurant with a wood-fired oven.","ŠTIPEC Pilsen Czechia"],
+    ["Pilsen","Lékárna","Czech · pub","Beer & Czech","Central pub with a view of St. Bartholomew's Cathedral and Pilsner focus.","Lékárna Pilsen Czechia"],
+    ["Pilsen","U Malické Brány","Czech · European","Traditional","Cozy restaurant known for Czech dishes and a courtyard terrace.","U Malické Brány Pilsen Czechia"],
+    ["Hluboká","Restaurant Terrace Hluboká","Modern Czech","Special occasion","Modern Czech cooking in Hluboká, suitable for a more polished lunch.","Restaurant Terrace Hluboká Czechia"],
+    ["Hluboká","Restaurace Lovecká Chata","Traditional Czech · game","Rustic · regional","Hunting-lodge setting with Czech and game specialties.","Restaurace Lovecká Chata Hluboká Czechia"],
+    ["Hluboká","Solidní Šance","Traditional · family restaurant","Local classic","Family-run restaurant with a long local hospitality tradition.","Solidní Šance Hluboká Czechia"],
+    ["Hluboká","Restaurace Hubert","Game · Czech","Regional","Restaurant specializing in game dishes, useful for a regional meal.","Restaurace Hubert Hluboká Czechia"],
+    ["Hluboká","Restaurace Eleonora","Czech · European","Historic setting","Stylish restaurant on the route toward Hluboká Castle.","Restaurace Eleonora Hluboká Czechia"],
+    ["Hluboká","Bistro Panorama","Czech · bistro · café","Casual lunch","Central bistro with Czech home cooking, coffee and desserts.","Bistro Panorama Hluboká nad Vltavou Czechia"],
+    ["Vienna","Plachutta Wollzeile","Viennese · Austrian","Tafelspitz","Classic central Vienna choice for Tafelspitz and traditional Viennese cuisine.","Plachutta Wollzeile Vienna Austria"],
+    ["Vienna","Figlmüller Wollzeile","Viennese · Austrian","Schnitzel","Historic central address associated with its oversized Wiener Schnitzel.","Figlmüller Wollzeile Vienna Austria"],
+    ["Vienna","Wiener Wiazhaus","Austrian","Traditional","Cozy traditional Austrian restaurant with classic hearty dishes.","Wiener Wiazhaus Vienna Austria"],
+    ["Vienna","Gasthaus Pöschl","Austrian","Traditional · central","Classic Austrian restaurant in the 1st district with a broad traditional menu.","Gasthaus Pöschl Vienna Austria"],
+    ["Vienna","Reinthaler's Beisl","Viennese · Austrian","Beisl","Traditional Viennese tavern-style cooking close to the historic center.","Reinthaler's Beisl Vienna Austria"],
+    ["Vienna","Glacis Beisl","Austrian · modern Beisl","Modern Austrian","Modern Beisl-style dining near MuseumsQuartier.","Glacis Beisl Vienna Austria"]
   ];
   function load(){try{return JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){return[]}}
   function saveAll(a){try{localStorage.setItem(KEY,JSON.stringify(a));return true}catch(e){return false}}
