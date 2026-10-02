@@ -111,8 +111,12 @@ function render(){
  document.getElementById("resultTitle").textContent=region+" resources";
  document.getElementById("resultCount").textContent=rows.length+" categories · "+rows.reduce(function(n,g){return n+g.links.length},0)+" shortcuts";
  groups.innerHTML=rows.map(function(g,i){
-  return "<details class='group' "+(i<2?"open":"")+"><summary><div><div class='groupTitle'>"+esc(g.category)+"</div><div class='groupMeta'>"+g.links.length+" resources</div></div><span class='chev'>⌄</span></summary><div class='groupBody'><p class='groupIntro'>"+esc(g.desc)+"</p><div class='links'>"+g.links.map(function(x){return "<a class='link' href='"+x[2]+"' target='_blank' rel='noopener noreferrer'><span class='linkName'>"+esc(x[0])+"</span><span class='linkType'>"+esc(x[1])+" ↗</span></a>"}).join("")+"</div></div></details>";
+  return "<details class='group' "+(i<2?"open":"")+"><summary role='button' tabindex='0'><div><div class='groupTitle'>"+esc(g.category)+"</div><div class='groupMeta'>"+g.links.length+" resources</div></div><span class='chev' aria-hidden='true'>⌄</span></summary><div class='groupBody'><p class='groupIntro'>"+esc(g.desc)+"</p><div class='links'>"+g.links.map(function(x){return "<a class='link' href='"+x[2]+"' target='_blank' rel='noopener noreferrer'><span class='linkName'>"+esc(x[0])+"</span><span class='linkType'>"+esc(x[1])+" ↗</span></a>"}).join("")+"</div></div></details>";
  }).join("");
+ Array.prototype.forEach.call(groups.querySelectorAll("details.group > summary"),function(summary){
+  summary.addEventListener("click",function(e){e.preventDefault();var d=summary.parentElement;d.open=!d.open;});
+  summary.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();var d=summary.parentElement;d.open=!d.open;}});
+ });
  try{localStorage.setItem("roamsonio-travel-region",region)}catch(e){}
 }
 (function(){var s=document.getElementById("region");try{s.value=localStorage.getItem("roamsonio-travel-region")||"Worldwide"}catch(e){}s.addEventListener("change",render);render()})();
