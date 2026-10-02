@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Shared Trip · RoamSonio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0B2D4A;--gold:#D4A85A;--ivory:#F8F5ED;--slate:#4F6B8A;--line:#D9E0E7;--paper:#fffdf9}
+*{box-sizing:border-box}body{margin:0;background:var(--ivory);color:var(--navy);font-family:"DM Sans",sans-serif}.top{height:74px;background:var(--navy);color:#fff;display:flex;align-items:center}.nav{width:94%;max-width:1200px;margin:auto;display:flex;justify-content:space-between;align-items:center}.brand{font:600 22px "Playfair Display",serif}.sonio{color:var(--gold)}.badge{color:#e9dfc4;font-size:8px;letter-spacing:.16em;text-transform:uppercase}.wrap{max-width:1200px;width:92%;margin:auto;padding:45px 0}.ey{font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:#a47c2f;font-weight:700}.hero{background:var(--navy);color:#fff;border-radius:18px;padding:36px}.hero h1{font:600 52px/1.02 "Playfair Display",serif;margin:8px 0}.hero p{color:#d7e0db;font-size:12px;line-height:1.7;margin:0}.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.pill{border:1px solid #D4A85A55;color:#D4A85A;border-radius:99px;padding:7px 10px;font-size:8px;letter-spacing:.08em;text-transform:uppercase}.grid{display:grid;grid-template-columns:1.4fr .6fr;gap:16px;margin-top:16px}.card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:25px}.card h2{font:600 30px "Playfair Display",serif;margin:0 0 16px}.day{border-top:1px solid var(--line);padding:17px 0}.day:first-child{border-top:0}.dayHead{display:flex;justify-content:space-between;gap:12px}.day h3{font:600 21px "Playfair Display",serif;margin:0}.dayDate{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#a47c2f}.blocks{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.block{background:#f4efe3;border-radius:9px;padding:11px}.block b{display:block;font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:#8b6728}.block span{display:block;font-size:10px;line-height:1.45;margin-top:4px}.list{margin:0;padding-left:17px;color:var(--slate);font-size:10px;line-height:1.7}.note{color:var(--slate);font-size:10px;line-height:1.6}.error{margin-top:30px;background:#fff9f8;border:1px solid #dfcbc7;color:#7c4b45;padding:18px;border-radius:10px}@media(max-width:800px){.grid{grid-template-columns:1fr}.blocks{grid-template-columns:1fr}.hero h1{font-size:40px}}
+</style></head><body>
+<header class="top"><div class="nav"><div class="brand">Roam<span class="sonio">Sonio</span></div><div class="badge">Shared trip · view only</div></div></header>
+<main class="wrap"><div id="loading"><div class="ey">Secure access</div><h1>Opening shared trip…</h1></div><div id="app" style="display:none"><section class="hero"><div class="ey">RoamSonio shared journey</div><h1 id="title"></h1><p id="dest"></p><div class="meta"><span class="pill" id="dates"></span><span class="pill" id="travelers"></span><span class="pill" id="access"></span></div></section><div class="grid"><section class="card"><h2>Itinerary</h2><div id="plan"></div></section><aside class="card"><h2>Trip highlights</h2><div id="highlights"></div><div style="margin-top:24px"><h2 style="font-size:24px">Trip areas</h2><ul class="list" id="areas"></ul></div></aside></div></div><div id="error" class="error" style="display:none"></div></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
+const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","sb_publishable_DyiQBLmIyGMBXCeJ9KKgSg_TFWO5vsy");
+const token=new URLSearchParams(location.search).get("token");
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function showError(m){document.getElementById("loading").style.display="none";document.getElementById("error").textContent=m;document.getElementById("error").style.display="block"}
+async function load(){
+  if(!token){showError("This shared trip link is missing its access code.");return}
+  const {data,error}=await client.rpc("get_trip_share",{share_token:token});
+  if(error||!data?.length){showError(error?.message||"This shared trip is not available.");return}
+  const s=data[0],t=s.snapshot||{};
+  document.getElementById("loading").style.display="none";document.getElementById("app").style.display="block";
+  document.getElementById("title").textContent=t.name||s.trip_name||"Shared trip";
+  document.getElementById("dest").textContent=(t.destinations||[]).join(" · ")||"Destination not specified";
+  document.getElementById("dates").textContent=(t.start||"Date not set")+" → "+(t.end||"Date not set");
+  document.getElementById("travelers").textContent=(t.travelers||"—")+" travelers";
+  document.getElementById("access").textContent=s.access_type==="family"?"Family access · view only":"Secure link · view only";
+  const plans=Array.isArray(t.plan)?t.plan:[];
+  document.getElementById("plan").innerHTML=plans.length?plans.map((d,i)=>"<article class='day'><div class='dayHead'><h3>"+esc(d.title||("Day "+(i+1)))+"</h3><span class='dayDate'>"+esc(d.date||"")+"</span></div><div class='blocks'><div class='block'><b>Morning</b><span>"+esc(d.morning||"Open time")+"</span></div><div class='block'><b>Afternoon</b><span>"+esc(d.afternoon||"Open time")+"</span></div><div class='block'><b>Evening</b><span>"+esc(d.evening||"Open time")+"</span></div></div>"+(d.note?"<p class='note'>"+esc(d.note)+"</p>":"")+"</article>").join(""):"<p class='note'>No itinerary has been added yet.</p>";
+  const hi=[...(t.mustSee||[]),...(t.sights||[])].filter(Boolean).slice(0,12);
+  document.getElementById("highlights").innerHTML=hi.length?"<ul class='list'>"+hi.map(x=>"<li>"+esc(x)+"</li>").join("")+"</ul>":"<p class='note'>No highlights have been added yet.</p>";
+  const ar=(t.areas||[]).filter(Boolean);document.getElementById("areas").innerHTML=ar.length?ar.slice(0,12).map(x=>"<li>"+esc(x)+"</li>").join(""):"<li>No areas listed.</li>";
+}
+load();
+</script></body></html>
