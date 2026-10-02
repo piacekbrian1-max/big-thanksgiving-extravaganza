@@ -1,12 +1,27 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>RoamSonio · My Trips</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
 <style>
+.top{height:74px;background:#0B2D4Af5;color:white;border-bottom:1px solid #ffffff12;display:flex;align-items:center}.nav{max-width:1440px;width:94%;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:12px;text-decoration:none}.mark{width:42px;height:42px;border:2px solid #D4A85A;border-radius:11px;display:grid;place-items:center;background:#F8F5ED;color:#0B2D4A;flex:none}.brandIcon{width:30px;height:30px;display:block}.brand strong{display:block;font:600 21px "Playfair Display",serif}.brand small{display:block;color:#cdb56f;font-size:8px;letter-spacing:.2em;margin-top:2px}.wordRoam{color:#F8F5ED}.wordSonio{color:#D4A85A}.navright{display:flex;align-items:center;gap:20px}.navright a{font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:#d5dfda;text-decoration:none}.navright a:hover{color:#D4A85A}
 body{margin:0;background:#F8F5ED;color:#0B2D4A;font-family:Arial,sans-serif}.wrap{max-width:1200px;width:92%;margin:auto;padding:70px 0}.ey{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#D4A85A;font-weight:700}.serif{font-family:Georgia,serif}.hero{background:#0B2D4A;color:white;padding:55px 6%;margin-bottom:35px}.hero h1{font:600 58px Georgia,serif;margin:10px 0}.hero p{max-width:650px;color:#d4dfda;line-height:1.7}.actions{display:flex;gap:10px;flex-wrap:wrap}.btn{display:inline-block;padding:12px 16px;border-radius:4px;border:1px solid #ffffff44;color:white;text-decoration:none;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}.primary{background:#D4A85A;color:#0B2D4A;border-color:#D4A85A}.panel{background:#fffdf9;border:1px solid #D9E0E7;border-radius:16px;padding:25px;margin-bottom:16px}.tripList{display:grid;gap:10px}.trip{display:flex;justify-content:space-between;gap:15px;align-items:center;background:#E9D9B7;border-radius:11px;padding:16px}.trip b{font:600 22px Georgia,serif}.trip small{display:block;color:#4F6B8A;margin-top:5px}.trip button{border:1px solid #C8D1DA;background:#fffdf9;border-radius:7px;padding:9px 12px;cursor:pointer;font-size:9px;text-transform:uppercase}.empty{padding:30px;border:1px dashed #C8D1DA;text-align:center;color:#4F6B8A}
 .brandIcon{width:25px;height:25px;display:block;color:#D4A85A}.mark .brandIcon,.logoMark .brandIcon{width:27px;height:27px}.wordRoam{color:#F8F5ED}.wordSonio{color:#D4A85A}</style></head><body>
+<header class="top"><div class="nav">
+<a class="brand" href="index.html"><span class="mark" aria-label="RoamSonio"><svg class="brandIcon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="32" r="29" fill="#F8F5ED"/><circle cx="45" cy="18" r="8" fill="#D4A85A"/><path d="M10 46 25 29l8 9 8-12 13 20H10Z" fill="#0B2D4A"/><path d="M19 43 32 28l7 8" fill="none" stroke="#F8F5ED" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 20c8-7 18-8 27-4 5 2 8 5 10 9" fill="none" stroke="#D4A85A" stroke-width="3" stroke-linecap="round"/><path d="M51 24l4 1-2 4" fill="none" stroke="#D4A85A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><strong><span class="wordRoam">Roam</span><span class="wordSonio">Sonio</span></strong><small>DREAM IT. PLAN IT. LIVE IT.</small></span></a>
+<div class="navright"><a href="index.html#my-roamwell">My RoamSonio</a><a href="my-trips.html">My Trips</a><a href="build-trip.html">Build Your Trip</a><a href="travel-desk.html">Travel Desk</a><a href="about.html">About Us</a><a href="login.html?return=my-trips.html" id="authLink">Sign In</a></div>
+</div></header>
 <header class="hero"><div class="ey">ROAMSONIO · YOUR TRAVEL LIBRARY</div><h1>My Trips</h1><p>Your saved journeys are kept separate from the current trip. Open a trip to work with its own plans, memories and journal, or start something completely new.</p><div class="actions"><a class="btn" href="index.html">Home</a><a class="btn primary" href="build-trip.html">Build a new trip</a><a class="btn" href="current-trip.html">Current trip</a></div></header>
 <main class="wrap"><section class="panel"><div class="ey">Saved journeys</div><h2 class="serif">Your trips</h2><p>Trips saved in this browser appear here. Opening one takes you to that trip's workspace instead of changing the current trip page.</p><div id="tripList" class="tripList"></div></section></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+(function(){
+var authLink=document.getElementById("authLink");
+if(authLink&&window.supabase){
+var client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","sb_publishable_DyiQBLmIyGMBXCeJ9KKgSg_TFWO5vsy");
+client.auth.getSession().then(function(r){if(r.data&&r.data.session){authLink.textContent="My Account";authLink.href="account.html";}});
+client.auth.onAuthStateChange(function(e,s){if(s){authLink.textContent="My Account";authLink.href="account.html";}else{authLink.textContent="Sign In";authLink.href="login.html?return=my-trips.html";}});
+}
+})();
 (function(){
 var KEY="big-thanksgiving-trips-v1";
 function load(){
