@@ -85,6 +85,30 @@ footer{background:var(--navy);color:#fff;padding:35px 28px}.foot{max-width:1380p
 
 </style>
 
+<style id="travel-desk-header-restore">
+/* Restore the full RoamSonio brand mark and readable header sizing without changing the Travel Desk content. */
+.top{height:58px!important;min-height:58px!important}
+.top .nav{height:58px!important;min-height:58px!important;padding:0 22px!important;gap:18px!important}
+.top .brand{gap:9px!important;height:46px!important;align-items:center!important}
+.top .mark{width:38px!important;height:38px!important;border:2px solid var(--gold)!important;border-radius:10px!important;display:grid!important;place-items:center!important;background:var(--ivory)!important;flex:none!important}
+.top .brandIcon{width:30px!important;height:30px!important;display:block!important}
+.top .brand strong{font-size:20px!important;line-height:1.05!important}
+.top .brand small{font-size:6px!important;line-height:1.1!important;letter-spacing:.18em!important;margin-top:2px!important}
+.top .navright{gap:14px!important;font-size:10px!important;line-height:1.1!important}
+@media(max-width:900px){
+  .top .nav{padding:0 16px!important;gap:12px!important}
+  .top .brand{gap:7px!important}
+  .top .mark{width:34px!important;height:34px!important}
+  .top .brandIcon{width:27px!important;height:27px!important}
+  .top .brand strong{font-size:18px!important}
+  .top .navright{gap:10px!important;font-size:9px!important}
+}
+@media(max-width:700px){
+  .top .nav{padding:0 12px!important}
+  .top .brand small{font-size:5px!important}
+  .top .navright{gap:8px!important;font-size:8px!important}
+}
+</style>
 <style id="travel-desk-header">
 /* Single authoritative Travel Desk header — 2026-10-02 */
 .top{
@@ -143,7 +167,7 @@ footer{background:var(--navy);color:#fff;padding:35px 28px}.foot{max-width:1380p
 </head>
 <body>
 <header class="top"><div class="nav">
-<a class="brand" href="index.html"><span><strong><span class="wordRoam">Roam</span><span class="wordSonio">Sonio</span></strong><small>DREAM IT. PLAN IT. LIVE IT.</small></span></a>
+<a class="brand" href="index.html"><span class="mark" aria-label="RoamSonio"><svg class="brandIcon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="32" r="29" fill="#F8F5ED"/><circle cx="45" cy="18" r="8" fill="#D4A85A"/><path d="M10 46 25 29l8 9 8-12 13 20H10Z" fill="#0B2D4A"/><path d="M19 43 32 28l7 8" fill="none" stroke="#F8F5ED" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 20c8-7 18-8 27-4 5 2 8 5 10 9" fill="none" stroke="#D4A85A" stroke-width="3" stroke-linecap="round"/><path d="M51 24l4 1-2 4" fill="none" stroke="#D4A85A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><strong><span class="wordRoam">Roam</span><span class="wordSonio">Sonio</span></strong><small>DREAM IT. PLAN IT. LIVE IT.</small></span></a>
 <div class="navright"><a href="index.html#my-roamwell">My RoamSonio</a><a href="my-trips.html">My Trips</a><a href="build-trip.html">Build Your Trip</a><a href="travel-desk.html">Travel Desk</a><a href="about.html">About Us</a><a href="login.html?return=travel-desk.html">Sign In</a></div>
 </div></header>
 <main>
