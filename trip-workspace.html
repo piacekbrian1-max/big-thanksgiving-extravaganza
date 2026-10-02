@@ -918,6 +918,12 @@ atlanta:{areas:{
 "Buckhead":{photo:imgs.atlanta,desc:"Upscale Atlanta with the Atlanta History Center, shopping and destination dining.",morning:["Atlanta History Center","Swan House","Buckhead Village"],afternoon:["Lenox Square","Phipps Plaza","Buckhead lunch"],evening:["Aria","Atlas","Buckhead dinner"]}
 }}
 };
+var europeDaily={trnava:{areas:{"Historic Centre":{morning:["Trojičné námestie + City Tower","Historic centre architecture walk","West Slovak Museum"],afternoon:["Ján Palárik Theatre area","Halenárska Street cafés","Synagogue–Contemporary Art Centre"],evening:["Historic-centre dinner","Advent market stroll","Quiet old-town evening"]},"City Parks & Culture":{morning:["City parks + morning coffee","West Slovak Museum","City Tower surroundings"],afternoon:["Ján Koniarik Gallery","Historic fortifications walk","Local café stop"],evening:["Trojičné námestie","Seasonal market","Local dinner"]},"Advent Trnava":{morning:["Historic centre breakfast","City Tower","Market square walk"],afternoon:["Christmas / artisan market","Historic streets","Local café"],evening:["Advent lights","Seasonal dinner","Evening city walk"]}},meals:{Lunch:["Pizza Kitty","Forky’s","Wetzlerov Dom","Staromestská reštaurácia"],Dinner:["De Nuevo","Wetzlerov Dom","Wasabi Sushi Bar","Staromestská reštaurácia"]}},prague:{areas:{"Old Town & Josefov":{morning:["Old Town Square","Charles Bridge early walk","Josefov"],afternoon:["National Museum / Old Town culture","Havelské tržiště","Vltava riverfront"],evening:["Old Town Christmas Market","Czech dinner","Evening bridge walk"]},"Malá Strana & Castle":{morning:["Prague Castle","St. Vitus Cathedral","Malá Strana streets"],afternoon:["Petřín Hill","Kampa Island","Café stop"],evening:["Malá Strana dinner","Charles Bridge after dark","Local wine / beer"]},"Vinohrady & New Town":{morning:["Vinohrady coffee","National Museum","Neighborhood walk"],afternoon:["Wenceslas Square","New Town architecture","Local shops"],evening:["Vinohrady dinner","Local bar","Wenceslas Square lights"]}},meals:{Lunch:["Lokál Dlouhá","Kantýna","Kuchyň","U Kalendů"],Dinner:["La Degustation Bohême Bourgeoise","Field","Alma Prague","Kuchyň"]}},pilsen:{areas:{"Historic Centre":{morning:["Republic Square","Great Synagogue","Historic centre walk"],afternoon:["Brewery Museum","Pilsner Urquell Brewery","Local café"],evening:["Pilsen Christmas Market","Czech dinner","Historic centre evening walk"]},"Brewery District":{morning:["Pilsner Urquell Brewery","Brewery Museum","Brewery District walk"],afternoon:["Na Spilce","Republic Square","Local beer history"],evening:["Brewery-linked dinner","Pilsen market","Old town stroll"]},"Culture & Local Life":{morning:["Techmania Science Center","City centre coffee","Pilsen architecture"],afternoon:["Puppet Museum","West Bohemian Museum","DEPO2015"],evening:["Local dinner","Republic Square","Seasonal market"]}},meals:{Lunch:["Švejk Restaurant U Petatřicátníků","U Mansfelda","Na Spilce","Purkmistr Brewery"],Dinner:["Na Spilce","Purkmistr Brewery","U Mansfelda","Švejk Restaurant U Petatřicátníků"]}},hluboka:{areas:{"Castle & Park":{morning:["Hluboká Castle","Castle Park","Historic centre"],afternoon:["Castle Park educational trail","Aleš South Bohemian Gallery","Munický Pond"],evening:["Castle-area dinner","Evening castle views","Quiet town walk"]},"Ohrada & Munický Pond":{morning:["South Bohemian Zoo","Ohrada Hunting & Fishing Museum","Munický Pond"],afternoon:["Munický Pond trail","Castle Park","Local café"],evening:["Hluboká dinner","Castle lights","Early evening walk"]},"South Bohemian Discovery":{morning:["Castle interiors","Town centre breakfast","Castle Park"],afternoon:["Ohrada","Munický Pond","Local artisan stop"],evening:["Local dinner","Castle viewpoint","Relaxed evening"]}},meals:{Lunch:["Restaurant Krčma Munice","Restaurace U Hájků","Restaurace V Podzámčí","Restaurace a gril U Sumce"],Dinner:["Restaurace U Hájků","Restaurace V Podzámčí","La Cantina del Golf","Restaurant Štekl"]}},vienna:{areas:{"Historic Centre":{morning:["Stephansplatz","Hofburg","Historic coffeehouse"],afternoon:["Kunsthistorisches Museum","Albertina","Graben / Kohlmarkt"],evening:["Rathausplatz Christmas Market","Viennese dinner","Historic centre lights"]},"Schönbrunn & West":{morning:["Schönbrunn Palace","Schönbrunn gardens","Zoo / palace area"],afternoon:["MuseumsQuartier","Mariahilfer Straße","Coffeehouse stop"],evening:["Schönbrunn seasonal market","Dinner in Neubau","Evening walk"]},"Belvedere & Naschmarkt":{morning:["Belvedere","Landstraße walk","Coffeehouse"],afternoon:["Naschmarkt","Freihausviertel","MuseumsQuartier"],evening:["Belvedere Christmas Market","Naschmarkt-area dinner","Vienna evening cafés"]}},meals:{Lunch:["Plachutta Gasthaus zur Oper","Zum Schwarzen Kameel","Glacis Beisl","Joma"],Dinner:["Steirereck","Skopik & Lohn","Motto am Fluss","Labstelle"]}}};
+function isEuropeanDestination(name){var s=slug(name);return /trnava|prague|praha|pilsen|plzen|hluboka|vienna|wien/.test(s)}
+function europeanKey(name){var s=slug(name);if(s.indexOf("trnava")>=0)return "trnava";if(s.indexOf("prague")>=0||s.indexOf("praha")>=0)return "prague";if(s.indexOf("pilsen")>=0||s.indexOf("plzen")>=0)return "pilsen";if(s.indexOf("hlub")>=0)return "hluboka";if(s.indexOf("vienna")>=0||s.indexOf("wien")>=0)return "vienna";return null}
+function planningDestinationForDay(dayIndex){var ds=trip.destinations||[],first=ds[0]||"";if(!ds.length)return "";if(!isEuropeanDestination(first))return first;var date=isoDay(dayIndex),stays=Array.isArray(trip.stayRecords)?trip.stayRecords:[];for(var i=0;i<stays.length;i++){var s=stays[i];if(!s||!s.destination)continue;var raw=String(s.dates||"").match(/(d{4}-d{2}-d{2})/g)||[];if(raw.length>=2&&date>=raw[0]&&date<=raw[1])return s.destination}if(/trnava/i.test(ds.join(" "))&&/prague/i.test(ds.join(" "))&&/pilsen/i.test(ds.join(" "))&&/hlub/i.test(ds.join(" "))&&/vienna/i.test(ds.join(" "))&&/^2026-11-2[6-9]$|^2026-11-30$/.test(date))return ds.find(function(x){return /trnava/i.test(x)})||ds[0];if(/2026-12-0[1-2]/.test(date))return ds.find(function(x){return /prague/i.test(x)})||ds[0];if(date==="2026-12-03")return ds.find(function(x){return /pilsen/i.test(x)})||ds[0];var idx=Math.min(ds.length-1,Math.floor(dayIndex*ds.length/dates().n));return ds[idx]||ds[0]}
+function planningProfile(destination){var k=europeanKey(destination);if(k)return europeDaily[k];var d=slug(destination);if(d.indexOf("new orleans")>=0||d.indexOf("nola")>=0)return profile.neworleans;if(d.indexOf("atlanta")>=0)return profile.atlanta;return cityProfile()}
+function dailyMeal(destination,category,index){var p=planningProfile(destination),list=p&&p.meals&&p.meals[category];return list&&list.length?list[index%list.length]:"";}
 function cityProfile(){
 var d=slug((trip.destinations||[])[0]||""),n=slug(trip.name||"");
 if(d.indexOf("new orleans")>=0||d.indexOf("nola")>=0||n.indexOf("new orleans")>=0)return profile.neworleans;
@@ -949,8 +955,8 @@ if(d==="2027-01-16")return {name:"Teaser Fest + Intergalactic Krewe of Chewbacch
 if(d==="2027-01-14"||d==="2027-01-15"||d==="2027-01-17")return {name:"Teaser Fest",when:"Jan 14–17, 2027",note:"Date-specific festival; verify the day's lineup and ticketing before locking the evening."};
 return null;
 }
-function smartCandidates(area,index,variant){
-var p=cityProfile(),a=p&&p.areas[area],v=Math.max(0,Number(variant||0));
+function smartCandidates(area,index,variant,destination){
+var p=planningProfile(destination||((trip.destinations||[])[0]||"")),a=p&&p.areas[area],v=Math.max(0,Number(variant||0));
 if(!a)return {morning:"Explore the historic center",afternoon:"Choose a major cultural site nearby",evening:"Local dinner + neighborhood walk"};
 var m=a.morning[(index+v)%a.morning.length],af=a.afternoon[(index+1+v)%a.afternoon.length],ev=a.evening[(index+v)%a.evening.length];
 return {morning:m,afternoon:af,evening:ev};
@@ -966,8 +972,8 @@ if(h.indexOf("trem")>=0||h.indexOf("tremé")>=0)return "Tremé";
 if(h.indexOf("city park")>=0||h.indexOf("mid city")>=0||h.indexOf("mid-city")>=0)return "Mid-City";
 return null;
 }
-function discoveryFor(area,idx){
-var p=cityProfile(),s=slug(area||"")+" "+(trip.preferences||[]).join(" ");
+function discoveryFor(area,idx,destination){
+var p=planningProfile(destination||planningDestinationForDay(idx)),s=slug(area||"")+" "+(trip.preferences||[]).join(" ");
 if(!p)return "Leave one flexible block for a neighborhood discovery near your home base.";
 if(/french quarter/.test(s))return "Consider a quieter French Quarter history walk beyond the busiest Bourbon Street blocks, then use Jackson Square as your photo stop.";
 if(/marigny/.test(s))return "Consider pairing Frenchmen Street with a short Marigny/Bywater architecture walk before dinner.";
@@ -976,7 +982,7 @@ if(/trem/.test(s))return "Consider a Tremé history-and-music afternoon followed
 if(/mid city|city park/.test(s))return "Consider City Park + the Besthoff Sculpture Garden as a slower outdoors-and-culture half-day.";
 return "RoamSonio suggests leaving one block open for an unexpected neighborhood find near today's cluster.";
 }
-function practicalFor(area,idx){
+function practicalFor(area,idx,destination){
 var base=baseLabel(),s=slug(area||"");
 var n="Confirm timed-entry, restaurant and evening reservations before locking the day.";
 if(idx===0)n="Confirm arrival timing, luggage drop and the first reservation before adding extra stops.";
@@ -986,8 +992,8 @@ if(/garden|uptown/.test(s))n="Streetcar travel is part of the experience; allow 
 if(/mid city|city park/.test(s))n="Check opening hours and weather before committing to the outdoor portion.";
 return "Don't overlook: "+n+" Home base: "+base+".";
 }
-function chooseArea(dayIndex,used){
-var p=cityProfile();if(!p)return "City center";
+function chooseArea(dayIndex,used,destination){
+var p=planningProfile(destination||planningDestinationForDay(dayIndex));if(!p)return "City center";
 var areas=Object.keys(p.areas),must=(trip.mustSee||[]).map(slug).join(" "),baseArea=homeBaseArea(),best=null,bestScore=-999;
 for(var i=0;i<areas.length;i++){
  var a=areas[i],sc=interestScore(a,a);
@@ -1005,12 +1011,13 @@ function clonePlan(p){return JSON.parse(JSON.stringify(p||[]))}
 function makeOriginalPlan(){
 var n=dates().n,used=[],plan=[];
 for(var i=0;i<n;i++){
-var area=chooseArea(i,used);used.push(area);var c=smartCandidates(area,i,0),ev=eventFor(isoDay(i));
+var destination=planningDestinationForDay(i),area=chooseArea(i,used,destination);used.push(area);var c=smartCandidates(area,i,0,destination),ev=eventFor(isoDay(i));
 if(ev)c.evening=ev.name+" · "+ev.when;
 var reason="Built around "+baseLabel()+", keeping the main stops in one geographic cluster and matching your interests.";
+if(destination&&isEuropeanDestination(destination))reason+=" Destination focus: "+destination+".";
 if((trip.mustSee||[]).length&&i===0)reason+=" Your must-see list is given priority on the first day.";
 if(ev)reason+=" A date-specific event was promoted because it falls during this stay.";
-plan.push({day:i+1,date:isoDay(i),area:area,title:area+" day",morning:c.morning,afternoon:c.afternoon,evening:c.evening,note:reason,event:ev||null,refreshCount:0});
+plan.push({day:i+1,date:isoDay(i),destination:destination,area:area,title:(destination?destination+" · ":"")+area+" day",morning:c.morning,afternoon:c.afternoon,evening:c.evening,lunch:dailyMeal(destination,"Lunch",i),dinner:dailyMeal(destination,"Dinner",i),note:reason,event:ev||null,refreshCount:0});
 }
 return plan;
 }
@@ -1065,10 +1072,10 @@ for(var i=0;i<trip.plan.length;i++){(function(d,idx){
 var x=document.createElement("article");x.className="smartDay";var ev=d.event?"<span class='tag'>Date-specific event</span>":"<span class='tag'>Smart day</span>";
 x.innerHTML="<div class='smartDayHead'><div><div class='kicker'>Day "+(idx+1)+" · "+fmtDate(d.date)+"</div><h3>"+esc(d.title||d.area)+"</h3><p>"+esc(d.area||"Destination center")+" · based around "+esc(baseLabel())+"</p></div>"+ev+"</div><div class='smartSlots'>"+
 "<div class='smartSlot'><div class='time'>Morning</div><h4>"+esc(d.morning)+"</h4><p>Start near the day's cluster and keep the first block focused.</p><div class='why'>Why: "+esc("Matches "+((trip.preferences||[]).slice(0,2).join(" + ")||"your saved trip profile"))+"</div></div>"+
-"<div class='smartSlot'><div class='time'>Afternoon</div><h4>"+esc(d.afternoon)+"</h4><p>Stay in the same general area where possible instead of crossing the city between stops.</p><div class='why'>Why: geographic continuity + time for lunch and wandering.</div></div>"+
-"<div class='smartSlot'><div class='time'>Evening</div><h4>"+esc(d.evening)+"</h4><p>"+esc(d.event?d.event.note:"Choose the evening level from your traveler profile and leave a little flexibility for the unexpected.")+"</p><div class='why'>Why: "+esc((trip.evening||"balanced evenings"))+"</div></div></div>"+
+"<div class='smartSlot'><div class='time'>Lunch</div><h4>"+esc(d.lunch||dailyMeal(d.destination||((trip.destinations||[])[0]||""),"Lunch",idx)||"Choose a nearby local lunch")+"</h4><p>Keep lunch close to the morning/afternoon cluster.</p><div class='why'>Why: less backtracking + more time to explore.</div></div>"+"<div class='smartSlot'><div class='time'>Afternoon</div><h4>"+esc(d.afternoon)+"</h4><p>Stay in the same general area where possible instead of crossing the city between stops.</p><div class='why'>Why: geographic continuity + time for lunch and wandering.</div></div>"+
+"<div class='smartSlot'><div class='time'>Dinner</div><h4>"+esc(d.dinner||dailyMeal(d.destination||((trip.destinations||[])[0]||""),"Dinner",idx)||"Choose a destination-specific dinner")+"</h4><p>Use the restaurant guide to compare options before committing.</p><div class='why'>Why: keeps food decisions connected to the day's geography.</div></div>"+"<div class='smartSlot'><div class='time'>Evening</div><h4>"+esc(d.evening)+"</h4><p>"+esc(d.event?d.event.note:"Choose the evening level from your traveler profile and leave a little flexibility for the unexpected.")+"</p><div class='why'>Why: "+esc((trip.evening||"balanced evenings"))+"</div></div></div>"+
 "<div class='editSmart'><div><label>Morning</label><textarea data-i='"+idx+"' data-k='morning'>"+esc(d.morning)+"</textarea></div><div><label>Afternoon</label><textarea data-i='"+idx+"' data-k='afternoon'>"+esc(d.afternoon)+"</textarea></div><div><label>Evening</label><textarea data-i='"+idx+"' data-k='evening'>"+esc(d.evening)+"</textarea></div><div style='grid-column:1/-1'><label>Day notes</label><textarea data-i='"+idx+"' data-k='note'>"+esc(d.note||"")+"</textarea></div></div>"+
-"<div class='smartInsights'><div class='discoveryBox'><b>RoamSonio suggests</b><p>"+esc(discoveryFor(d.area,idx))+"</p></div><div class='practicalBox'><b>Don't overlook</b><p>"+esc(practicalFor(d.area,idx))+"</p></div></div><div class='smartActions'><button class='btn' onclick='savePlanEdits()'>Save edits</button><button class='btn' onclick='refreshDay("+idx+")'>Refresh this date</button><button class='btn' onclick='restoreOriginalDay("+idx+")'>Restore original</button><a class='btn' target='_blank' href='"+maps((d.area||"city center")+" "+(trip.destinations||[])[0])+"'>Map this day</a></div>";
+"<div class='smartInsights'><div class='discoveryBox'><b>RoamSonio suggests</b><p>"+esc(discoveryFor(d.area,idx,d.destination))+"</p></div><div class='practicalBox'><b>Don't overlook</b><p>"+esc(practicalFor(d.area,idx,d.destination))+"</p></div></div><div class='smartActions'><button class='btn' onclick='savePlanEdits()'>Save edits</button><button class='btn' onclick='refreshDay("+idx+")'>Refresh this date</button><button class='btn' onclick='restoreOriginalDay("+idx+")'>Restore original</button><a class='btn' target='_blank' href='"+maps((d.area||"city center")+" "+(trip.destinations||[])[0])+"'>Map this day</a></div>";
 e.appendChild(x)
 })(trip.plan[i],i)}
 }
@@ -1077,14 +1084,14 @@ window.refreshDay=function(idx){
 if(!trip.plan||!trip.plan[idx])return;
 var d=trip.plan[idx],next=(Number(d.refreshCount)||0)+1;
 var used=trip.plan.map(function(x,i){return i===idx?"":x.area}).filter(Boolean);
-var area=chooseArea(idx,used);
+var destination=d.destination||planningDestinationForDay(idx),area=chooseArea(idx,used,destination);
 if(area===d.area){
-  var names=Object.keys((cityProfile()||{}).areas||{}),start=names.indexOf(d.area);
+  var names=Object.keys((planningProfile(destination)||{}).areas||{}),start=names.indexOf(d.area);
   for(var z=1;z<=names.length;z++){var candidate=names[(start+z)%names.length];if(used.indexOf(candidate)<0){area=candidate;break}}
 }
-var c=smartCandidates(area,idx,next),ev=eventFor(isoDay(idx));
+var c=smartCandidates(area,idx,next,destination),ev=eventFor(isoDay(idx));
 d.refreshCount=next;
-d.area=area;d.title=area+" day";d.morning=c.morning;d.afternoon=c.afternoon;
+d.destination=destination;d.area=area;d.title=(destination?destination+" · ":"")+area+" day";d.morning=c.morning;d.afternoon=c.afternoon;d.lunch=dailyMeal(destination,"Lunch",idx);d.dinner=dailyMeal(destination,"Dinner",idx);
 d.evening=ev?ev.name+" · "+ev.when:c.evening;d.event=ev;
 d.note="Option "+next+" · RoamSonio refreshed this date with a different cluster and activity mix.";
 save();renderPlan();
