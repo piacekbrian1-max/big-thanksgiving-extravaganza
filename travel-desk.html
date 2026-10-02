@@ -63,6 +63,10 @@ footer{background:var(--navy);color:#fff;padding:35px 28px}.foot{max-width:1380p
   .groups details.group{min-height:0}
   .cardImage{height:180px}
 }
+/* Magazine card layout override: keep the photo header above the card content. */
+.groups details.group summary{display:block;padding:0;position:relative}
+.groups details.group summary .cardImage{display:block;width:100%;height:185px;flex:none}
+.groups details.group summary .cardHeading{display:block}
 @media(max-width:560px){
   .nav{padding:9px 12px}
   .brandIcon{width:38px;height:38px}
