@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Master Admin Security · RoamSonio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0B2D4A;--gold:#D4A85A;--ivory:#F8F5ED;--paper:#FFFDF9;--slate:#58718A;--line:#D9E0E7}
+*{box-sizing:border-box}html,body{margin:0;max-width:100%;overflow-x:hidden}
+body{background:var(--ivory);color:var(--navy);font-family:"DM Sans",Arial,sans-serif}
+a{text-decoration:none;color:inherit}.rsTop{position:sticky;top:0;z-index:1000;width:100%;min-height:68px;background:rgba(248,245,237,.98);border-bottom:1px solid var(--line);backdrop-filter:blur(14px)}
+.rsNav{width:100%;max-width:1440px;margin:0 auto;min-height:68px;padding:0 20px;display:flex;align-items:center;gap:18px}
+.rsBrand{display:flex;align-items:center;gap:10px;flex:0 0 auto}.rsMark{width:42px;height:42px;border:2px solid var(--gold);border-radius:10px;display:grid;place-items:center;background:var(--ivory)}.rsMark svg{width:32px;height:32px}
+.rsBrand strong{font:600 22px/1.05 "Playfair Display",serif;white-space:nowrap}.rsRoam{color:var(--navy)}.rsSonio{color:var(--gold)}
+.rsBrand small{display:block;margin-top:3px;color:var(--slate);font:700 7px/1.1 "DM Sans";letter-spacing:.18em;white-space:nowrap}
+.rsLinks{display:flex;align-items:center;justify-content:flex-end;gap:13px;flex:1;min-width:0;flex-wrap:wrap}.rsLinks a{font:700 11px/1.1 "DM Sans";white-space:nowrap;color:var(--navy)}
+.wrap{width:min(720px,calc(100% - 28px));margin:auto;padding:42px 0 70px}.ey{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:#A47C2F;font-weight:800}
+h1{font:600 clamp(38px,6vw,54px)/1.02 "Playfair Display",serif;margin:8px 0 10px}.intro{color:var(--slate);font-size:12px;line-height:1.65;margin:0 0 22px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:24px;margin-top:18px}.card h2{font:600 28px/1.1 "Playfair Display";margin:0 0 8px}.card p{color:var(--slate);font-size:11px;line-height:1.6}
+#qr{display:flex;justify-content:center;margin:22px 0}.secret{font-family:monospace;font-size:11px;word-break:break-all;background:#F1EADB;border-radius:8px;padding:12px;margin:12px 0}
+input{width:100%;padding:14px;border:1px solid #CBD5DF;border-radius:7px;background:#fff;color:var(--navy);font:600 18px/1 "DM Sans";letter-spacing:.25em;text-align:center}.primary{width:100%;border:0;border-radius:7px;background:var(--gold);color:var(--navy);padding:14px;font:800 10px/1 "DM Sans";letter-spacing:.12em;text-transform:uppercase;cursor:pointer;margin-top:12px}
+.status{display:none;margin-top:15px;padding:12px;border-radius:8px;font-size:10px;line-height:1.5}.status.show{display:block}.ok{background:#E9F1EA;color:#315B39}.err{background:#F7E5E2;color:#7B3028}.note{padding:13px;background:#F1EADB;color:#5F5137;border-radius:9px;font-size:10px;line-height:1.55;margin-top:18px}
+.hidden{display:none!important}
+@media(max-width:700px){.rsNav{padding:8px 11px;min-height:62px;align-items:flex-start}.rsTop{min-height:62px}.rsBrand strong{font-size:18px}.rsMark{width:34px;height:34px;flex-basis:34px}.rsMark svg{width:26px;height:26px}.rsBrand small{font-size:5px}.rsLinks{gap:6px 8px}.rsLinks a{font-size:9px}}
+</style>
+</head>
+<body>
+<header class="rsTop"><div class="rsNav">
+<a class="rsBrand" href="index.html"><span class="rsMark"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#F8F5ED"/><circle cx="45" cy="18" r="8" fill="#D4A85A"/><path d="M10 46 25 29l8 9 8-12 13 20H10Z" fill="#0B2D4A"/><path d="M17 20c8-7 18-8 27-4 5 2 8 5 10 9" fill="none" stroke="#D4A85A" stroke-width="3" stroke-linecap="round"/></svg></span><span><strong><span class="rsRoam">Roam</span><span class="rsSonio">Sonio</span></strong><small>DREAM IT. PLAN IT. LIVE IT.</small></span></a>
+<nav class="rsLinks"><a href="master-account.html">Master Account</a><a href="account.html">My Account</a></nav>
+</div></header>
+<main class="wrap">
+<div class="ey">RoamSonio Administration</div><h1>Master Admin Security</h1>
+<p class="intro">Set up an authenticator app for your Master Admin account. This adds a second factor beyond your Google sign-in.</p>
+<section class="card" id="enrollCard">
+<h2>Authenticator setup</h2><p>Open Google Authenticator on your phone, choose <b>+</b>, then scan this QR code.</p>
+<div id="qr"></div><div id="secretWrap" class="hidden"><p>Can't scan? Add this setup key manually:</p><div class="secret" id="secret"></div></div>
+<p>After adding RoamSonio, enter the current 6-digit code below.</p>
+<input id="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000">
+<button class="primary" id="verifyEnroll">Verify & Enable MFA</button>
+<div class="status" id="enrollStatus"></div>
+</section>
+<section class="card hidden" id="successCard">
+<h2>MFA is enabled</h2><p>Your Master Admin account now has a verified authenticator factor.</p>
+<button class="primary" id="continueBtn">Continue to Master Account</button>
+</section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+<script>
+const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","sb_publishable_DyiQBLmIyGMBXCeJ9KKgSg_TFWO5vsy");
+const statusBox=document.getElementById("enrollStatus");
+function showStatus(msg,good=false){statusBox.textContent=msg;statusBox.className="status show "+(good?"ok":"err")}
+async function start(){
+ const {data:{session}}=await client.auth.getSession();
+ if(!session){location.href="master-admin-login.html";return}
+ const {data:factors,error}=await client.auth.mfa.listFactors();
+ if(error){showStatus(error.message);return}
+ const verified=(factors?.totp||[]).find(f=>f.status==="verified");
+ if(verified){
+   document.getElementById("enrollCard").classList.add("hidden");
+   document.getElementById("successCard").classList.remove("hidden");
+   return;
+ }
+ const {data,error:enrollError}=await client.auth.mfa.enroll({factorType:"totp",friendlyName:"RoamSonio Master Admin"});
+ if(enrollError){showStatus(enrollError.message);return}
+ document.getElementById("secret").textContent=enroll.data.totp.secret;
+ document.getElementById("secretWrap").classList.remove("hidden");
+ await QRCode.toCanvas(document.getElementById("qr"),enroll.data.totp.uri,{width:220,margin:2});
+ document.getElementById("verifyEnroll").onclick=async()=>{
+   const code=document.getElementById("code").value.replace(/\D/g,"");
+   if(code.length!==6){showStatus("Enter the 6-digit code from Google Authenticator.");return}
+   const {data:challenge,error:challengeError}=await client.auth.mfa.challenge({factorId:enroll.data.id});
+   if(challengeError){showStatus(challengeError.message);return}
+   const {error:verifyError}=await client.auth.mfa.verify({factorId:enroll.data.id,challengeId:challenge.id,code});
+   if(verifyError){showStatus("That code was not accepted. Make sure Google Authenticator is showing the current code and try again.");return}
+   document.getElementById("enrollCard").classList.add("hidden");
+   document.getElementById("successCard").classList.remove("hidden");
+ };
+}
+document.getElementById("continueBtn").onclick=()=>location.href="master-account.html";
+start();
+</script>
+</body>
+</html>
