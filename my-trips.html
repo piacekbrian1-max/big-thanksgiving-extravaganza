@@ -54,15 +54,12 @@ async function recoverTrip(id){
   var session=await getSession();
   if(!session){st.textContent="Sign in to recover this trip to your RoamSonio account.";return}
   try{
-    var r=await sb.from("trips").insert({
-      owner_id:session.user.id,
-      name:t.name||((t.destinations||[])[0]||"RoamSonio Trip")+" Adventure",
-      visibility:"private",
-      surprise_mode:false,
-      trip_snapshot:t
-    }).select("id").single();
+    var r=await sb.rpc("roamsonio_recover_trip",{
+      p_name:t.name||((t.destinations||[])[0]||"RoamSonio Trip")+" Adventure",
+      p_snapshot:t
+    });
     if(r.error)throw r.error;
-    t.supabaseId=r.data.id;
+    t.supabaseId=r.data;
     t.recoveredToAccountAt=new Date().toISOString();
     localStorage.setItem(KEY,JSON.stringify(a));
     st.textContent="Success — "+(t.name||"Trip")+" is now saved to the account. Master Admin can see it in Trips.";
