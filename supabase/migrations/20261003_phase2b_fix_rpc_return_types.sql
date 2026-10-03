@@ -43,7 +43,11 @@ returns table(
   trip_name text,
   visibility text,
   surprise_mode boolean,
-  created_at timestamptz
+  created_at timestamptz,
+  start_date date,
+  end_date date,
+  destinations jsonb,
+  trip_snapshot jsonb
 )
 language plpgsql
 security definer
@@ -59,7 +63,11 @@ begin
   select t.id,t.owner_id,u.email::text,
     coalesce(nullif(u.raw_user_meta_data->>'display_name',''),
              nullif(u.raw_user_meta_data->>'full_name',''),'')::text,
-    t.name::text,t.visibility::text,t.surprise_mode,t.created_at
+    t.name::text,t.visibility::text,t.surprise_mode,t.created_at,
+    nullif(t.trip_snapshot->>'start','')::date,
+    nullif(t.trip_snapshot->>'end','')::date,
+    coalesce(t.trip_snapshot->'destinations','[]'::jsonb),
+    t.trip_snapshot
   from public.trips t
   left join auth.users u on u.id=t.owner_id
   order by t.created_at desc;
