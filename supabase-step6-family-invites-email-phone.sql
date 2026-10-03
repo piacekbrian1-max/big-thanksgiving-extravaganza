@@ -1,11 +1,16 @@
--- RoamSonio: email OR mobile family invitations
--- Run in Supabase SQL Editor before testing the updated invitation form.
+-- RoamSonio: named family invitations with email and/or mobile
 
 alter table public.family_invitations
   add column if not exists phone text;
 
-create or replace function public.create_family_invitation(
+alter table public.family_invitations
+  add column if not exists invitee_name text;
+
+drop function if exists public.create_family_invitation(uuid,text,text,text);
+
+create function public.create_family_invitation(
   p_family_id uuid,
+  p_invitee_name text,
   p_email text,
   p_phone text,
   p_role text
@@ -20,6 +25,10 @@ declare
 begin
   if auth.uid() is null then
     raise exception 'Sign in to create a family invitation.';
+  end if;
+
+  if nullif(trim(coalesce(p_invitee_name,'')),'') is null then
+    raise exception 'Enter the name of the person you are inviting.';
   end if;
 
   if nullif(trim(coalesce(p_email,'')),'') is null
@@ -43,11 +52,12 @@ begin
   end if;
 
   insert into public.family_invitations (
-    family_id, invited_by, email, phone, role
+    family_id, invited_by, invitee_name, email, phone, role
   )
   values (
     p_family_id,
     auth.uid(),
+    trim(p_invitee_name),
     nullif(lower(trim(coalesce(p_email,''))),''),
     nullif(trim(coalesce(p_phone,'')),''),
     p_role
@@ -58,5 +68,5 @@ begin
 end;
 $$;
 
-revoke all on function public.create_family_invitation(uuid,text,text,text) from public;
-grant execute on function public.create_family_invitation(uuid,text,text,text) to authenticated;
+revoke all on function public.create_family_invitation(uuid,text,text,text,text) from public;
+grant execute on function public.create_family_invitation(uuid,text,text,text,text) to authenticated;
