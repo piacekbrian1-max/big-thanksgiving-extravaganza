@@ -194,10 +194,13 @@ h1{font:600 clamp(38px,5vw,58px)/1.02 "Playfair Display",serif;margin:8px 0 10px
       </div>
     </section>
     <section class="section">
-      <div class="sectionHead"><div><h2>Recent Activity</h2><p>Reserved for the future admin activity feed</p></div></div>
-      <div class="table">
+      <div class="sectionHead">
+        <div><h2>Recent Activity</h2><p>Protected administrative history</p></div>
+        <button type="button" class="secondaryBtn" id="refreshActivityBtn">Refresh</button>
+      </div>
+      <div class="table" id="activityTable">
         <div class="row header"><span>Activity</span><span>User</span><span>Area</span><span>Time</span></div>
-        <div class="row"><span>Awaiting data connection</span><span class="muted">—</span><span class="muted">—</span><span class="muted">—</span></div>
+        <div class="row"><span>Loading activity…</span><span class="muted">—</span><span class="muted">—</span><span class="muted">—</span></div>
       </div>
     </section>
   </div>
@@ -251,6 +254,7 @@ const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","s
     document.getElementById("dashboard").style.display="block";
     loadMasterSummary();
     loadTransferUsers();
+    loadAdminActivity();
     return;
   }
 
@@ -327,6 +331,39 @@ const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","s
     document.getElementById("transferShareCount").textContent=shares;
   }
 
+  async function loadAdminActivity(){
+    const table=document.getElementById("activityTable");
+    if(!table)return;
+    try{
+      const {data,error}=await client.rpc("roamsonio_admin_activity_log");
+      if(error)throw error;
+      const rows=data||[];
+      table.innerHTML='<div class="row header"><span>Activity</span><span>User</span><span>Area</span><span>Time</span></div>';
+      if(!rows.length){
+        table.insertAdjacentHTML("beforeend",'<div class="row"><span>No administrative activity yet</span><span class="muted">—</span><span class="muted">—</span><span class="muted">—</span></div>');
+        return;
+      }
+      rows.forEach(row=>{
+        const el=document.createElement("div");
+        el.className="row";
+        const activity=document.createElement("span");
+        activity.textContent=(row.action||"Activity").replace(/_/g," ");
+        const user=document.createElement("span");
+        user.textContent=row.actor_email||row.target_email||"System";
+        const area=document.createElement("span");
+        area.textContent=row.target_email ? "Account · "+row.target_email : "Administration";
+        const time=document.createElement("span");
+        const d=new Date(row.created_at);
+        time.textContent=isNaN(d)?"":d.toLocaleString(undefined,{month:"short",day:"numeric",year:"numeric",hour:"numeric",minute:"2-digit"});
+        el.append(activity,user,area,time);
+        table.appendChild(el);
+      });
+    }catch(e){
+      console.error("Activity log failed:",e);
+      table.innerHTML='<div class="row header"><span>Activity</span><span>User</span><span>Area</span><span>Time</span></div><div class="row"><span>Unable to load activity</span><span class="muted">—</span><span class="muted">—</span><span class="muted">'+(e.message||"Error")+'</span></div>';
+    }
+  }
+
   async function loadTransferUsers(){
     try{
       const {error:refreshError}=await client.auth.refreshSession(); if(refreshError)throw refreshError;
@@ -345,6 +382,8 @@ const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","s
       document.getElementById("transferReadyText").textContent=e.message||"Unable to load eligible accounts.";
     }
   }
+
+  document.getElementById("refreshActivityBtn").addEventListener("click",loadAdminActivity);
 
   document.getElementById("transferSourceSelect").addEventListener("change",updateTransferControls);
   document.getElementById("transferTargetSelect").addEventListener("change",updateTransferControls);
