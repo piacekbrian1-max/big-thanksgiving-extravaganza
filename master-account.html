@@ -314,7 +314,7 @@ const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","s
   });
 
   document.getElementById("executeTransferBtn").addEventListener("click",async()=>{
-    if(confirmInput.value.trim()!=="TRANSFER PIACEK FAMILY")return;
+    if(approvalSelect.value!=="approved")return;
     executeBtn.disabled=true;
     executeBtn.textContent="Transferring…";
     const resultBox=document.getElementById("transferResult");
@@ -331,7 +331,7 @@ const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","s
 
       resultBox.textContent="Transfer completed successfully. The database returned: "+JSON.stringify(data);
       resultBox.hidden=false;
-      confirmInput.disabled=true;
+      approvalSelect.disabled=true;
       executeBtn.textContent="Transfer Complete";
       document.getElementById("reviewTransferBtn").disabled=true;
     }catch(e){
@@ -348,7 +348,7 @@ const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","s
     document.getElementById("transferApprovalSelect").value="";
     document.getElementById("executeTransferBtn").disabled=true;
     document.getElementById("transferResult").hidden=true;
-    document.getElementById("transferConfirmInput").focus();
+    document.getElementById("transferApprovalSelect").focus();
     document.getElementById("transferConfirm").scrollIntoView({behavior:"smooth",block:"center"});
   });
 
