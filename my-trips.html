@@ -67,11 +67,28 @@ async function recoverTrip(id){
   }catch(e){st.textContent="The trip could not be recovered yet: "+(e.message||e)}
 }
 function render(){var el=document.getElementById("tripList"),a=load();el.innerHTML="";if(!a.length){el.innerHTML='<div class="empty">No saved trips yet. Build your first new trip.</div>';return}
-for(var i=a.length-1;i>=0;i--){var t=a[i],d=document.createElement("div");d.className="trip";d.innerHTML="<div><b>"+esc(t.name)+"</b><small>"+esc((t.destinations||[]).join(" · "))+" · "+(t.days||"")+" days · "+esc(t.status||"Planning")+"</small></div><div><button onclick='openTrip("+JSON.stringify(t.id)+")'>Open trip</button> "+(!t.supabaseId?"<button onclick='recoverTrip("+JSON.stringify(t.id)+")'>Save to account</button> ":"")+"<button onclick='deleteTrip("+JSON.stringify(t.id)+")'>Delete</button></div>";el.appendChild(d)}}
+for(var i=a.length-1;i>=0;i--){var t=a[i],d=document.createElement("div");d.className="trip";d.innerHTML="<div><b>"+esc(t.name)+"</b><small>"+esc((t.destinations||[]).join(" · "))+" · "+(t.days||"")+" days · "+esc(t.status||"Planning")+"</small></div><div><button onclick='openTrip("+JSON.stringify(t.id)+")'>Open trip</button> "+(!t.supabaseId?"<button type="button" class="recoverBtn" data-recover-id=""+esc(t.id)+"">Save to account</button> ":"")+"<button onclick='deleteTrip("+JSON.stringify(t.id)+")'>Delete</button></div>";el.appendChild(d)}}
 window.openTrip=function(id){var a=[];try{a=JSON.parse(localStorage.getItem("big-thanksgiving-trips-v1")||"[]")}catch(e){}var t=a.find(function(x){return x.id===id})||{};var d=(t.destinations||[])[0]||"";sessionStorage.setItem("openTripId",id);location.href="trip-workspace.html?id="+encodeURIComponent(id)+"&destination="+encodeURIComponent(d)+"&v=500-"+Date.now()};
 window.deleteTrip=function(id){if(!confirm("Delete this saved trip?"))return;var a=load().filter(function(t){return t.id!==id});localStorage.setItem(KEY,JSON.stringify(a));render()};
 render();
-})();
+document.addEventListener("click",function(e){
+  var b=e.target.closest(".recoverBtn");
+  if(!b)return;
+  e.preventDefault();
+  e.stopPropagation();
+  var id=b.getAttribute("data-recover-id");
+  if(!id)return;
+  b.disabled=true;
+  b.textContent="Saving…";
+  recoverTrip(id).catch(function(err){
+    var st=document.getElementById("recoveryStatus");
+    st.style.display="block";
+    st.textContent="Recovery error: "+(err&&err.message?err.message:String(err));
+    b.disabled=false;
+    b.textContent="Save to account";
+  });
+});
+})(); 
 </script><style id="roamsonio-auth-nav">
 .rsLinks{gap:14px!important;flex-wrap:wrap!important}
 .rsLinks .rsAuthBtn{padding:8px 11px!important;border:1px solid #D4A85A!important;border-radius:7px!important;background:#D4A85A!important;color:#0B2D4A!important}
