@@ -36,7 +36,7 @@ html,body{max-width:100%;overflow-x:hidden}*,*::before,*::after{box-sizing:borde
 const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","sb_publishable_DyiQBLmIyGMBXCeJ9KKgSg_TFWO5vsy");
 const statusBox=document.getElementById("status");
 function status(msg){statusBox.textContent=msg;statusBox.classList.add("show")}
-document.getElementById("signupBtn").onclick=()=>location.href="signup.html";
+document.getElementById("signupBtn").onclick=()=>{const ret=new URLSearchParams(location.search).get("return")||"account.html";location.href="signup.html?return="+encodeURIComponent(ret);};
 document.getElementById("resetBtn").onclick=(e)=>{e.preventDefault();location.href="reset-password.html";};
 document.getElementById("loginForm").onsubmit=async(e)=>{e.preventDefault();status("Signing you in…");const email=document.getElementById("email").value.trim(),password=document.getElementById("password").value;const {error}=await client.auth.signInWithPassword({email,password});if(error){status(error.message);return}location.href=new URLSearchParams(location.search).get("return")||"account.html";};
 </script>
