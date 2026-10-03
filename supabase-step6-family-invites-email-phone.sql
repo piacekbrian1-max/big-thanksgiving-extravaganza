@@ -6,14 +6,19 @@ alter table public.family_invitations
 alter table public.family_invitations
   add column if not exists invitee_name text;
 
+alter table public.family_invitations
+  alter column expires_at drop not null;
+
 drop function if exists public.create_family_invitation(uuid,text,text,text);
+drop function if exists public.create_family_invitation(uuid,text,text,text,text);
 
 create function public.create_family_invitation(
   p_family_id uuid,
   p_invitee_name text,
   p_email text,
   p_phone text,
-  p_role text
+  p_role text,
+  p_expiration text
 )
 returns table (invite_token uuid, expires_at timestamptz)
 language plpgsql
@@ -38,6 +43,10 @@ begin
 
   if p_role not in ('adult','member','guest') then
     raise exception 'Choose a valid family role.';
+  end if;
+
+  if p_expiration not in ('5','14','30','never') then
+    raise exception 'Choose a valid invitation expiration.';
   end if;
 
   if not exists (
@@ -68,5 +77,5 @@ begin
 end;
 $$;
 
-revoke all on function public.create_family_invitation(uuid,text,text,text,text) from public;
-grant execute on function public.create_family_invitation(uuid,text,text,text,text) to authenticated;
+revoke all on function public.create_family_invitation(uuid,text,text,text,text,text) from public;
+grant execute on function public.create_family_invitation(uuid,text,text,text,text,text) to authenticated;
