@@ -141,6 +141,18 @@ const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","s
   }
 
   if(isMaster===true){
+    const {data:aal,error:aalError}=await client.auth.mfa.getAuthenticatorAssuranceLevel();
+    if(aalError){
+      console.error("MFA assurance check failed:",aalError);
+      const box=document.getElementById("authError");
+      box.textContent="We could not verify your Master Admin security level. Please sign in again.";
+      box.style.display="block";
+      return;
+    }
+    if(aal.currentLevel!=="aal2"){
+      location.href="master-admin-security.html";
+      return;
+    }
     document.getElementById("denied").style.display="none";
     document.getElementById("dashboard").style.display="block";
     return;
