@@ -61,7 +61,7 @@ h1{font:600 clamp(38px,5vw,58px)/1.02 "Playfair Display",serif;margin:8px 0 10px
 .transferBtn,.secondaryBtn{padding:11px 15px;border-radius:8px;font:800 9px/1 "DM Sans";letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
 .transferBtn{border:1px solid var(--gold);background:var(--gold);color:var(--navy)}
 #initiateTransferBtn{background:var(--navy);border-color:var(--navy);color:#fff}
-#initiateTransferBtn:disabled{opacity:.45;cursor:not-allowed}
+#initiateTransferBtn:disabled,#reviewTransferBtn:disabled{opacity:.45;cursor:not-allowed}\n.transferBox select{margin-top:2px}\n.transferBox select option{font-family:"DM Sans",Arial,sans-serif}
 
 .secondaryBtn{border:1px solid var(--line);background:#fff;color:var(--navy)}
 .transferReview{margin-top:14px;padding:16px;border:1px solid var(--gold);border-radius:11px;background:#fff}
@@ -140,34 +140,34 @@ h1{font:600 clamp(38px,5vw,58px)/1.02 "Playfair Display",serif;margin:8px 0 10px
       <div class="sectionHead">
         <div>
           <h2>Account Transfer</h2>
-          <p>Protected ownership migration</p>
+          <p>Protected ownership migration for eligible user accounts</p>
         </div>
       </div>
       <div class="transferGrid">
         <div class="transferBox">
-          <div class="transferLabel">FROM · MASTER ADMIN</div>
-          <strong>piacek.brian1@gmail.com</strong>
-          <span>Master Admin · current owner</span>
+          <div class="transferLabel">FROM · USER ACCOUNT</div>
+          <select class="confirmInput" id="transferSourceSelect"><option value="">Select source account…</option></select>
+          <span id="transferSourceMeta">Normal user accounts only · administrator accounts are protected</span>
         </div>
-        <div class="transferArrow" aria-hidden="true">→</div>
+        <div class="transferArrow">→</div>
         <div class="transferBox">
-          <div class="transferLabel">TO · NORMAL USER</div>
-          <strong>piacek.brian1+roamsonio@gmail.com</strong>
-          <span>Normal user · no admin role</span>
+          <div class="transferLabel">TO · USER ACCOUNT</div>
+          <select class="confirmInput" id="transferTargetSelect"><option value="">Select target account…</option></select>
+          <span id="transferTargetMeta">Target must be an eligible normal account</span>
         </div>
       </div>
       <div class="transferSummary">
-        <div><strong>1</strong><span>Family</span></div>
-        <div><strong>1</strong><span>Family Membership</span></div>
-        <div><strong>5</strong><span>Trips</span></div>
-        <div><strong>2</strong><span>Trip Shares</span></div>
+        <div><strong id="transferFamilyCount">—</strong><span>Families</span></div>
+        <div><strong id="transferMembershipCount">—</strong><span>Memberships</span></div>
+        <div><strong id="transferTripCount">—</strong><span>Trips</span></div>
+        <div><strong id="transferShareCount">—</strong><span>Trip Shares</span></div>
       </div>
       <div class="transferNotice">
-        <strong>Nothing moves from this screen yet.</strong>
-        <span>The next step is a protected review. The Master Admin role, 11 historical invitations, and historical audit records remain on the original account.</span>
+        <strong id="transferReadyTitle">Select two accounts to begin.</strong>
+        <span id="transferReadyText">This tool is reusable for eligible users. It does not modify data until a protected preview is reviewed and the final transfer is confirmed.</span>
       </div>
       <div class="quick transferActions">
-        <button type="button" class="transferBtn" id="reviewTransferBtn">Review Transfer</button>
+        <button type="button" class="transferBtn" id="reviewTransferBtn" disabled>Review Transfer</button>
         <button type="button" class="transferBtn" id="initiateTransferBtn" disabled>Initiate Actual Transfer</button>
       </div>
       <div class="transferReview" id="transferReview" hidden>
@@ -176,11 +176,11 @@ h1{font:600 clamp(38px,5vw,58px)/1.02 "Playfair Display",serif;margin:8px 0 10px
         <div id="transferReviewRows" class="reviewRows"></div>
         <div class="transferConfirm" id="transferConfirm" hidden>
           <strong>Final confirmation required</strong>
-          <p>This is the only control on this page that changes ownership. It will transfer the reviewed family, membership, 5 trips and 2 trip shares. The Master Admin role and historical invitations remain on the original account. If anything fails, the database transaction rolls back.</p>
+          <p>This is the only control on this page that changes ownership. Historical invitations, admin roles and historical audit records remain attributed to their original accounts. If anything fails, the protected database transaction rolls back.</p>
           <label for="transferApprovalSelect" class="transferSelectLabel">Transfer authorization</label>
           <select class="confirmInput" id="transferApprovalSelect">
             <option value="">Select an approval status…</option>
-            <option value="approved">Approved — proceed with transfer</option>
+            <option value="approved">Authorized — proceed with transfer</option>
           </select>
           <div class="confirmActions">
             <button type="button" class="dangerBtn" id="executeTransferBtn" disabled>Confirm &amp; Transfer</button>
@@ -193,7 +193,6 @@ h1{font:600 clamp(38px,5vw,58px)/1.02 "Playfair Display",serif;margin:8px 0 10px
         </div>
       </div>
     </section>
-
     <section class="section">
       <div class="sectionHead"><div><h2>Recent Activity</h2><p>Reserved for the future admin activity feed</p></div></div>
       <div class="table">
@@ -251,6 +250,7 @@ const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","s
     document.getElementById("denied").style.display="none";
     document.getElementById("dashboard").style.display="block";
     loadMasterSummary();
+    loadTransferUsers();
     return;
   }
 
@@ -259,105 +259,152 @@ const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","s
 </script>
 
   <script>
-  const TRANSFER_SOURCE="da634ac8-c9b8-430e-aa14-c37a4c4e8878";
-  const TRANSFER_TARGET="1d7ae331-284b-4520-a072-aa0cb4a0930e";
+  let transferUsers=[];
+  let selectedSource="";
+  let selectedTarget="";
+  let transferPreviewLoaded=false;
+
+  function userLabel(u){
+    const name=(u.display_name||"").trim();
+    return name ? name+" · "+u.email : (u.email||u.user_id);
+  }
+
+  function populateTransferUsers(users){
+    transferUsers=(users||[]).filter(u=>!u.admin_active);
+    const source=document.getElementById("transferSourceSelect");
+    const target=document.getElementById("transferTargetSelect");
+    source.innerHTML='<option value="">Select source account…</option>';
+    target.innerHTML='<option value="">Select target account…</option>';
+    transferUsers.forEach(u=>{
+      const label=userLabel(u);
+      const a=document.createElement("option"); a.value=u.user_id; a.textContent=label; source.appendChild(a);
+      const b=document.createElement("option"); b.value=u.user_id; b.textContent=label; target.appendChild(b);
+    });
+    updateTransferControls();
+  }
+
+  function resetTransferPreview(){
+    transferPreviewLoaded=false;
+    document.getElementById("transferReview").hidden=true;
+    document.getElementById("transferConfirm").hidden=true;
+    document.getElementById("transferReviewRows").innerHTML="";
+    ["transferFamilyCount","transferMembershipCount","transferTripCount","transferShareCount"].forEach(id=>document.getElementById(id).textContent="—");
+    document.getElementById("initiateTransferBtn").disabled=true;
+    document.getElementById("transferApprovalSelect").value="";
+    document.getElementById("executeTransferBtn").disabled=true;
+  }
+
+  function updateTransferControls(){
+    selectedSource=document.getElementById("transferSourceSelect").value;
+    selectedTarget=document.getElementById("transferTargetSelect").value;
+    const valid=!!selectedSource && !!selectedTarget && selectedSource!==selectedTarget;
+    document.getElementById("reviewTransferBtn").disabled=!valid;
+    if(!valid)resetTransferPreview();
+    document.getElementById("transferReadyTitle").textContent=valid?"Ready to review this transfer.":"Select two different accounts to begin.";
+    document.getElementById("transferReadyText").textContent=valid
+      ?"No data changes occur during review. The protected preview will show exactly what would move and what stays historical."
+      :"This tool is reusable for eligible users. Administrator accounts are protected.";
+  }
 
   function renderTransferPreview(rows){
     const container=document.getElementById("transferReviewRows");
     container.innerHTML="";
-    rows.forEach(row=>{
-      const el=document.createElement("div");
-      el.className="reviewRow";
-      const action=document.createElement("b");
-      action.textContent=row.action||"";
-      if((row.action||"")==="KEEP")action.className="keep";
-      const type=document.createElement("b");
-      type.textContent=(row.record_type||"").replaceAll("_"," ");
-      const detail=document.createElement("span");
-      detail.textContent=row.record_name ? row.record_name+" — "+(row.detail||"") : (row.detail||"");
-      el.append(action,type,detail);
-      container.appendChild(el);
+    let families=0,memberships=0,trips=0,shares=0;
+    (rows||[]).forEach(row=>{
+      if(row.record_type==="family" && row.action!=="KEEP")families++;
+      if(row.record_type==="family_member" && row.action!=="KEEP")memberships++;
+      if(row.record_type==="trip" && row.action!=="KEEP")trips++;
+      if(row.record_type==="trip_share" && row.action!=="KEEP")shares++;
+      const el=document.createElement("div"); el.className="reviewRow";
+      const action=document.createElement("b"); action.textContent=row.action||""; if(row.action==="KEEP")action.className="keep";
+      const type=document.createElement("span"); type.textContent=(row.record_type||"").replace(/_/g," ").toUpperCase();
+      const detail=document.createElement("span"); detail.textContent=(row.record_name||"")+(row.detail?" — "+row.detail:"");
+      el.append(action,type,detail); container.appendChild(el);
     });
+    document.getElementById("transferFamilyCount").textContent=families;
+    document.getElementById("transferMembershipCount").textContent=memberships;
+    document.getElementById("transferTripCount").textContent=trips;
+    document.getElementById("transferShareCount").textContent=shares;
   }
 
-  document.getElementById("reviewTransferBtn").addEventListener("click",async()=>{
-    const review=document.getElementById("transferReview");
-    const status=document.getElementById("transferReviewStatus");
-    const btn=document.getElementById("reviewTransferBtn");
-    review.hidden=false;
-    status.textContent="Loading protected transfer preview…";
-    btn.disabled=true;
+  async function loadTransferUsers(){
     try{
-      const {data,error}=await client.rpc("roamsonio_preview_account_transfer",{
-        p_source_user_id:TRANSFER_SOURCE,
-        p_target_user_id:TRANSFER_TARGET
-      });
+      const {error:refreshError}=await client.auth.refreshSession(); if(refreshError)throw refreshError;
+      const {data,error}=await client.rpc("roamsonio_admin_users"); if(error)throw error;
+      populateTransferUsers(data||[]);
+      document.getElementById("transferReadyTitle").textContent="Ready for an account transfer.";
+      document.getElementById("transferReadyText").textContent="Select any eligible normal source account and any eligible normal target account. Administrator accounts are protected.";
+    }catch(e){
+      console.error("Transfer user list failed:",e);
+      document.getElementById("transferReadyTitle").textContent="Transfer tool unavailable.";
+      document.getElementById("transferReadyText").textContent=e.message||"Unable to load eligible accounts.";
+    }
+  }
+
+  document.getElementById("transferSourceSelect").addEventListener("change",updateTransferControls);
+  document.getElementById("transferTargetSelect").addEventListener("change",updateTransferControls);
+
+  document.getElementById("reviewTransferBtn").addEventListener("click",async()=>{
+    const review=document.getElementById("transferReview"), status=document.getElementById("transferReviewStatus"), btn=document.getElementById("reviewTransferBtn");
+    review.hidden=false; status.textContent="Loading protected transfer preview…"; btn.disabled=true;
+    try{
+      const {data,error}=await client.rpc("roamsonio_preview_user_transfer",{p_source_user_id:selectedSource,p_target_user_id:selectedTarget});
       if(error)throw error;
       renderTransferPreview(data||[]);
       status.textContent="Protected preview loaded. No data was changed.";
       document.getElementById("transferConfirm").hidden=true;
       document.getElementById("reviewCloseOnly").style.display="flex";
       document.getElementById("initiateTransferBtn").disabled=false;
+      transferPreviewLoaded=true;
     }catch(e){
       console.error("Transfer preview failed:",e);
       status.textContent="Transfer preview could not be loaded: "+(e.message||"Unknown error");
       document.getElementById("transferReviewRows").innerHTML="";
-    }finally{
-      btn.disabled=false;
-    }
+      document.getElementById("initiateTransferBtn").disabled=true;
+      transferPreviewLoaded=false;
+    }finally{btn.disabled=false;}
   });
 
   const approvalSelect=document.getElementById("transferApprovalSelect");
   const executeBtn=document.getElementById("executeTransferBtn");
-  approvalSelect.addEventListener("change",()=>{
-    executeBtn.disabled=approvalSelect.value!=="approved";
-  });
+  approvalSelect.addEventListener("change",()=>{executeBtn.disabled=approvalSelect.value!=="approved";});
 
   document.getElementById("executeTransferBtn").addEventListener("click",async()=>{
-    if(approvalSelect.value!=="approved")return;
-    executeBtn.disabled=true;
-    executeBtn.textContent="Transferring…";
-    const resultBox=document.getElementById("transferResult");
-    resultBox.hidden=true;
+    if(!transferPreviewLoaded || approvalSelect.value!=="approved")return;
+    executeBtn.disabled=true; executeBtn.textContent="Transferring…";
+    const resultBox=document.getElementById("transferResult"); resultBox.hidden=true;
     try{
-      const {error:refreshError}=await client.auth.refreshSession();
-      if(refreshError)throw refreshError;
-
-      const {data,error}=await client.rpc("roamsonio_transfer_account",{
-        p_source_user_id:TRANSFER_SOURCE,
-        p_target_user_id:TRANSFER_TARGET
-      });
+      const {error:refreshError}=await client.auth.refreshSession(); if(refreshError)throw refreshError;
+      const {error}=await client.rpc("roamsonio_transfer_user_account",{p_source_user_id:selectedSource,p_target_user_id:selectedTarget});
       if(error)throw error;
-
-      resultBox.textContent="Success";
-      resultBox.hidden=false;
-      approvalSelect.disabled=true;
-      executeBtn.textContent="Transfer Complete";
+      resultBox.textContent="Success"; resultBox.hidden=false;
+      approvalSelect.disabled=true; executeBtn.textContent="Transfer Complete";
       document.getElementById("reviewTransferBtn").disabled=true;
+      document.getElementById("initiateTransferBtn").disabled=true;
+      document.getElementById("transferReadyTitle").textContent="Transfer completed.";
+      document.getElementById("transferReadyText").textContent="The selected ownership records were transferred. Historical invitations, admin roles and historical audit records were preserved.";
+      transferPreviewLoaded=false;
     }catch(e){
       console.error("Account transfer failed:",e);
-      resultBox.textContent="Transfer was not completed: "+(e.message||"Unknown error")+". The protected database transaction should have rolled back.";
-      resultBox.hidden=false;
-      executeBtn.disabled=false;
-      executeBtn.textContent="Confirm & Transfer";
+      resultBox.textContent="Transfer was not completed: "+(e.message||"Unknown error")+". No partial ownership change should remain.";
+      resultBox.hidden=false; executeBtn.disabled=false; executeBtn.textContent="Confirm & Transfer";
     }
   });
 
   document.getElementById("initiateTransferBtn").addEventListener("click",()=>{
+    if(!transferPreviewLoaded)return;
     document.getElementById("transferConfirm").hidden=false;
     document.getElementById("transferApprovalSelect").value="";
+    document.getElementById("transferApprovalSelect").disabled=false;
     document.getElementById("executeTransferBtn").disabled=true;
+    document.getElementById("executeTransferBtn").textContent="Confirm & Transfer";
     document.getElementById("transferResult").hidden=true;
     document.getElementById("transferApprovalSelect").focus();
     document.getElementById("transferConfirm").scrollIntoView({behavior:"smooth",block:"center"});
   });
 
-  document.getElementById("closeTransferReview").addEventListener("click",()=>{
-    document.getElementById("transferReview").hidden=true;
-  });
-  document.getElementById("closeTransferReviewFallback").addEventListener("click",()=>{
-    document.getElementById("transferReview").hidden=true;
-  });
+  document.getElementById("closeTransferReview").addEventListener("click",()=>{document.getElementById("transferReview").hidden=true;});
+  document.getElementById("closeTransferReviewFallback").addEventListener("click",()=>{document.getElementById("transferReview").hidden=true;});
 
   async function loadMasterSummary(){
     try{
