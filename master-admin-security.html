@@ -61,8 +61,16 @@ async function start(){
  if(error){showStatus(error.message);return}
  const verified=(factors?.totp||[]).find(f=>f.status==="verified");
  if(verified){
-   document.getElementById("enrollCard").classList.add("hidden");
-   document.getElementById("successCard").classList.remove("hidden");
+   document.getElementById("enrollCard").innerHTML='<h2>Verify your authenticator</h2><p>Your authenticator is already enrolled. Enter the current 6-digit code to complete Master Admin verification.</p><input id="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000"><button class="primary" id="verifyExisting">Verify and Continue</button><div class="status" id="enrollStatus"></div>';
+   const {data:challenge,error:challengeError}=await client.auth.mfa.challenge({factorId:verified.id});
+   if(challengeError){showStatus(challengeError.message);return}
+   document.getElementById("verifyExisting").onclick=async()=>{
+     const code=document.getElementById("code").value.replace(/\\D/g,"");
+     if(code.length!==6){showStatus("Enter the 6-digit code from Google Authenticator.");return}
+     const {error}=await client.auth.mfa.verify({factorId:verified.id,challengeId:challenge.id,code});
+     if(error){showStatus("That code was not accepted. Make sure Google Authenticator is showing the current code and try again.");return}
+     location.href="master-account.html";
+   };
    return;
  }
  const {data,error:enrollError}=await client.auth.mfa.enroll({factorType:"totp",friendlyName:"RoamSonio Master Admin"});
