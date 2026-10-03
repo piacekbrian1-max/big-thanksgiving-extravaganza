@@ -109,4 +109,29 @@ document.getElementById("continueBtn").onclick=()=>location.href="master-account
 start();
 </script>
 </body>
-</html>
+</html  if(enroll.totp.qr_code){
+    const qrValue=enroll.totp.qr_code;
+    if(qrValue.trim().startsWith("<svg")){
+      document.getElementById("qr").innerHTML=qrValue;
+    }else{
+      const img=document.createElement("img");
+      img.alt="RoamSonio Master Admin authenticator QR code";
+      img.style.width="260px";img.style.height="260px";img.style.maxWidth="100%";img.style.display="block";
+      img.src=qrValue;
+      document.getElementById("qr").appendChild(img);
+    }
+  }else{
+    document.getElementById("qr").innerHTML="<p style=\"color:#58718A;font-size:11px\">Supabase did not return a QR code.</p>";
+  }
+  document.getElementById("enrollStatus").textContent="Authenticator enrollment is ready. Scan the QR code above, then enter the 6-digit code.";
+  document.getElementById("enrollStatus").className="status show ok";
+  if(enrollError){
+    showStatus("MFA enrollment failed: "+(enrollError.message||"Unknown Supabase error"));
+    console.error("MFA enrollment error:",enrollError);
+    return;
+  }
+  if(!enroll?.totp?.secret){
+    showStatus("Supabase enrollment completed without a TOTP secret. Please refresh and try again.");
+    return;
+  }
+>
