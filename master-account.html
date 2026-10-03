@@ -47,6 +47,30 @@ h1{font:600 clamp(38px,5vw,58px)/1.02 "Playfair Display",serif;margin:8px 0 10px
 .quick a.primary{background:var(--gold);border-color:var(--gold)}
 .notice{margin-top:20px;padding:13px 15px;border-radius:10px;background:#F1EADB;color:#5F5137;font-size:10px;line-height:1.5}
 .denied{max-width:620px;margin:70px auto;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:30px;text-align:center}
+.transferGrid{display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;gap:10px;margin-top:4px}
+.transferBox{padding:15px;border:1px solid var(--line);border-radius:10px;background:#fff}
+.transferBox strong{display:block;font-size:12px;line-height:1.35;word-break:break-word}
+.transferBox span{display:block;margin-top:5px;color:var(--slate);font-size:9px}
+.transferLabel{margin-bottom:7px;color:var(--gold-dark);font-size:8px;font-weight:800;letter-spacing:.11em}
+.transferArrow{display:grid;place-items:center;padding:0 4px;font:600 22px/1 "Playfair Display";color:var(--gold-dark)}
+.transferSummary{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.transferSummary div{padding:12px;border:1px solid #E4E8EC;border-radius:9px;background:#fff;text-align:center}
+.transferSummary strong{display:block;font:600 23px/1 "Playfair Display"}
+.transferSummary span{display:block;margin-top:5px;color:var(--slate);font-size:8px;text-transform:uppercase;letter-spacing:.06em}
+.transferNotice{display:flex;flex-direction:column;gap:4px;margin-top:10px;padding:13px 15px;border-radius:10px;background:#F1EADB;color:#5F5137;font-size:10px;line-height:1.5}
+.transferBtn,.secondaryBtn{padding:11px 15px;border-radius:8px;font:800 9px/1 "DM Sans";letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.transferBtn{border:1px solid var(--gold);background:var(--gold);color:var(--navy)}
+.secondaryBtn{border:1px solid var(--line);background:#fff;color:var(--navy)}
+.transferReview{margin-top:14px;padding:16px;border:1px solid var(--gold);border-radius:11px;background:#fff}
+.reviewTitle{font:600 22px/1.1 "Playfair Display";margin-bottom:6px}
+.reviewStatus{color:var(--slate);font-size:10px;line-height:1.5}
+.reviewRows{display:grid;gap:6px;margin-top:12px}
+.reviewRow{display:grid;grid-template-columns:110px 120px 1fr;gap:8px;padding:9px 10px;border:1px solid #E4E8EC;border-radius:8px;font-size:9px}
+.reviewRow b{font-size:8px;text-transform:uppercase;letter-spacing:.06em}
+.reviewRow .keep{color:var(--gold-dark)}
+.reviewActions{margin-top:12px;display:flex;justify-content:flex-end}
+@media(max-width:700px){.transferGrid{grid-template-columns:1fr}.transferArrow{transform:rotate(90deg);padding:2px}.transferSummary{grid-template-columns:1fr 1fr}.reviewRow{grid-template-columns:1fr 1fr}.reviewRow span:last-child{grid-column:1/-1}}
+
 .denied h1{font-size:38px}
 .preview{display:none}
 .errorBox{display:none;margin:20px auto 0;max-width:760px;padding:13px 15px;border-radius:10px;background:#F7E5E2;color:#7B3028;border:1px solid #E8C7C2;font-size:11px;line-height:1.5}
@@ -95,7 +119,50 @@ h1{font:600 clamp(38px,5vw,58px)/1.02 "Playfair Display",serif;margin:8px 0 10px
       <div class="quick">
         <a class="primary" href="master-users.html">Users</a><a href="master-trips.html">Trips</a><a href="master-families.html">Families</a><a href="master-support.html">Support</a><a href="#">Messages</a><a href="#">Announcements</a><a href="#">Activity Log</a>
       </div>
-      <div class="notice">Phase 2B is read-only. Users, trips, families and support data are visible through protected database functions. No business data can be changed from these screens yet.</div>
+      <div class="notice">Phase 2B is read-only. Users, trips, families and support data are visible through protected database functions. Account transfer is separately protected and requires Master Admin + MFA verification.</div>
+    </section>
+
+    <section class="section" id="accountTransferSection">
+      <div class="sectionHead">
+        <div>
+          <h2>Account Transfer</h2>
+          <p>Protected ownership migration</p>
+        </div>
+      </div>
+      <div class="transferGrid">
+        <div class="transferBox">
+          <div class="transferLabel">FROM · MASTER ADMIN</div>
+          <strong>piacek.brian1@gmail.com</strong>
+          <span>Master Admin · current owner</span>
+        </div>
+        <div class="transferArrow" aria-hidden="true">→</div>
+        <div class="transferBox">
+          <div class="transferLabel">TO · NORMAL USER</div>
+          <strong>piacek.brian1+roamsonio@gmail.com</strong>
+          <span>Normal user · no admin role</span>
+        </div>
+      </div>
+      <div class="transferSummary">
+        <div><strong>1</strong><span>Family</span></div>
+        <div><strong>1</strong><span>Family Membership</span></div>
+        <div><strong>5</strong><span>Trips</span></div>
+        <div><strong>2</strong><span>Trip Shares</span></div>
+      </div>
+      <div class="transferNotice">
+        <strong>Nothing moves from this screen yet.</strong>
+        <span>The next step is a protected review. The Master Admin role, 11 historical invitations, and historical audit records remain on the original account.</span>
+      </div>
+      <div class="quick transferActions">
+        <button type="button" class="transferBtn" id="reviewTransferBtn">Review Transfer</button>
+      </div>
+      <div class="transferReview" id="transferReview" hidden>
+        <div class="reviewTitle">Transfer Review</div>
+        <div id="transferReviewStatus" class="reviewStatus">Loading protected preview…</div>
+        <div id="transferReviewRows" class="reviewRows"></div>
+        <div class="reviewActions">
+          <button type="button" class="secondaryBtn" id="closeTransferReview">Close Review</button>
+        </div>
+      </div>
     </section>
 
     <section class="section">
@@ -163,6 +230,55 @@ const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","s
 </script>
 
   <script>
+  const TRANSFER_SOURCE="da634ac8-c9b8-430e-aa14-c37a4c4e8878";
+  const TRANSFER_TARGET="1d7ae331-284b-4520-a072-aa0cb4a0930e";
+
+  function renderTransferPreview(rows){
+    const container=document.getElementById("transferReviewRows");
+    container.innerHTML="";
+    rows.forEach(row=>{
+      const el=document.createElement("div");
+      el.className="reviewRow";
+      const action=document.createElement("b");
+      action.textContent=row.action||"";
+      if((row.action||"")==="KEEP")action.className="keep";
+      const type=document.createElement("b");
+      type.textContent=(row.record_type||"").replaceAll("_"," ");
+      const detail=document.createElement("span");
+      detail.textContent=row.record_name ? row.record_name+" — "+(row.detail||"") : (row.detail||"");
+      el.append(action,type,detail);
+      container.appendChild(el);
+    });
+  }
+
+  document.getElementById("reviewTransferBtn").addEventListener("click",async()=>{
+    const review=document.getElementById("transferReview");
+    const status=document.getElementById("transferReviewStatus");
+    const btn=document.getElementById("reviewTransferBtn");
+    review.hidden=false;
+    status.textContent="Loading protected transfer preview…";
+    btn.disabled=true;
+    try{
+      const {data,error}=await client.rpc("roamsonio_preview_account_transfer",{
+        p_source_user_id:TRANSFER_SOURCE,
+        p_target_user_id:TRANSFER_TARGET
+      });
+      if(error)throw error;
+      renderTransferPreview(data||[]);
+      status.textContent="Protected preview loaded. No data was changed.";
+    }catch(e){
+      console.error("Transfer preview failed:",e);
+      status.textContent="Transfer preview could not be loaded: "+(e.message||"Unknown error");
+      document.getElementById("transferReviewRows").innerHTML="";
+    }finally{
+      btn.disabled=false;
+    }
+  });
+
+  document.getElementById("closeTransferReview").addEventListener("click",()=>{
+    document.getElementById("transferReview").hidden=true;
+  });
+
   async function loadMasterSummary(){
     try{
       // Refresh the session so the access token carries the verified AAL2 claim
