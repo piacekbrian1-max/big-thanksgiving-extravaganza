@@ -72,7 +72,8 @@ h1{font:600 clamp(38px,5vw,58px)/1.02 "Playfair Display",serif;margin:8px 0 10px
   <div class="denied" id="denied">
     <div class="ey">RoamSonio Administration</div>
     <h1>Master Account</h1>
-    <p class="intro" style="margin:0 auto">This area is reserved for the RoamSonio master administrator. Access is controlled by the protected admin role before any user or trip data is exposed.</p>
+    <p class="intro" style="margin:0 auto">This area is reserved for the RoamSonio master administrator. Sign in with the authorized Google account to continue.</p>
+    <div class="quick" style="justify-content:center;margin-top:18px"><a class="primary" href="master-admin-login.html">Master Admin Sign In</a></div>
     <div class="errorBox" id="authError"></div>
   </div>
 
@@ -83,10 +84,10 @@ h1{font:600 clamp(38px,5vw,58px)/1.02 "Playfair Display",serif;margin:8px 0 10px
     <div class="adminBadge">Master Administrator</div>
 
     <section class="grid">
-      <div class="card"><div class="num">—</div><small>Total Users</small></div>
-      <div class="card"><div class="num">—</div><small>Total Trips</small></div>
-      <div class="card"><div class="num">—</div><small>Families & Groups</small></div>
-      <div class="card"><div class="num">—</div><small>Open Support</small></div>
+      <div class="card"><div class="num" id="userCount">—</div><small>Total Users</small></div>
+      <div class="card"><div class="num" id="tripCount">—</div><small>Total Trips</small></div>
+      <div class="card"><div class="num" id="familyCount">—</div><small>Families & Groups</small></div>
+      <div class="card"><div class="num" id="supportCount">—</div><small>Open Support</small></div>
     </section>
 
     <section class="section">
@@ -114,7 +115,7 @@ const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","s
 (async()=>{
   const {data:{session},error:sessionError}=await client.auth.getSession();
   if(sessionError||!session){
-    location.href="master-admin-login.html";
+    location.replace("master-admin-login.html");
     return;
   }
 
@@ -134,9 +135,7 @@ const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","s
 
   if(roleError){
     console.error("Master role verification failed:",roleError);
-    const box=document.getElementById("authError");
-    box.textContent="We could not verify your Master Admin access. Please refresh and try again.";
-    box.style.display="block";
+    location.replace("master-admin-login.html");
     return;
   }
 
@@ -155,11 +154,11 @@ const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","s
     }
     document.getElementById("denied").style.display="none";
     document.getElementById("dashboard").style.display="block";
+    loadMasterSummary();
     return;
   }
 
-  document.getElementById("authError").textContent="Your signed-in account is not authorized for the Master Account.";
-  document.getElementById("authError").style.display="block";
+  location.replace("master-admin-login.html");
 })();
 </script>
 
