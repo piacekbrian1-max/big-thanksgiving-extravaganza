@@ -362,7 +362,8 @@ const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","s
   document.getElementById("displayName").textContent=name;
   document.getElementById("accountIntro").textContent=name+"’s RoamSonio account is separate from other members. Family membership and trip permissions are managed here.";
   document.getElementById("email").textContent=session.user.email||"Signed-in RoamSonio member";
-  if(session.user.app_metadata?.role==="master_admin"||session.user.app_metadata?.user_role==="master_admin"){document.getElementById("masterAccountTile").style.display="flex";}
+  const {data:isMaster}=await client.rpc("roamsonio_is_master_admin");
+   if(isMaster===true){document.getElementById("masterAccountTile").style.display="flex";}
 })();
 
 document.getElementById("profileLink").addEventListener("click",e=>{
