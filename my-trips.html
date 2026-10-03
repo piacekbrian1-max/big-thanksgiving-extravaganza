@@ -10,7 +10,7 @@ html,body{max-width:100%;overflow-x:hidden}*,*::before,*::after{box-sizing:borde
 </style></head><body>
 <header class="rsTop"><div class="rsNav"><a class="rsBrand" href="index.html" aria-label="RoamSonio home"><span class="rsMark"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#F8F5ED"/><circle cx="45" cy="18" r="8" fill="#D4A85A"/><path d="M10 46 25 29l8 9 8-12 13 20H10Z" fill="#0B2D4A"/><path d="M17 20c8-7 18-8 27-4 5 2 8 5 10 9" fill="none" stroke="#D4A85A" stroke-width="3" stroke-linecap="round"/></svg></span><span><strong><span class="rsRoam">Roam</span><span class="rsSonio">Sonio</span></strong><small>DREAM IT. PLAN IT. LIVE IT.</small></span></a><nav class="rsLinks" aria-label="Primary navigation"><a href="index.html">My RoamSonio</a><a href="my-trips.html">My Trips</a><a href="build-trip.html">Build Your Trip</a><a href="travel-desk.html">Travel Desk</a><a href="about.html">About Us</a><a href="account.html" id="rsAccountLink">My Account</a><a href="login.html?return=my-trips.html" id="rsAuthLink" class="rsAuthBtn">Sign In</a></nav></div></header>
 <header class="hero"><div class="ey">ROAMSONIO · YOUR TRAVEL LIBRARY</div><h1><span id="tripOwnerName">My</span> Trips</h1><p id="tripOwnerIntro">Your saved journeys are kept separate from the current trip. Open a trip to work with its own plans, memories and journal, or start something completely new.</p><div class="actions"><a class="btn" href="index.html">Home</a><a class="btn primary" href="build-trip.html">Build a new trip</a><a class="btn" href="current-trip.html">Current trip</a></div></header>
-<main class="wrap"><section class="panel"><div class="ey">Saved journeys</div><h2 class="serif">Your trips</h2><p>Trips saved in this browser appear here. Opening one takes you to that trip's workspace instead of changing the current trip page.</p><div id="tripList" class="tripList"></div></section></main>
+<main class="wrap"><section class="panel"><div class="ey">Saved journeys</div><h2 class="serif">Your trips</h2><p>Trips saved in this browser appear here. Opening one takes you to that trip's workspace instead of changing the current trip page.</p><div id="recoveryStatus" class="empty" style="display:none;margin-bottom:12px"></div><div id="tripList" class="tripList"></div></section></main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 (function(){
@@ -42,8 +42,35 @@ function load(){
   }catch(e){return[]}
 }
 function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+var SB_URL="https://vqtqchxoecrahtrnoocy.supabase.co";
+var SB_KEY="sb_publishable_DyiQBLmIyGMBXCeJ9KKgSg_TFWO5vsy";
+var sb=supabase.createClient(SB_URL,SB_KEY);
+async function getSession(){try{var r=await sb.auth.getSession();return r.data&&r.data.session||null}catch(e){return null}}
+async function recoverTrip(id){
+  var a=load(),t=a.find(function(x){return x.id===id});
+  if(!t)return;
+  var st=document.getElementById("recoveryStatus");
+  st.style.display="block";st.textContent="Saving "+(t.name||"this trip")+" to your RoamSonio account…";
+  var session=await getSession();
+  if(!session){st.textContent="Sign in to recover this trip to your RoamSonio account.";return}
+  try{
+    var r=await sb.from("trips").insert({
+      owner_id:session.user.id,
+      name:t.name||((t.destinations||[])[0]||"RoamSonio Trip")+" Adventure",
+      visibility:"private",
+      surprise_mode:false,
+      trip_snapshot:t
+    }).select("id").single();
+    if(r.error)throw r.error;
+    t.supabaseId=r.data.id;
+    t.recoveredToAccountAt=new Date().toISOString();
+    localStorage.setItem(KEY,JSON.stringify(a));
+    st.textContent="Success — "+(t.name||"Trip")+" is now saved to the account. Master Admin can see it in Trips.";
+    render();
+  }catch(e){st.textContent="The trip could not be recovered yet: "+(e.message||e)}
+}
 function render(){var el=document.getElementById("tripList"),a=load();el.innerHTML="";if(!a.length){el.innerHTML='<div class="empty">No saved trips yet. Build your first new trip.</div>';return}
-for(var i=a.length-1;i>=0;i--){var t=a[i],d=document.createElement("div");d.className="trip";d.innerHTML="<div><b>"+esc(t.name)+"</b><small>"+esc((t.destinations||[]).join(" · "))+" · "+(t.days||"")+" days · "+esc(t.status||"Planning")+"</small></div><div><button onclick='openTrip("+JSON.stringify(t.id)+")'>Open trip</button> <button onclick='deleteTrip("+JSON.stringify(t.id)+")'>Delete</button></div>";el.appendChild(d)}}
+for(var i=a.length-1;i>=0;i--){var t=a[i],d=document.createElement("div");d.className="trip";d.innerHTML="<div><b>"+esc(t.name)+"</b><small>"+esc((t.destinations||[]).join(" · "))+" · "+(t.days||"")+" days · "+esc(t.status||"Planning")+"</small></div><div><button onclick='openTrip("+JSON.stringify(t.id)+")'>Open trip</button> "+(!t.supabaseId?"<button onclick='recoverTrip("+JSON.stringify(t.id)+")'>Save to account</button> ":"")+"<button onclick='deleteTrip("+JSON.stringify(t.id)+")'>Delete</button></div>";el.appendChild(d)}}
 window.openTrip=function(id){var a=[];try{a=JSON.parse(localStorage.getItem("big-thanksgiving-trips-v1")||"[]")}catch(e){}var t=a.find(function(x){return x.id===id})||{};var d=(t.destinations||[])[0]||"";sessionStorage.setItem("openTripId",id);location.href="trip-workspace.html?id="+encodeURIComponent(id)+"&destination="+encodeURIComponent(d)+"&v=500-"+Date.now()};
 window.deleteTrip=function(id){if(!confirm("Delete this saved trip?"))return;var a=load().filter(function(t){return t.id!==id});localStorage.setItem(KEY,JSON.stringify(a));render()};
 render();
