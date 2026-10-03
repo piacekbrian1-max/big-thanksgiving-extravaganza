@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Master Account · RoamSonio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0B2D4A;--gold:#D4A85A;--gold-dark:#A47C2F;--ivory:#F8F5ED;--paper:#FFFDF9;--slate:#58718A;--line:#D9E0E7}
+*{box-sizing:border-box}
+html,body{margin:0;max-width:100%;overflow-x:hidden}
+body{background:var(--ivory);color:var(--navy);font-family:"DM Sans",Arial,sans-serif}
+a{text-decoration:none;color:inherit}
+.rsTop{position:sticky;top:0;z-index:1000;width:100%;min-height:68px;background:rgba(248,245,237,.98);border-bottom:1px solid var(--line);backdrop-filter:blur(14px)}
+.rsNav{width:100%;max-width:1440px;margin:0 auto;min-height:68px;padding:0 20px;display:flex;align-items:center;gap:18px}
+.rsBrand{display:flex;align-items:center;gap:10px;flex:0 0 auto}
+.rsMark{width:42px;height:42px;border:2px solid var(--gold);border-radius:10px;display:grid;place-items:center;background:var(--ivory)}
+.rsMark svg{width:32px;height:32px}
+.rsBrand strong{font:600 22px/1.05 "Playfair Display",serif;white-space:nowrap}
+.rsRoam{color:var(--navy)}.rsSonio{color:var(--gold)}
+.rsBrand small{display:block;margin-top:3px;color:var(--slate);font:700 7px/1.1 "DM Sans";letter-spacing:.18em;white-space:nowrap}
+.rsLinks{display:flex;align-items:center;justify-content:flex-end;gap:13px;flex:1;min-width:0;flex-wrap:wrap}
+.rsLinks a{font:700 11px/1.1 "DM Sans";white-space:nowrap;color:var(--navy)}
+.rsAuthBtn{padding:8px 11px;border:1px solid var(--gold);border-radius:7px;background:var(--gold)}
+.wrap{width:min(1240px,calc(100% - 36px));margin:auto;padding:34px 0 70px}
+.ey{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-dark);font-weight:800}
+h1{font:600 clamp(38px,5vw,58px)/1.02 "Playfair Display",serif;margin:8px 0 10px}
+.intro{max-width:760px;color:var(--slate);font-size:13px;line-height:1.65;margin:0}
+.adminBadge{display:inline-flex;margin-top:14px;padding:7px 10px;border-radius:99px;background:#E9D9B7;font-size:8px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:26px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:19px;min-height:132px}
+.card .num{font:600 31px/1 "Playfair Display";color:var(--navy)}
+.card small{display:block;margin-top:8px;color:var(--slate);font-size:9px;line-height:1.4;text-transform:uppercase;letter-spacing:.08em}
+.section{margin-top:28px;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:22px}
+.sectionHead{display:flex;align-items:end;justify-content:space-between;gap:15px;margin-bottom:15px}
+.section h2{font:600 27px/1.1 "Playfair Display";margin:0}
+.sectionHead p{margin:0;color:var(--slate);font-size:10px}
+.table{display:grid;gap:8px}
+.row{display:grid;grid-template-columns:1.1fr .9fr .8fr .8fr;gap:10px;padding:11px 12px;border:1px solid #E4E8EC;border-radius:9px;background:#fff}
+.row.header{background:#F1EADB;border-color:#E1D4B9;font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.1em}
+.row span{font-size:10px;min-width:0}
+.row .muted{color:var(--slate)}
+.quick{display:flex;gap:8px;flex-wrap:wrap}
+.quick a{padding:10px 13px;border-radius:7px;border:1px solid var(--line);font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+.quick a.primary{background:var(--gold);border-color:var(--gold)}
+.notice{margin-top:20px;padding:13px 15px;border-radius:10px;background:#F1EADB;color:#5F5137;font-size:10px;line-height:1.5}
+.denied{max-width:620px;margin:70px auto;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:30px;text-align:center}
+.denied h1{font-size:38px}
+.preview{display:none}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.rsNav{padding:8px 11px;min-height:62px;align-items:flex-start}.rsTop{min-height:62px}.rsBrand strong{font-size:18px}.rsMark{width:34px;height:34px;flex-basis:34px}.rsMark svg{width:26px;height:26px}.rsBrand small{font-size:5px}.rsLinks{gap:6px 8px}.rsLinks a{font-size:9px}.wrap{width:calc(100% - 24px);padding-top:24px}.grid{grid-template-columns:1fr 1fr}.row{grid-template-columns:1fr 1fr}.row.header{display:none}}
+@media(max-width:430px){.grid{grid-template-columns:1fr}.card{min-height:105px}}
+</style>
+</head>
+<body>
+<header class="rsTop">
+  <div class="rsNav">
+    <a class="rsBrand" href="index.html" aria-label="RoamSonio home">
+      <span class="rsMark"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#F8F5ED"/><circle cx="45" cy="18" r="8" fill="#D4A85A"/><path d="M10 46 25 29l8 9 8-12 13 20H10Z" fill="#0B2D4A"/><path d="M17 20c8-7 18-8 27-4 5 2 8 5 10 9" fill="none" stroke="#D4A85A" stroke-width="3" stroke-linecap="round"/></svg></span>
+      <span><strong><span class="rsRoam">Roam</span><span class="rsSonio">Sonio</span></strong><small>DREAM IT. PLAN IT. LIVE IT.</small></span>
+    </a>
+    <nav class="rsLinks" aria-label="Primary navigation">
+      <a href="index.html">My RoamSonio</a><a href="my-trips.html">My Trips</a><a href="build-trip.html">Build Your Trip</a><a href="travel-desk.html">Travel Desk</a><a href="about.html">About Us</a><a href="account.html">My Account</a><a href="login.html">Sign In</a>
+    </nav>
+  </div>
+</header>
+
+<main id="app">
+  <div class="denied" id="denied">
+    <div class="ey">RoamSonio Administration</div>
+    <h1>Master Account</h1>
+    <p class="intro" style="margin:0 auto">This area is reserved for the RoamSonio master administrator. Access will be controlled by the protected admin role before any user or trip data is exposed.</p>
+  </div>
+
+  <div class="wrap preview" id="dashboard">
+    <div class="ey">RoamSonio Operations Center</div>
+    <h1>Master Account</h1>
+    <p class="intro">A single control center for users, trips, families, support requests and communication. Phase 1 establishes the protected administration surface without changing the existing user workflows.</p>
+    <div class="adminBadge">Master Administrator</div>
+
+    <section class="grid">
+      <div class="card"><div class="num">—</div><small>Total Users</small></div>
+      <div class="card"><div class="num">—</div><small>Total Trips</small></div>
+      <div class="card"><div class="num">—</div><small>Families & Groups</small></div>
+      <div class="card"><div class="num">—</div><small>Open Support</small></div>
+    </section>
+
+    <section class="section">
+      <div class="sectionHead"><div><h2>Administration</h2><p>Phase 1 navigation foundation</p></div></div>
+      <div class="quick">
+        <a class="primary" href="#">Users</a><a href="#">Trips</a><a href="#">Families</a><a href="#">Support</a><a href="#">Messages</a><a href="#">Announcements</a><a href="#">Activity Log</a>
+      </div>
+      <div class="notice">Data panels are intentionally not connected yet. The next step will add the protected data layer and Row Level Security before this dashboard can read across user accounts and trips.</div>
+    </section>
+
+    <section class="section">
+      <div class="sectionHead"><div><h2>Recent Activity</h2><p>Reserved for the future admin activity feed</p></div></div>
+      <div class="table">
+        <div class="row header"><span>Activity</span><span>User</span><span>Area</span><span>Time</span></div>
+        <div class="row"><span>Awaiting data connection</span><span class="muted">—</span><span class="muted">—</span><span class="muted">—</span></div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","sb_publishable_DyiQBLmIyGMBXCeJ9KKgSg_TFWO5vsy");
+(async()=>{
+  const {data:{session}}=await client.auth.getSession();
+  if(!session){location.href="login.html?return=master-account.html";return}
+  const role=session.user.app_metadata?.role||session.user.app_metadata?.user_role;
+  const isMaster=role==="master_admin";
+  const preview=new URLSearchParams(location.search).get("preview")==="1";
+  if(isMaster||preview){
+    document.getElementById("denied").style.display="none";
+    document.getElementById("dashboard").style.display="block";
+    if(preview&&!isMaster){
+      document.querySelector(".adminBadge").textContent="UI Preview Mode — no real data";
+      document.querySelector(".notice").textContent="Preview only. No user, trip, family or support data is being loaded.";
+    }
+  }
+})();
+</script>
+</body>
+</html>
