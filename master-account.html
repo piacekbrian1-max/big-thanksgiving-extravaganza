@@ -60,6 +60,9 @@ h1{font:600 clamp(38px,5vw,58px)/1.02 "Playfair Display",serif;margin:8px 0 10px
 .transferNotice{display:flex;flex-direction:column;gap:4px;margin-top:10px;padding:13px 15px;border-radius:10px;background:#F1EADB;color:#5F5137;font-size:10px;line-height:1.5}
 .transferBtn,.secondaryBtn{padding:11px 15px;border-radius:8px;font:800 9px/1 "DM Sans";letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
 .transferBtn{border:1px solid var(--gold);background:var(--gold);color:var(--navy)}
+#initiateTransferBtn{background:var(--navy);border-color:var(--navy);color:#fff}
+#initiateTransferBtn:disabled{opacity:.45;cursor:not-allowed}
+
 .secondaryBtn{border:1px solid var(--line);background:#fff;color:var(--navy)}
 .transferReview{margin-top:14px;padding:16px;border:1px solid var(--gold);border-radius:11px;background:#fff}
 .reviewTitle{font:600 22px/1.1 "Playfair Display";margin-bottom:6px}
@@ -164,6 +167,7 @@ h1{font:600 clamp(38px,5vw,58px)/1.02 "Playfair Display",serif;margin:8px 0 10px
       </div>
       <div class="quick transferActions">
         <button type="button" class="transferBtn" id="reviewTransferBtn">Review Transfer</button>
+        <button type="button" class="transferBtn" id="initiateTransferBtn" disabled>Initiate Actual Transfer</button>
       </div>
       <div class="transferReview" id="transferReview" hidden>
         <div class="reviewTitle">Transfer Review</div>
@@ -286,8 +290,9 @@ const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","s
       if(error)throw error;
       renderTransferPreview(data||[]);
       status.textContent="Protected preview loaded. No data was changed.";
-      document.getElementById("transferConfirm").hidden=false;
-      document.getElementById("reviewCloseOnly").style.display="none";
+      document.getElementById("transferConfirm").hidden=true;
+      document.getElementById("reviewCloseOnly").style.display="flex";
+      document.getElementById("initiateTransferBtn").disabled=false;
     }catch(e){
       console.error("Transfer preview failed:",e);
       status.textContent="Transfer preview could not be loaded: "+(e.message||"Unknown error");
@@ -331,6 +336,15 @@ const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","s
       executeBtn.disabled=false;
       executeBtn.textContent="Confirm & Transfer";
     }
+  });
+
+  document.getElementById("initiateTransferBtn").addEventListener("click",()=>{
+    document.getElementById("transferConfirm").hidden=false;
+    document.getElementById("transferConfirmInput").value="";
+    document.getElementById("executeTransferBtn").disabled=true;
+    document.getElementById("transferResult").hidden=true;
+    document.getElementById("transferConfirmInput").focus();
+    document.getElementById("transferConfirm").scrollIntoView({behavior:"smooth",block:"center"});
   });
 
   document.getElementById("closeTransferReview").addEventListener("click",()=>{
