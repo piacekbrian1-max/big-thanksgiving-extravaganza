@@ -17,7 +17,7 @@ a{text-decoration:none;color:inherit}.top{height:74px;background:#0B2D4A;color:#
 html,body{max-width:100%;overflow-x:hidden}*,*::before,*::after{box-sizing:border-box}body{background:#F8F5ED;color:#0B2D4A}.rsTop,.rsNav{box-sizing:border-box!important}.rsNav{width:100%!important;max-width:1440px!important;margin:0 auto!important}.rsLinks{flex:1 1 auto!important;min-width:0!important}.rsLinks a{white-space:nowrap!important}.btn,.button,button,input,select,textarea{font-family:"DM Sans",Arial,sans-serif}.btn{border-radius:7px}.btn.primary,.primary{background:#D4A85A;color:#0B2D4A;border-color:#D4A85A}@media (min-width:801px) and (max-width:1500px){.rsNav{padding-left:20px!important;padding-right:20px!important;gap:18px!important}.rsLinks{gap:13px!important}.rsLinks a{font-size:11px!important}}@media (max-width:800px){.rsNav{width:100%!important;max-width:none!important}}
 </style></head>
 <body>
-<header class="rsTop"><div class="rsNav"><a class="rsBrand" href="index.html" aria-label="RoamSonio home"><span class="rsMark"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#F8F5ED"/><circle cx="45" cy="18" r="8" fill="#D4A85A"/><path d="M10 46 25 29l8 9 8-12 13 20H10Z" fill="#0B2D4A"/><path d="M17 20c8-7 18-8 27-4 5 2 8 5 10 9" fill="none" stroke="#D4A85A" stroke-width="3" stroke-linecap="round"/></svg></span><span><strong><span class="rsRoam">Roam</span><span class="rsSonio">Sonio</span></strong><small>DREAM IT. PLAN IT. LIVE IT.</small></span></a><nav class="rsLinks" aria-label="Primary navigation"><a href="index.html">My RoamSonio</a><a href="my-trips.html">My Trips</a><a href="build-trip.html">Build Your Trip</a><a href="travel-desk.html">Travel Desk</a><a href="about.html">About Us</a></nav></div></header>
+<header class="rsTop"><div class="rsNav"><a class="rsBrand" href="index.html" aria-label="RoamSonio home"><span class="rsMark"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#F8F5ED"/><circle cx="45" cy="18" r="8" fill="#D4A85A"/><path d="M10 46 25 29l8 9 8-12 13 20H10Z" fill="#0B2D4A"/><path d="M17 20c8-7 18-8 27-4 5 2 8 5 10 9" fill="none" stroke="#D4A85A" stroke-width="3" stroke-linecap="round"/></svg></span><span><strong><span class="rsRoam">Roam</span><span class="rsSonio">Sonio</span></strong><small>DREAM IT. PLAN IT. LIVE IT.</small></span></a><nav class="rsLinks" aria-label="Primary navigation"><a href="index.html">My RoamSonio</a><a href="my-trips.html">My Trips</a><a href="build-trip.html">Build Your Trip</a><a href="travel-desk.html">Travel Desk</a><a href="about.html">About Us</a><a href="account.html" id="rsAccountLink">My Account</a><a href="login.html?return=login.html" id="rsAuthLink" class="rsAuthBtn">Sign In</a></nav></div></header>
 <main class="wrap"><section class="card">
 <div class="ey">Your travel space</div>
 <h1>Welcome back.</h1>
@@ -40,5 +40,37 @@ document.getElementById("signupBtn").onclick=()=>location.href="signup.html";
 document.getElementById("resetBtn").onclick=(e)=>{e.preventDefault();location.href="reset-password.html";};
 document.getElementById("loginForm").onsubmit=async(e)=>{e.preventDefault();status("Signing you in…");const email=document.getElementById("email").value.trim(),password=document.getElementById("password").value;const {error}=await client.auth.signInWithPassword({email,password});if(error){status(error.message);return}location.href=new URLSearchParams(location.search).get("return")||"account.html";};
 </script>
-</body>
+<style id="roamsonio-auth-nav">
+.rsLinks{gap:14px!important;flex-wrap:wrap!important}
+.rsLinks .rsAuthBtn{padding:8px 11px!important;border:1px solid #D4A85A!important;border-radius:7px!important;background:#D4A85A!important;color:#0B2D4A!important}
+@media(max-width:800px){.rsLinks{gap:7px!important;row-gap:5px!important}.rsLinks .rsAuthBtn{padding:7px 9px!important}}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+  function initRoamAuth(){
+    if(!window.supabase) return;
+    var client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","sb_publishable_DyiQBLmIyGMBXCeJ9KKgSg_TFWO5vsy");
+    var account=document.getElementById("rsAccountLink"), auth=document.getElementById("rsAuthLink");
+    if(!account||!auth) return;
+    var page=location.pathname.split("/").pop()||"index.html";
+    function render(session){
+      var signedIn=!!session;
+      account.href=signedIn?"account.html":"login.html?return=account.html";
+      auth.textContent=signedIn?"Sign Out":"Sign In";
+      auth.href=signedIn?"#":"login.html?return="+encodeURIComponent(page);
+    }
+    client.auth.getSession().then(function(r){render(r.data&&r.data.session);});
+    client.auth.onAuthStateChange(function(event,session){render(session);});
+    auth.addEventListener("click",async function(e){
+      if(auth.textContent==="Sign Out"){
+        e.preventDefault();
+        await client.auth.signOut();
+        location.reload();
+      }
+    });
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",initRoamAuth); else initRoamAuth();
+})();
+</script></body>
 </html>
