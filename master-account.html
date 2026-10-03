@@ -69,6 +69,16 @@ h1{font:600 clamp(38px,5vw,58px)/1.02 "Playfair Display",serif;margin:8px 0 10px
 .reviewRow b{font-size:8px;text-transform:uppercase;letter-spacing:.06em}
 .reviewRow .keep{color:var(--gold-dark)}
 .reviewActions{margin-top:12px;display:flex;justify-content:flex-end}
+.transferConfirm{margin-top:14px;padding:14px;border:1px solid #D9B56C;border-radius:10px;background:#FFF8E8}
+.transferConfirm strong{display:block;font-size:10px}
+.transferConfirm p{margin:5px 0 10px;color:var(--slate);font-size:9px;line-height:1.5}
+.confirmInput{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--navy);font:600 10px "DM Sans";outline:none}
+.confirmInput:focus{border-color:var(--gold)}
+.confirmActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.dangerBtn{padding:11px 15px;border:1px solid #A84B3D;border-radius:8px;background:#A84B3D;color:#fff;font:800 9px/1 "DM Sans";letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.dangerBtn:disabled{opacity:.5;cursor:not-allowed}
+.successBox{margin-top:10px;padding:11px 13px;border-radius:9px;background:#E8F2E8;color:#315B3B;font-size:9px;line-height:1.5}
+
 @media(max-width:700px){.transferGrid{grid-template-columns:1fr}.transferArrow{transform:rotate(90deg);padding:2px}.transferSummary{grid-template-columns:1fr 1fr}.reviewRow{grid-template-columns:1fr 1fr}.reviewRow span:last-child{grid-column:1/-1}}
 
 .denied h1{font-size:38px}
@@ -159,8 +169,18 @@ h1{font:600 clamp(38px,5vw,58px)/1.02 "Playfair Display",serif;margin:8px 0 10px
         <div class="reviewTitle">Transfer Review</div>
         <div id="transferReviewStatus" class="reviewStatus">Loading protected preview…</div>
         <div id="transferReviewRows" class="reviewRows"></div>
-        <div class="reviewActions">
-          <button type="button" class="secondaryBtn" id="closeTransferReview">Close Review</button>
+        <div class="transferConfirm" id="transferConfirm" hidden>
+          <strong>Final confirmation required</strong>
+          <p>This is the only control on this page that changes ownership. It will transfer the reviewed family, membership, 5 trips and 2 trip shares. The Master Admin role and historical invitations remain on the original account. If anything fails, the database transaction rolls back.</p>
+          <input class="confirmInput" id="transferConfirmInput" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Type TRANSFER PIACEK FAMILY to continue">
+          <div class="confirmActions">
+            <button type="button" class="dangerBtn" id="executeTransferBtn" disabled>Confirm &amp; Transfer</button>
+            <button type="button" class="secondaryBtn" id="closeTransferReview">Close Review</button>
+          </div>
+          <div class="successBox" id="transferResult" hidden></div>
+        </div>
+        <div class="reviewActions" id="reviewCloseOnly">
+          <button type="button" class="secondaryBtn" id="closeTransferReviewFallback">Close Review</button>
         </div>
       </div>
     </section>
@@ -266,6 +286,8 @@ const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","s
       if(error)throw error;
       renderTransferPreview(data||[]);
       status.textContent="Protected preview loaded. No data was changed.";
+      document.getElementById("transferConfirm").hidden=false;
+      document.getElementById("reviewCloseOnly").style.display="none";
     }catch(e){
       console.error("Transfer preview failed:",e);
       status.textContent="Transfer preview could not be loaded: "+(e.message||"Unknown error");
@@ -275,7 +297,46 @@ const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","s
     }
   });
 
+  const confirmInput=document.getElementById("transferConfirmInput");
+  const executeBtn=document.getElementById("executeTransferBtn");
+  confirmInput.addEventListener("input",()=>{
+    executeBtn.disabled=confirmInput.value.trim()!=="TRANSFER PIACEK FAMILY";
+  });
+
+  document.getElementById("executeTransferBtn").addEventListener("click",async()=>{
+    if(confirmInput.value.trim()!=="TRANSFER PIACEK FAMILY")return;
+    executeBtn.disabled=true;
+    executeBtn.textContent="Transferring…";
+    const resultBox=document.getElementById("transferResult");
+    resultBox.hidden=true;
+    try{
+      const {error:refreshError}=await client.auth.refreshSession();
+      if(refreshError)throw refreshError;
+
+      const {data,error}=await client.rpc("roamsonio_transfer_account",{
+        p_source_user_id:TRANSFER_SOURCE,
+        p_target_user_id:TRANSFER_TARGET
+      });
+      if(error)throw error;
+
+      resultBox.textContent="Transfer completed successfully. The database returned: "+JSON.stringify(data);
+      resultBox.hidden=false;
+      confirmInput.disabled=true;
+      executeBtn.textContent="Transfer Complete";
+      document.getElementById("reviewTransferBtn").disabled=true;
+    }catch(e){
+      console.error("Account transfer failed:",e);
+      resultBox.textContent="Transfer was not completed: "+(e.message||"Unknown error")+". The protected database transaction should have rolled back.";
+      resultBox.hidden=false;
+      executeBtn.disabled=false;
+      executeBtn.textContent="Confirm & Transfer";
+    }
+  });
+
   document.getElementById("closeTransferReview").addEventListener("click",()=>{
+    document.getElementById("transferReview").hidden=true;
+  });
+  document.getElementById("closeTransferReviewFallback").addEventListener("click",()=>{
     document.getElementById("transferReview").hidden=true;
   });
 
