@@ -114,7 +114,7 @@ const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","s
 (async()=>{
   const {data:{session},error:sessionError}=await client.auth.getSession();
   if(sessionError||!session){
-    location.href="login.html?return=master-account.html";
+    location.href="master-admin-login.html";
     return;
   }
 
