@@ -18,7 +18,7 @@ async function load(){
   if(!token){showError("This shared trip link is missing its access code.");return}
   const {data,error}=await client.rpc("get_trip_share",{share_token:token});
   if(error||!data?.length){const msg=error?.message||"This shared trip is not available.";if(msg.toLowerCase().includes("sign in to view this family trip")){showError(msg,{label:"Sign in to RoamSonio",href:"login.html?return="+encodeURIComponent(location.href)});}else{showError(msg);}return}
-  const s=data[0],t=s.snapshot||{};
+  const s=data[0],t=s.snapshot||{};const savedKey="roamsonio-received-shares-v1";try{let saved=JSON.parse(localStorage.getItem(savedKey)||"[]");saved=saved.filter(x=>x&&x.token&&x.token!==token);saved.unshift({token:token,trip_name:t.name||s.trip_name||"Shared trip",saved_at:new Date().toISOString()});localStorage.setItem(savedKey,JSON.stringify(saved.slice(0,50)))}catch(e){}
   document.getElementById("loading").style.display="none";document.getElementById("app").style.display="block";
   document.getElementById("title").textContent=t.name||s.trip_name||"Shared trip";
   document.getElementById("dest").textContent=(t.destinations||[]).join(" · ")||"Destination not specified";
