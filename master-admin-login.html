@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Master Admin Sign In · RoamSonio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0B2D4A;--gold:#D4A85A;--ivory:#F8F5ED;--slate:#58718A;--line:#D9E0E7;--paper:#FFFDF9}
+*{box-sizing:border-box}html,body{margin:0;max-width:100%;overflow-x:hidden}
+body{background:var(--ivory);color:var(--navy);font-family:"DM Sans",Arial,sans-serif;min-height:100vh}
+a{text-decoration:none;color:inherit}
+.rsTop{position:sticky;top:0;z-index:1000;width:100%;min-height:68px;background:rgba(248,245,237,.98);border-bottom:1px solid var(--line);backdrop-filter:blur(14px)}
+.rsNav{width:100%;max-width:1440px;margin:0 auto;min-height:68px;padding:0 20px;display:flex;align-items:center;gap:18px}
+.rsBrand{display:flex;align-items:center;gap:10px;flex:0 0 auto}
+.rsMark{width:42px;height:42px;border:2px solid var(--gold);border-radius:10px;display:grid;place-items:center;background:var(--ivory)}
+.rsMark svg{width:32px;height:32px}
+.rsBrand strong{font:600 22px/1.05 "Playfair Display",serif;white-space:nowrap}
+.rsRoam{color:var(--navy)}.rsSonio{color:var(--gold)}
+.rsBrand small{display:block;margin-top:3px;color:var(--slate);font:700 7px/1.1 "DM Sans";letter-spacing:.18em;white-space:nowrap}
+.rsLinks{display:flex;align-items:center;justify-content:flex-end;gap:13px;flex:1;min-width:0;flex-wrap:wrap}
+.rsLinks a{font:700 11px/1.1 "DM Sans";white-space:nowrap;color:var(--navy)}
+.wrap{min-height:calc(100vh - 68px);display:grid;place-items:center;padding:44px 18px}
+.card{width:min(500px,100%);background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:34px;box-shadow:0 18px 50px #0B2D4A12;text-align:center}
+.ey{font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:#A47C2F;font-weight:800}
+h1{font:600 40px/1.05 "Playfair Display",serif;margin:9px 0 12px}
+p{color:var(--slate);font-size:11px;line-height:1.65;margin:0 auto 24px;max-width:390px}
+.badge{display:inline-flex;padding:7px 10px;border-radius:99px;background:#E9D9B7;color:#5F5137;font-size:8px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin-bottom:20px}
+.google{width:100%;border:1px solid #CBD5DF;border-radius:8px;background:#fff;color:var(--navy);padding:14px;font:800 10px/1 "DM Sans";letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.status{display:none;margin:16px 0 0;padding:11px 12px;border-radius:8px;background:#F7E5E2;color:#7B3028;border:1px solid #E8C7C2;font-size:10px;line-height:1.5;text-align:left}
+.status.show{display:block}
+.note{margin-top:20px;padding:13px 14px;border-radius:9px;background:#F1EADB;color:#5F5137;font-size:9px;line-height:1.55;text-align:left}
+.back{display:inline-block;margin-top:20px;color:#8B6728;font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+@media(max-width:700px){.rsNav{padding:8px 11px;min-height:62px;align-items:flex-start}.rsTop{min-height:62px}.rsBrand strong{font-size:18px}.rsMark{width:34px;height:34px;flex-basis:34px}.rsMark svg{width:26px;height:26px}.rsBrand small{font-size:5px}.rsLinks{gap:6px 8px}.rsLinks a{font-size:9px}}
+</style>
+</head>
+<body>
+<header class="rsTop">
+  <div class="rsNav">
+    <a class="rsBrand" href="index.html" aria-label="RoamSonio home">
+      <span class="rsMark"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#F8F5ED"/><circle cx="45" cy="18" r="8" fill="#D4A85A"/><path d="M10 46 25 29l8 9 8-12 13 20H10Z" fill="#0B2D4A"/><path d="M17 20c8-7 18-8 27-4 5 2 8 5 10 9" fill="none" stroke="#D4A85A" stroke-width="3" stroke-linecap="round"/></svg></span>
+      <span><strong><span class="rsRoam">Roam</span><span class="rsSonio">Sonio</span></strong><small>DREAM IT. PLAN IT. LIVE IT.</small></span>
+    </a>
+    <nav class="rsLinks"><a href="index.html">My RoamSonio</a><a href="account.html">My Account</a></nav>
+  </div>
+</header>
+<main class="wrap">
+<section class="card">
+  <div class="ey">RoamSonio Administration</div>
+  <h1>Master Admin Sign In</h1>
+  <div class="badge">Protected Access</div>
+  <p>This sign-in is separate from the normal RoamSonio account login. Use the authorized Google account for Master Administration.</p>
+  <button class="google" id="googleBtn" type="button">Continue with Google</button>
+  <div class="status" id="status" role="status"></div>
+  <div class="note">Google authentication proves the identity. Supabase then checks the protected Master Admin role before the administration dashboard can be accessed.</div>
+  <a class="back" href="login.html">Back to normal sign in</a>
+</section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","sb_publishable_DyiQBLmIyGMBXCeJ9KKgSg_TFWO5vsy");
+const statusBox=document.getElementById("status");
+function status(msg){statusBox.textContent=msg;statusBox.classList.add("show")}
+document.getElementById("googleBtn").onclick=async()=>{
+  status("Connecting to Google…");
+  const {error}=await client.auth.signInWithOAuth({
+    provider:"google",
+    options:{redirectTo:location.origin+"/roamsonio/master-account.html"}
+  });
+  if(error) status(error.message);
+};
+</script>
+</body>
+</html>
