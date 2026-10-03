@@ -6,18 +6,29 @@ returns table (
   family_name text,
   role text,
   status text,
-  expires_at timestamptz
+  expires_at timestamptz,
+  invited_by text
 )
 language sql
 security definer
 set search_path = public
 stable
-as $$
-  select f.name, i.role, i.status, i.expires_at
+as $
+  select
+    f.name,
+    i.role,
+    i.status,
+    i.expires_at,
+    coalesce(nullif(fm.display_name,''),'Family Owner')
   from public.family_invitations i
   join public.families f on f.id = i.family_id
+  left join public.family_members fm
+    on fm.family_id = i.family_id
+   and fm.user_id = f.owner_id
+   and fm.role = 'owner'
+   and fm.status = 'active'
   where i.invite_token = get_family_invite.invite_token;
-$$;
+$;
 
 revoke all on function public.get_family_invite(uuid) from public;
 grant execute on function public.get_family_invite(uuid) to anon, authenticated;
