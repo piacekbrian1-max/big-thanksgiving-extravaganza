@@ -586,9 +586,12 @@ button,a{max-width:100%}
 
 <footer><div class="foot"><div><b id="footerTitle">Trip Workspace</b><p>Built from the Thanksgiving trip design system, with destination-specific planning intelligence layered on top.</p></div><div><p><a href="index.html">Home</a> · <a href="my-trips.html">My Trips</a> · <a href="build-trip.html">Build a new trip</a> · <a href="#home">Back to top</a></p></div></div></footer>
 
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-(function(){
+(async function(){
+var rsWorkspaceAuth=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","sb_publishable_DyiQBLmIyGMBXCeJ9KKgSg_TFWO5vsy");
+var rsWorkspaceSession=await rsWorkspaceAuth.auth.getSession();
+if(!rsWorkspaceSession.data.session){location.replace("login.html?return="+encodeURIComponent(location.pathname+location.search));return;}
 var menuToggle=document.getElementById("menuToggle"),tripNav=document.getElementById("tripNav");
 function closeTripMenu(){if(tripNav){tripNav.classList.remove("open")}if(menuToggle){menuToggle.setAttribute("aria-expanded","false")}}
 function toggleTripMenu(e){if(e){e.preventDefault();e.stopPropagation()}if(!tripNav)return;var open=tripNav.classList.toggle("open");if(menuToggle)menuToggle.setAttribute("aria-expanded",open?"true":"false")}
