@@ -17,12 +17,34 @@ main{max-width:1180px;width:92%;margin:auto}.hero{padding:82px 0 58px;display:gr
 footer{background:var(--navy);color:#4F6B8A;padding:38px 0}.foot{max-width:1180px;width:92%;margin:auto;display:flex;justify-content:space-between;gap:20px}.foot b{font:600 25px "Playfair Display",serif;color:#eee7d4}.foot p{font-size:9px;line-height:1.6}
 @media(max-width:800px){.hero,.story{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}.principles{grid-template-columns:1fr 1fr}.cta{display:block}.cta .btn{display:inline-block;margin-top:18px}}@media(max-width:600px){.navright a:not(:last-child){display:none}.hero{padding:55px 0 35px}.hero h1{font-size:51px}.grid,.principles{grid-template-columns:1fr}.sectionHead h2{font-size:35px}}
 </style>
-</head>
+<style id="roamsonio-global-nav">
+.rsTop{position:sticky!important;top:0!important;z-index:1000!important;width:100%!important;height:68px!important;min-height:68px!important;background:rgba(248,245,237,.98)!important;color:#0B2D4A!important;border-bottom:1px solid #D9E0E7!important;backdrop-filter:blur(14px)!important}
+.rsNav{width:min(1440px,100%)!important;height:68px!important;margin:0 auto!important;padding:0 28px!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:28px!important}
+.rsBrand{display:flex!important;align-items:center!important;gap:10px!important;flex:0 0 auto!important;min-width:0!important;text-decoration:none!important}
+.rsMark{width:42px!important;height:42px!important;border:2px solid #D4A85A!important;border-radius:10px!important;display:grid!important;place-items:center!important;background:#F8F5ED!important;flex:0 0 42px!important;overflow:hidden!important}
+.rsMark svg{width:32px!important;height:32px!important;display:block!important}
+.rsBrand strong{display:block!important;font:600 22px/1.05 "Playfair Display","Georgia",serif!important;white-space:nowrap!important}
+.rsRoam{color:#0B2D4A!important}.rsSonio{color:#D4A85A!important}
+.rsBrand small{display:block!important;margin-top:3px!important;color:#58718A!important;font:700 7px/1.1 "DM Sans",Arial,sans-serif!important;letter-spacing:.18em!important;white-space:nowrap!important}
+.rsLinks{display:flex!important;align-items:center!important;justify-content:flex-end!important;gap:19px!important;min-width:0!important;white-space:nowrap!important}
+.rsLinks a{color:#0B2D4A!important;text-decoration:none!important;font:700 12px/1.1 "DM Sans",Arial,sans-serif!important;letter-spacing:.02em!important}
+.rsLinks a:hover{color:#A47C2F!important}
+@media(max-width:1100px){.rsNav{padding:0 20px!important;gap:18px!important}.rsLinks{gap:13px!important}.rsLinks a{font-size:11px!important}}
+@media(max-width:800px){.rsTop,.rsNav{height:auto!important;min-height:66px!important}.rsNav{padding:9px 16px!important;align-items:center!important;gap:12px!important}.rsBrand{gap:8px!important}.rsMark{width:38px!important;height:38px!important;flex-basis:38px!important}.rsMark svg{width:29px!important;height:29px!important}.rsBrand strong{font-size:20px!important}.rsBrand small{font-size:6px!important}.rsLinks{gap:9px!important;flex-wrap:wrap!important;row-gap:6px!important}.rsLinks a{font-size:10px!important}}
+@media(max-width:560px){.rsTop,.rsNav{min-height:62px!important}.rsNav{padding:8px 11px!important;gap:8px!important}.rsMark{width:34px!important;height:34px!important;flex-basis:34px!important}.rsMark svg{width:26px!important;height:26px!important}.rsBrand{gap:7px!important}.rsBrand strong{font-size:18px!important}.rsBrand small{font-size:5px!important}.rsLinks{gap:6px 8px!important}.rsLinks a{font-size:9px!important}}
+</style></head>
 <body>
-<header class="top"><div class="nav">
-<a class="brand" href="index.html"><span class="mark" aria-label="RoamSonio"><svg class="brandIcon" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#F8F5ED"/><circle cx="45" cy="18" r="8" fill="#D4A85A"/><path d="M10 46 25 29l8 9 8-12 13 20H10Z" fill="#0B2D4A"/><path d="M19 43 32 28l7 8" fill="none" stroke="#F8F5ED" stroke-width="2.2" stroke-linecap="round"/><path d="M17 20c8-7 18-8 27-4 5 2 8 5 10 9" fill="none" stroke="#D4A85A" stroke-width="3" stroke-linecap="round"/></svg></span><span><strong><span class="wordRoam">Roam</span><span class="wordSonio">Sonio</span></strong><small>DREAM IT. PLAN IT. LIVE IT.</small></span></a>
-<div class="navright"><a href="index.html">Home</a><a href="my-trips.html">My Trips</a><a href="build-trip.html">Build Your Trip</a><a href="about.html">About Us</a></div>
-</div></header>
+<header class="rsTop">
+<div class="rsNav">
+<a class="rsBrand" href="index.html" aria-label="RoamSonio home">
+<span class="rsMark"><svg viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="32" r="29" fill="#F8F5ED"/><circle cx="45" cy="18" r="8" fill="#D4A85A"/><path d="M10 46 25 29l8 9 8-12 13 20H10Z" fill="#0B2D4A"/><path d="M17 20c8-7 18-8 27-4 5 2 8 5 10 9" fill="none" stroke="#D4A85A" stroke-width="3" stroke-linecap="round"/></svg></span>
+<span><strong><span class="rsRoam">Roam</span><span class="rsSonio">Sonio</span></strong><small>DREAM IT. PLAN IT. LIVE IT.</small></span>
+</a>
+<nav class="rsLinks" aria-label="Primary navigation">
+<a href="index.html">My RoamSonio</a><a href="my-trips.html">My Trips</a><a href="build-trip.html">Build Your Trip</a><a href="travel-desk.html">Travel Desk</a><a href="about.html">About Us</a>
+</nav>
+</div>
+</header>
 <main>
 <section class="hero">
 <div><div class="ey">About RoamSonio</div><h1>Travel planning should feel like part of the <span>adventure.</span></h1><p>RoamSonio is a travel planning workspace built around one simple idea: the planning process should help you get excited about the journey, not bury you in tabs, spreadsheets and disconnected notes.</p></div>
