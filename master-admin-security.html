@@ -55,40 +55,57 @@ const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","s
 const statusBox=document.getElementById("enrollStatus");
 function showStatus(msg,good=false){statusBox.textContent=msg;statusBox.className="status show "+(good?"ok":"err")}
 async function start(){
- const {data:{session}}=await client.auth.getSession();
- if(!session){location.href="master-admin-login.html";return}
+ const {data:{session},error:sessionError}=await client.auth.getSession();
+ if(sessionError||!session){location.href="master-admin-login.html";return}
  const {data:factors,error}=await client.auth.mfa.listFactors();
- if(error){showStatus(error.message);return}
+ if(error){showStatus("We could not read your MFA status. Please refresh and try again.");console.error(error);return}
  const verified=(factors?.totp||[]).find(f=>f.status==="verified");
  if(verified){
-   document.getElementById("enrollCard").innerHTML='<h2>Verify your authenticator</h2><p>Your authenticator is already enrolled. Enter the current 6-digit code to complete Master Admin verification.</p><input id="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000"><button class="primary" id="verifyExisting">Verify and Continue</button><div class="status" id="enrollStatus"></div>';
+   document.getElementById("enrollCard").innerHTML='<h2>Verify your authenticator</h2><p>Your authenticator is already enrolled. Enter the current 6-digit code to continue.</p><input id="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000"><button class="primary" id="verifyExisting">Verify and Continue</button><div class="status" id="enrollStatus"></div>';
    const {data:challenge,error:challengeError}=await client.auth.mfa.challenge({factorId:verified.id});
-   if(challengeError){showStatus(challengeError.message);return}
+   if(challengeError){document.getElementById("enrollStatus").textContent=challengeError.message;document.getElementById("enrollStatus").className="status show err";return}
    document.getElementById("verifyExisting").onclick=async()=>{
-     const code=document.getElementById("code").value.replace(/\\D/g,"");
-     if(code.length!==6){showStatus("Enter the 6-digit code from Google Authenticator.");return}
+     const code=document.getElementById("code").value.replace(/\D/g,"");
+     if(code.length!==6){document.getElementById("enrollStatus").textContent="Enter the 6-digit code from Google Authenticator.";document.getElementById("enrollStatus").className="status show err";return}
      const {error}=await client.auth.mfa.verify({factorId:verified.id,challengeId:challenge.id,code});
-     if(error){showStatus("That code was not accepted. Make sure Google Authenticator is showing the current code and try again.");return}
+     if(error){document.getElementById("enrollStatus").textContent="That code was not accepted. Check Google Authenticator and try again.";document.getElementById("enrollStatus").className="status show err";return}
      location.href="master-account.html";
    };
    return;
  }
- const {data,error:enrollError}=await client.auth.mfa.enroll({factorType:"totp",friendlyName:"RoamSonio Master Admin"});
- if(enrollError){showStatus(enrollError.message);return}
- document.getElementById("secret").textContent=enroll.data.totp.secret;
+ // A previous interrupted setup can leave an unverified factor. Remove only unverified TOTP factors before creating a fresh enrollment.
+ const pending=(factors?.totp||[]).filter(f=>f.status!=="verified");
+ for(const factor of pending){await client.auth.mfa.unenroll({factorId:factor.id});}
+ const {data:enroll,error:enrollError}=await client.auth.mfa.enroll({factorType:"totp",friendlyName:"RoamSonio Master Admin"});
+ if(enrollError){
+   showStatus("MFA enrollment could not start. Refresh the page and try again.");
+   console.error("MFA enrollment error:",enrollError);
+   return;
+ }
+ document.getElementById("secret").textContent=enroll.totp.secret;
  document.getElementById("secretWrap").classList.remove("hidden");
- try{const qr=qrcode(0,"M");qr.addData(enroll.data.totp.uri);qr.make();document.getElementById("qr").innerHTML=qr.createSvgTag(6,2);}catch(qrError){console.error("QR render failed:",qrError);showStatus("The QR code could not be rendered. Use the setup key shown below to add RoamSonio manually in Google Authenticator.");}
+ if(typeof qrcode==="function"){
+   try{
+     const qr=qrcode(0,"M");qr.addData(enroll.totp.uri);qr.make();
+     document.getElementById("qr").innerHTML=qr.createSvgTag(6,2);
+   }catch(qrError){
+     console.error("QR render failed:",qrError);
+     document.getElementById("qr").innerHTML='<p style="color:#58718A;font-size:11px">QR display is unavailable in this browser. Use the setup key shown below.</p>';
+   }
+ }else{
+   document.getElementById("qr").innerHTML='<p style="color:#58718A;font-size:11px">QR display is unavailable in this browser. Use the setup key shown below.</p>';
+ }
  document.getElementById("verifyEnroll").onclick=async()=>{
    const code=document.getElementById("code").value.replace(/\D/g,"");
    if(code.length!==6){showStatus("Enter the 6-digit code from Google Authenticator.");return}
-   const {data:challenge,error:challengeError}=await client.auth.mfa.challenge({factorId:enroll.data.id});
+   const {data:challenge,error:challengeError}=await client.auth.mfa.challenge({factorId:enroll.id});
    if(challengeError){showStatus(challengeError.message);return}
-   const {error:verifyError}=await client.auth.mfa.verify({factorId:enroll.data.id,challengeId:challenge.id,code});
+   const {error:verifyError}=await client.auth.mfa.verify({factorId:enroll.id,challengeId:challenge.id,code});
    if(verifyError){showStatus("That code was not accepted. Make sure Google Authenticator is showing the current code and try again.");return}
    document.getElementById("enrollCard").classList.add("hidden");
    document.getElementById("successCard").classList.remove("hidden");
  };
-}
+}}
 document.getElementById("continueBtn").onclick=()=>location.href="master-account.html";
 start();
 </script>
