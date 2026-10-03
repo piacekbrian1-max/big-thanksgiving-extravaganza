@@ -329,7 +329,7 @@ const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","s
       });
       if(error)throw error;
 
-      resultBox.textContent="Transfer completed successfully. The database returned: "+JSON.stringify(data);
+      resultBox.textContent="Success";
       resultBox.hidden=false;
       approvalSelect.disabled=true;
       executeBtn.textContent="Transfer Complete";
