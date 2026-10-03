@@ -49,7 +49,7 @@ input{width:100%;padding:14px;border:1px solid #CBD5DF;border-radius:7px;backgro
 </section>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script>
 const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","sb_publishable_DyiQBLmIyGMBXCeJ9KKgSg_TFWO5vsy");
 const statusBox=document.getElementById("enrollStatus");
@@ -77,7 +77,7 @@ async function start(){
  if(enrollError){showStatus(enrollError.message);return}
  document.getElementById("secret").textContent=enroll.data.totp.secret;
  document.getElementById("secretWrap").classList.remove("hidden");
- const qr=qrcode(0,"M"); qr.addData(enroll.data.totp.uri); qr.make(); document.getElementById("qr").innerHTML=qr.createSvgTag(6,2);
+ try{const qr=qrcode(0,"M");qr.addData(enroll.data.totp.uri);qr.make();document.getElementById("qr").innerHTML=qr.createSvgTag(6,2);}catch(qrError){console.error("QR render failed:",qrError);showStatus("The QR code could not be rendered. Use the setup key shown below to add RoamSonio manually in Google Authenticator.");}
  document.getElementById("verifyEnroll").onclick=async()=>{
    const code=document.getElementById("code").value.replace(/\D/g,"");
    if(code.length!==6){showStatus("Enter the 6-digit code from Google Authenticator.");return}
