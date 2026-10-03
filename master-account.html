@@ -164,6 +164,14 @@ const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","s
 
   <script>
   async function loadMasterSummary(){
+    try{
+      // Refresh the session so the access token carries the verified AAL2 claim
+      // used by the protected Master Admin RPCs.
+      const {error:refreshError}=await client.auth.refreshSession();
+      if(refreshError) throw refreshError;
+    }catch(e){
+      console.error("Master session refresh failed:",e);
+    }
     const calls=await Promise.all([
       client.rpc("roamsonio_admin_users"),
       client.rpc("roamsonio_admin_trips"),
@@ -174,6 +182,13 @@ const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","s
     if(!calls[1].error)document.getElementById("tripCount").textContent=calls[1].data.length;
     if(!calls[2].error)document.getElementById("familyCount").textContent=calls[2].data.length;
     if(!calls[3].error)document.getElementById("supportCount").textContent=calls[3].data.filter(x=>["open","in_progress","waiting_on_user"].includes(x.status)).length;
+    const firstError=calls.find(x=>x.error);
+    if(firstError){
+      console.error("Master dashboard data load error:",firstError.error);
+      const box=document.getElementById("authError");
+      box.textContent="Your Master Admin sign-in is active, but the dashboard data could not be loaded. Please refresh this page once.";
+      box.style.display="block";
+    }
   }
   </script>
 </body>
