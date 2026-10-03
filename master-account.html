@@ -270,7 +270,7 @@ const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","s
   }
 
   function populateTransferUsers(users){
-    transferUsers=(users||[]).filter(u=>!u.admin_active);
+    transferUsers=(users||[]).filter(u=>u.admin_active!==true && !u.admin_role);
     const source=document.getElementById("transferSourceSelect");
     const target=document.getElementById("transferTargetSelect");
     source.innerHTML='<option value="">Select source account…</option>';
@@ -332,6 +332,11 @@ const client=supabase.createClient("https://vqtqchxoecrahtrnoocy.supabase.co","s
       const {error:refreshError}=await client.auth.refreshSession(); if(refreshError)throw refreshError;
       const {data,error}=await client.rpc("roamsonio_admin_users"); if(error)throw error;
       populateTransferUsers(data||[]);
+      if(!transferUsers.length){
+        document.getElementById("transferReadyTitle").textContent="No eligible normal accounts found.";
+        document.getElementById("transferReadyText").textContent="The protected user directory returned no normal-user accounts available for transfer.";
+        return;
+      }
       document.getElementById("transferReadyTitle").textContent="Ready for an account transfer.";
       document.getElementById("transferReadyText").textContent="Select any eligible normal source account and any eligible normal target account. Administrator accounts are protected.";
     }catch(e){
